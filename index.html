@@ -1,0 +1,2203 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<title>ShellFans AI — AI Chat 社群分析，問句即洞察，把社群經營，變成可管理的長期資產</title>
+<link rel="canonical" href="https://shell.fans">
+<meta name="description" content="ShellFans AI 是跨平台社群 AI 指揮中心，幫助創作者、經紀人與品牌主整合 IG、Facebook、Threads 等平台資料，保存社群資產、看懂粉絲、同步經營與口碑成長。">
+<meta property="og:title" content="ShellFans AI — 跨平台社群 AI 指揮中心">
+<meta property="og:description" content="保存社群資產，看懂粉絲，同步經營與口碑。">
+<meta property="og:type" content="website">
+<meta content="https://shell.fans" property="og:url">
+<meta content="https://shell.fans/og/cba6b96a33cf4730.jpg" property="og:image">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="https://shell.fans/images/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;600;700&family=Noto+Serif+TC:wght@600;700&display=swap" rel="stylesheet">
+<style>
+/* ShellFans Chat plan-selector — give the paid options a subtle visual
+   hint that they require an upgrade. Native <option> doesn't accept
+   pseudo-elements / nested HTML, so the "升級" cue lives in the option
+   text itself and we just colour the row. Browsers that ignore option
+   styling (older Safari) degrade to plain text — still legible. */
+#sfChatPlan option[data-tier="paid"]{color:#b45309;font-weight:500}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%;text-size-adjust:100%}
+body{
+  font-family:"Noto Sans TC","PingFang TC","Microsoft JhengHei","Heiti TC",system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  font-size:16px;
+  line-height:1.7;
+  font-weight:400;
+  color:#101214;
+  background:#FAFAF8;
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+  overflow-x:hidden;
+  font-feature-settings:"palt";
+}
+img{max-width:100%;display:block}
+a{color:inherit;text-decoration:none}
+ul,ol{list-style:none}
+button{font-family:inherit}
+
+:root{
+  --ink:#101214;
+  --charcoal:#1A1D21;
+  --warm-paper:#F7F3EA;
+  --off-white:#FAFAF8;
+  --shell-sand:#D8C3A5;
+  --signal-coral:#E96F5E;
+  --data-teal:#2C9A8A;
+  --deep-blue:#1E3A5F;
+  --muted-gold:#C59B57;
+  --text-secondary:#536578;
+  --text-tertiary:#8A8D93;
+  --border-light:#E8E5DE;
+  --border-medium:#D4D0C8;
+  --font-sans:"Noto Sans TC","PingFang TC","Microsoft JhengHei","Heiti TC",system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  --font-serif:"Noto Serif TC","PingFang TC","Microsoft JhengHei",serif;
+  --container:1200px;
+  --gutter:clamp(1.25rem,4vw,3rem);
+}
+.container{max-width:var(--container);margin:0 auto;padding:0 var(--gutter)}
+
+h1,h2,h3,h4,h5,h6{font-family:var(--font-sans);line-height:1.45;color:var(--ink);font-weight:700}
+p{line-height:1.8}
+
+/* ===== NAV (aligned with shell.fans) ===== */
+.nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  background:rgba(255,255,255,0.94);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--border-light);
+  transition:box-shadow .3s;
+}
+.nav.scrolled{box-shadow:0 1px 12px rgba(0,0,0,0.06)}
+.nav-inner{
+  display:flex;align-items:center;
+  height:72px;
+  gap:32px;
+}
+.nav-brand{display:flex;align-items:center;flex-shrink:0}
+.nav-brand img{height:34px;width:auto;display:block}
+.nav-menu{display:flex;align-items:center;gap:28px;flex:1}
+.nav-link{
+  font-size:0.95rem;font-weight:500;color:var(--text-secondary);
+  padding:8px 2px;position:relative;transition:color .2s;
+  font-family:var(--font-sans);
+  white-space:nowrap;
+}
+.nav-link:hover{color:var(--ink)}
+.nav-link::after{
+  content:"";position:absolute;left:0;right:0;bottom:0;
+  height:2px;background:var(--signal-coral);
+  transform:scaleX(0);transform-origin:left;transition:transform .2s;
+}
+.nav-link:hover::after{transform:scaleX(1)}
+.nav-actions{display:flex;align-items:center;gap:14px;flex-shrink:0}
+.nav-login{
+  position:relative;
+}
+.nav-login-toggle{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:8px 14px;
+  font-size:0.95rem;font-weight:500;color:var(--text-secondary);
+  background:none;border:none;cursor:pointer;
+  font-family:var(--font-sans);
+}
+.nav-login-toggle:hover{color:var(--ink)}
+.nav-login-toggle .caret{font-size:0.7rem;line-height:1}
+.nav-login-list{
+  display:none;
+  position:absolute;top:100%;right:0;min-width:180px;
+  background:#fff;border-radius:10px;
+  box-shadow:0 18px 42px -18px rgba(20,108,181,0.25);
+  padding:8px 0;margin-top:6px;
+  border:1px solid var(--border-light);
+}
+.nav-login.open .nav-login-list{display:block}
+.nav-login-list a{
+  display:block;padding:10px 18px;
+  font-size:0.9rem;color:#292929;font-weight:500;
+}
+.nav-login-list a:hover{background:var(--off-white)}
+.nav-cta{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:10px 20px;
+  background:var(--signal-coral);color:#fff;
+  border-radius:8px;
+  font-size:0.95rem;font-weight:600;
+  transition:transform .15s,box-shadow .15s;
+  font-family:var(--font-sans);
+}
+.nav-cta:hover{transform:translateY(-1px);box-shadow:0 6px 18px rgba(233,111,94,0.3)}
+.nav-hamburger{
+  display:none;
+  flex-direction:column;gap:5px;
+  background:none;border:none;cursor:pointer;
+  padding:8px;
+}
+.nav-hamburger span{display:block;width:22px;height:2px;background:var(--ink);border-radius:2px}
+
+.mobile-menu{
+  display:none;
+  position:fixed;top:72px;left:0;right:0;bottom:0;
+  background:#fff;
+  padding:1.5rem var(--gutter) 2rem;
+  flex-direction:column;
+  z-index:99;
+  overflow-y:auto;
+}
+.mobile-menu.active{display:flex}
+.mobile-menu a{
+  font-size:1.05rem;font-weight:500;
+  padding:1rem 0;
+  border-bottom:1px solid var(--border-light);
+  color:var(--ink);
+}
+.mobile-menu .mobile-section-title{
+  font-size:0.78rem;font-weight:600;color:var(--text-tertiary);
+  text-transform:uppercase;letter-spacing:0.08em;
+  margin:1.5rem 0 0.5rem;
+}
+.mobile-menu .mobile-cta{
+  display:inline-flex;align-items:center;justify-content:center;
+  margin-top:1.5rem;
+  padding:14px 24px;
+  background:var(--signal-coral);color:#fff;
+  border-radius:8px;font-weight:600;
+  border:none;
+}
+
+@media (max-width:991px){
+  .nav-menu,.nav-login,.nav-cta{display:none}
+  .nav-hamburger{display:flex}
+  .nav-inner{justify-content:space-between}
+}
+
+/* ===== BUTTONS ===== */
+.btn-primary{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:14px 30px;
+  background:var(--signal-coral);color:#fff;
+  border-radius:8px;
+  font-size:1rem;font-weight:600;
+  transition:transform .15s,box-shadow .15s;
+  border:none;cursor:pointer;
+  font-family:var(--font-sans);
+}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(233,111,94,0.3)}
+.btn-secondary{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:14px 28px;
+  background:transparent;color:var(--deep-blue);
+  border:1.5px solid var(--deep-blue);border-radius:8px;
+  font-size:1rem;font-weight:600;
+  transition:background .2s,color .2s;
+  cursor:pointer;
+  font-family:var(--font-sans);
+}
+.btn-secondary:hover{background:var(--deep-blue);color:#fff}
+
+/* ===== HERO ===== */
+.hero{padding:24px 0 80px;background:linear-gradient(180deg,#FAFAF8 0%,#F7F3EA 100%);position:relative;overflow:hidden}
+.hero-grid{
+  display:grid;
+  grid-template-columns:1.05fr 1fr;
+  gap:clamp(2.5rem,5vw,4.5rem);
+  align-items:center;
+}
+.hero-eyebrow{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:6px 14px;background:#fff;border:1px solid var(--border-light);
+  border-radius:999px;
+  font-size:0.82rem;font-weight:600;color:var(--deep-blue);
+  margin-bottom:1.25rem;
+}
+.hero-eyebrow .dot{width:6px;height:6px;border-radius:50%;background:var(--signal-coral)}
+.hero .hero-h{
+  font-size:clamp(1.4rem,2.6vw,2rem);
+  font-weight:700;
+  line-height:1.35;
+  letter-spacing:0.01em;
+  margin:0 0 1.1rem;
+  color:#1c1c1f;
+}
+.hero .hero-h .accent{color:var(--deep-blue);position:relative;display:inline-block}
+.hero .hero-h .accent::after{
+  content:"";position:absolute;left:0;right:0;bottom:0.1em;height:0.35em;
+  background:rgba(197,155,87,0.25);z-index:-1;
+}
+.hero-sub{
+  font-size:clamp(1rem,1.3vw,1.1rem);
+  color:var(--text-secondary);
+  line-height:1.85;
+  margin-bottom:2rem;
+  max-width:520px;
+}
+.hero-ctas{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:1.5rem}
+.hero-platforms{
+  display:flex;align-items:center;gap:8px;flex-wrap:wrap;
+  font-size:0.82rem;color:var(--text-tertiary);
+}
+.hero-platforms .label{font-weight:500}
+.platform-chip{
+  display:inline-flex;align-items:center;
+  padding:4px 10px;background:#fff;border:1px solid var(--border-light);
+  border-radius:6px;
+  font-size:0.78rem;font-weight:600;color:var(--text-secondary);
+}
+
+/* Hero visual: simplified dashboard card */
+.hero-visual{position:relative;min-height:380px;display:flex;align-items:center;justify-content:center}
+.hero-card{
+  background:#fff;border:1px solid var(--border-light);border-radius:18px;
+  box-shadow:0 24px 48px -20px rgba(20,40,80,0.18),0 4px 12px rgba(0,0,0,0.04);
+  width:100%;max-width:480px;
+  overflow:hidden;
+}
+.hero-card-bar{
+  display:flex;align-items:center;gap:8px;
+  padding:12px 18px;background:var(--off-white);
+  border-bottom:1px solid var(--border-light);
+}
+.hero-card-dots{display:flex;gap:6px}
+.hero-card-dots span{width:9px;height:9px;border-radius:50%}
+.hero-card-dots span:nth-child(1){background:#FF5F57}
+.hero-card-dots span:nth-child(2){background:#FEBC2E}
+.hero-card-dots span:nth-child(3){background:#28C840}
+.hero-card-bar .title{
+  margin-left:8px;font-size:0.78rem;font-weight:600;color:var(--text-secondary);
+}
+.hero-card-bar .badge{
+  margin-left:auto;font-size:0.7rem;font-weight:600;
+  padding:3px 10px;border-radius:5px;
+  background:rgba(44,154,138,0.1);color:var(--data-teal);
+}
+.hero-card-body{padding:24px}
+.hero-card-greeting{
+  font-size:0.82rem;color:var(--text-tertiary);margin-bottom:6px;
+}
+.hero-card-greeting strong{color:var(--ink);font-weight:700}
+.hero-card-summary{
+  font-size:0.95rem;color:var(--ink);font-weight:600;line-height:1.6;
+  margin-bottom:18px;
+}
+.hero-card-stats{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:20px;
+}
+.hero-stat{
+  padding:14px 12px;background:var(--off-white);border-radius:10px;
+  border:1px solid var(--border-light);
+}
+.hero-stat .stat-label{
+  font-size:0.7rem;color:var(--text-tertiary);font-weight:500;margin-bottom:4px;
+}
+.hero-stat .stat-val{
+  font-size:1.1rem;font-weight:700;color:var(--ink);line-height:1.2;
+}
+.hero-stat .stat-trend{
+  font-size:0.7rem;color:var(--data-teal);font-weight:600;margin-top:2px;
+}
+.hero-card-list{
+  display:flex;flex-direction:column;gap:8px;
+}
+.hero-card-row{
+  display:flex;align-items:center;gap:10px;
+  padding:10px 12px;background:var(--off-white);border-radius:8px;
+}
+.hero-card-row .pf{
+  width:24px;height:24px;border-radius:6px;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+  font-size:0.7rem;font-weight:700;color:#fff;
+}
+.hero-card-row .pf.ig{background:linear-gradient(135deg,#f09433,#dc2743,#bc1888)}
+.hero-card-row .pf.fb{background:#1877F2}
+.hero-card-row .pf.th{background:#000}
+.hero-card-row .text{
+  flex:1;font-size:0.78rem;color:var(--text-secondary);line-height:1.5;
+}
+.hero-card-row .text strong{color:var(--ink);font-weight:600;display:block;font-size:0.82rem;margin-bottom:1px}
+.hero-card-row .meta{font-size:0.7rem;color:var(--text-tertiary);font-weight:500;flex-shrink:0}
+
+@media (max-width:900px){
+  .hero{padding:20px 0 60px}
+  .hero-grid{grid-template-columns:1fr;gap:2.5rem}
+  .hero-visual{min-height:auto}
+}
+
+/* ===== SECTION HEADER ===== */
+.section{padding:24px 0 80px}
+.section-header{margin-bottom:3rem;max-width:760px}
+.section-header .overline{
+  display:inline-block;
+  font-size:0.78rem;font-weight:600;color:var(--data-teal);
+  text-transform:uppercase;letter-spacing:0.1em;
+  margin-bottom:0.85rem;
+}
+.section-header h2{
+  font-size:clamp(1.5rem,2.8vw,2.1rem);
+  line-height:1.45;
+  margin-bottom:0.75rem;
+}
+.section-header p{
+  font-size:1rem;color:var(--text-secondary);line-height:1.85;
+}
+
+/* ===== VALUE: 3 cards ===== */
+.values{padding:24px 0 80px;background:var(--warm-paper)}
+.values-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem}
+.value-card{
+  background:#fff;border:1px solid var(--border-light);border-radius:14px;
+  padding:32px 28px;
+  transition:transform .25s,box-shadow .25s;
+}
+.value-card:hover{transform:translateY(-4px);box-shadow:0 14px 36px -16px rgba(20,40,80,0.18)}
+.value-icon{
+  width:46px;height:46px;border-radius:12px;
+  display:flex;align-items:center;justify-content:center;
+  margin-bottom:1.25rem;
+}
+.value-icon svg{width:22px;height:22px;stroke-width:2;fill:none}
+.value-card:nth-child(1) .value-icon{background:rgba(30,58,95,0.08)}
+.value-card:nth-child(1) .value-icon svg{stroke:var(--deep-blue)}
+.value-card:nth-child(2) .value-icon{background:rgba(44,154,138,0.1)}
+.value-card:nth-child(2) .value-icon svg{stroke:var(--data-teal)}
+.value-card:nth-child(3) .value-icon{background:rgba(233,111,94,0.1)}
+.value-card:nth-child(3) .value-icon svg{stroke:var(--signal-coral)}
+.value-card h3{
+  font-size:1.15rem;line-height:1.5;margin-bottom:0.75rem;
+}
+.value-card p{
+  font-size:0.95rem;color:var(--text-secondary);line-height:1.85;
+}
+
+@media (max-width:900px){
+  .values-grid{grid-template-columns:1fr;gap:1rem}
+}
+
+/* ===== FLOW (3 steps) ===== */
+.flow{padding:24px 0 80px;background:var(--off-white)}
+.flow-steps{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  gap:1.5rem;
+  position:relative;
+}
+.flow-step{
+  background:#fff;border:1px solid var(--border-light);border-radius:14px;
+  padding:32px 28px;position:relative;
+}
+.flow-num{
+  display:inline-flex;align-items:center;justify-content:center;
+  width:36px;height:36px;border-radius:50%;
+  background:var(--deep-blue);color:#fff;
+  font-weight:700;font-size:0.95rem;
+  margin-bottom:1.25rem;
+  font-family:var(--font-sans);
+}
+.flow-step h3{
+  font-size:1.1rem;line-height:1.5;margin-bottom:0.75rem;
+}
+.flow-step p{
+  font-size:0.95rem;color:var(--text-secondary);line-height:1.85;margin-bottom:1rem;
+}
+.flow-tags{display:flex;flex-wrap:wrap;gap:6px}
+.flow-tag{
+  display:inline-block;
+  padding:4px 10px;
+  font-size:0.78rem;font-weight:500;
+  background:var(--warm-paper);color:var(--text-secondary);
+  border-radius:6px;
+}
+
+@media (max-width:900px){
+  .flow-steps{grid-template-columns:1fr}
+}
+
+/* ===== ROLES ===== */
+.roles{padding:24px 0 80px;background:var(--charcoal);color:#fff}
+.roles .section-header h2{color:#fff}
+.roles .section-header p{color:rgba(255,255,255,0.6)}
+.roles .section-header .overline{color:var(--shell-sand)}
+.roles-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem}
+.role-card{
+  background:rgba(255,255,255,0.04);
+  border:1px solid rgba(255,255,255,0.1);
+  border-radius:14px;
+  padding:32px 28px;
+}
+.role-tag{
+  display:inline-block;
+  font-size:0.78rem;font-weight:600;
+  text-transform:uppercase;letter-spacing:0.08em;
+  margin-bottom:1rem;
+}
+.role-card:nth-child(1) .role-tag{color:var(--data-teal)}
+.role-card:nth-child(2) .role-tag{color:var(--muted-gold)}
+.role-card:nth-child(3) .role-tag{color:var(--signal-coral)}
+.role-card h3{
+  color:#fff;
+  font-size:1.15rem;line-height:1.5;
+  margin-bottom:0.85rem;
+}
+.role-card p{
+  font-size:0.95rem;color:rgba(255,255,255,0.65);line-height:1.85;
+  margin-bottom:1.25rem;
+}
+.role-features{display:flex;flex-direction:column;gap:8px}
+.role-feature{
+  display:flex;align-items:center;gap:8px;
+  font-size:0.85rem;color:rgba(255,255,255,0.75);
+}
+.role-feature::before{
+  content:"";width:5px;height:5px;border-radius:50%;flex-shrink:0;
+}
+.role-card:nth-child(1) .role-feature::before{background:var(--data-teal)}
+.role-card:nth-child(2) .role-feature::before{background:var(--muted-gold)}
+.role-card:nth-child(3) .role-feature::before{background:var(--signal-coral)}
+
+@media (max-width:900px){
+  .roles-grid{grid-template-columns:1fr}
+}
+
+/* ===== FINAL CTA ===== */
+.final-cta{padding:100px 0;background:linear-gradient(135deg,#F7F3EA 0%,#FAFAF8 100%)}
+.final-cta-inner{
+  max-width:760px;margin:0 auto;text-align:center;
+}
+.final-cta h2{
+  font-size:clamp(1.6rem,3vw,2.2rem);
+  line-height:1.5;
+  margin-bottom:1.25rem;
+}
+.final-cta p{
+  font-size:1rem;color:var(--text-secondary);line-height:1.85;
+  margin-bottom:2rem;max-width:580px;margin-left:auto;margin-right:auto;
+}
+.final-cta-buttons{display:inline-flex;gap:14px;flex-wrap:wrap;justify-content:center}
+
+/* ===== FOOTER ===== */
+.footer{padding:56px 0 28px;background:var(--ink);color:rgba(255,255,255,0.7)}
+.footer-top{
+  display:grid;
+  grid-template-columns:1.6fr 1fr 1fr 1fr;
+  gap:2.5rem;
+  margin-bottom:2rem;
+  padding-bottom:1.75rem;
+}
+.footer-brand img{
+  height:32px;width:auto;
+  margin-bottom:1rem;
+  filter:brightness(0) invert(1);
+}
+.footer-desc{
+  font-size:0.9rem;color:rgba(255,255,255,0.55);line-height:1.7;
+  max-width:320px;
+}
+.footer-col h4{
+  color:#fff;font-size:0.92rem;font-weight:700;
+  margin-bottom:1rem;
+}
+.footer-col a{
+  display:block;font-size:0.88rem;color:rgba(255,255,255,0.6);
+  padding:5px 0;transition:color .2s;
+}
+.footer-col a:hover{color:#fff}
+
+/* Company info — centred inline list, no separators */
+.footer-company{
+  display:flex;flex-wrap:wrap;justify-content:center;align-items:center;
+  gap:4px 18px;
+  margin:0 auto;
+  padding:8px 0 4px;
+  max-width:920px;
+  text-align:center;
+  font-size:0.85rem;line-height:1.55;color:rgba(255,255,255,0.62);
+}
+.footer-company-row{display:inline-flex;align-items:center}
+.footer-company-row a{
+  color:rgba(255,255,255,0.85);
+  text-decoration:none;
+}
+.footer-company-row a:hover{color:#fff;text-decoration:underline;text-underline-offset:2px}
+
+/* Patent / trademark — centred single paragraph */
+.footer-patent{
+  margin:0 auto;
+  padding:6px 0 4px;
+  max-width:780px;
+  text-align:center;
+  font-size:0.8rem;line-height:1.6;color:rgba(255,255,255,0.48);
+}
+.footer-patent a{
+  color:rgba(255,255,255,0.72);
+  text-decoration:underline;text-decoration-color:rgba(255,255,255,0.25);
+  text-underline-offset:2px;
+}
+.footer-patent a:hover{color:#fff;text-decoration-color:#fff}
+
+/* Bottom row — copyright + lang + social + legal, all centred */
+.footer-bottom{
+  display:flex;justify-content:center;align-items:center;flex-wrap:wrap;
+  gap:10px 18px;
+  margin-top:12px;
+  padding-top:12px;
+  font-size:0.8rem;color:rgba(255,255,255,0.5);
+  text-align:center;
+}
+.footer-copy{
+  flex-basis:100%;
+  text-align:center;
+  color:rgba(255,255,255,0.5);
+  margin-bottom:4px;
+}
+.footer-lang{
+  display:inline-flex;align-items:center;gap:6px;
+  color:rgba(255,255,255,0.6);
+  background:none;border:none;font-family:inherit;font-size:inherit;
+  padding:4px 6px;border-radius:6px;
+  cursor:default;
+  line-height:1;
+}
+.footer-lang svg{flex-shrink:0;opacity:0.7}
+.footer-social{
+  display:inline-flex;align-items:center;gap:8px;
+}
+.footer-social a{
+  display:inline-flex;align-items:center;justify-content:center;
+  width:30px;height:30px;
+  background:rgba(255,255,255,0.06);
+  border:1px solid rgba(255,255,255,0.08);
+  border-radius:8px;
+  transition:background .2s,border-color .2s;
+}
+.footer-social a:hover{background:rgba(255,255,255,0.12);border-color:rgba(255,255,255,0.18)}
+.footer-social img{
+  width:14px;height:14px;
+  filter:brightness(0) invert(1);
+  opacity:0.85;
+}
+.footer-social a:hover img{opacity:1}
+.footer-legal{display:inline-flex;align-items:center;gap:14px}
+.footer-legal a{color:rgba(255,255,255,0.55);transition:color .2s}
+.footer-legal a:hover{color:#fff}
+
+@media (max-width:900px){
+  .footer-top{grid-template-columns:1fr 1fr;gap:2rem}
+}
+@media (max-width:600px){
+  .footer-top{grid-template-columns:1fr;text-align:center}
+  .footer-brand,.footer-brand img{margin-left:auto;margin-right:auto}
+  .footer-desc{margin-left:auto;margin-right:auto}
+  .footer-company{flex-direction:column;gap:2px}
+}
+</style>
+  <meta content="Shell.fans AI｜唄粉智能科技" property="og:site_name">
+  <meta content="https://shell.fans/og/cba6b96a33cf4730.jpg" name="twitter:image">
+    <meta content="ShellFans AI 唄粉智能科技，專注於社群資產保存與跨平台經營，支援貼文、留言、媒體檔案備份還原，並結合 AI 粉絲分析與多平台管理，協助創作者與品牌守住內容、粉絲與經營成果。 這組描述是依你目前首頁強調的「社群資產保存」「備份還原」「AI 粉絲分析」「多平台管理」去收斂的。" property="og:image:alt">
+  
+<style data-shellfans-embed="1">
+html[data-embed="1"] body { padding: 0 !important; background: transparent !important; }
+html[data-embed="1"] header.nav,
+html[data-embed="1"] .mobile-menu,
+html[data-embed="1"] .hero,
+html[data-embed="1"] .values,
+html[data-embed="1"] .flow,
+html[data-embed="1"] .roles,
+html[data-embed="1"] .final-cta,
+html[data-embed="1"] footer.footer { display: none !important; }
+html[data-embed="1"] .chatbot { padding: 16px 0 !important; }
+html[data-embed="1"] .chatbot > .container > div:first-child { display: none !important; }
+
+</style>
+<script data-shellfans-embed-bootstrap="1">
+(function () {
+  try {
+    var p = new URLSearchParams(window.location.search);
+    if (p.get('embed') === '1') {
+      document.documentElement.setAttribute('data-embed', '1');
+    }
+  } catch (_) {}
+})();
+</script>
+  <script async data-shellfans-ga="1" src="https://www.googletagmanager.com/gtag/js?id=G-NE4639EL2B"></script><script data-shellfans-ga="1">window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag("js",new Date());gtag("config","G-NE4639EL2B");</script>
+    <meta name="keywords" content="ShellFans AI, ShellFans, 跨平台社群指揮中心, 社群資產保險箱, 社群資產備份, 社群備份還原, Facebook 備份, Instagram 備份, 粉絲情感分析, 多平台同步經營, 社群資產管理, 創作者備份工具, AI 社群經營工具">
+    <meta name="robots" content="index, follow">
+  </head>
+<body>
+<!-- ===== NAV ===== -->
+<header class="nav" id="nav">
+  <div class="container">
+    <div class="nav-inner">
+      <a href="https://shell.fans/" class="nav-brand" aria-label="ShellFans">
+        <img src="https://shell.fans/images/nav_logo.svg" alt="ShellFans" width="162" height="34">
+      </a>
+      <nav class="nav-menu" aria-label="主選單" data-i18n="aria.mainMenu" data-i18n-attr="aria-label">        <a href="https://shell.fans/aeo-geo" class="nav-link" data-i18n="nav.aeoGeo">AEO/GEO 代管</a>
+        <a href="https://shell.fans/kol-engine" class="nav-link" data-i18n="nav.engine">續航引擎</a>
+        <a href="https://shell.fans/fans-analysis" class="nav-link" data-i18n="nav.fansAnalysis">粉絲分析</a>
+        <a href="https://kol.fans" target="_blank" rel="noopener" class="nav-link" data-i18n="nav.wordOfMouth">口碑行銷</a>
+        <a href="https://kol.fans/pricing" target="_blank" rel="noopener" class="nav-link" data-i18n="nav.pricing">查看方案</a>
+        <a href="https://blog.shell.fans/" target="_blank" rel="noopener" class="nav-link">Klog</a>
+      </nav>
+      <div class="nav-actions">
+        <div class="lang-switcher" id="langSwitcher" style="position:relative;margin-right:10px">
+          <button type="button" id="langSwitcherToggle" aria-haspopup="true" aria-expanded="false" style="display:flex;align-items:center;gap:6px;border:1px solid #e2e8f0;border-radius:8px;background:#fff;padding:6px 10px;font-size:12px;font-weight:500;color:#475569;cursor:pointer;transition:all 120ms">
+            <img src="/icons/globe-animated.svg" alt="" width="16" height="16" aria-hidden="true" style="display:inline-block;vertical-align:middle" />
+            <span id="langSwitcherLabel" data-i18n="footer.langLabel">繁體中文</span>
+            <svg id="langSwitcherChevron" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="transition:transform 200ms;color:#94a3b8" aria-hidden="true"><path d="M19 9l-7 7-7-7"></path></svg>
+          </button>
+          <div class="lang-switcher-list" role="menu" id="langSwitcherList" style="display:none;position:absolute;top:calc(100% + 4px);right:0;background:#fff;border:1px solid #e2e8f0;border-radius:8px;box-shadow:0 4px 12px rgba(0,0,0,0.08);min-width:140px;z-index:50;padding:4px 0">
+            <button type="button" data-locale="zh-TW" role="menuitem" onclick="window.__setLocale('zh-TW');window.__closeLangSwitcher&&window.__closeLangSwitcher()" style="display:flex;align-items:center;gap:8px;width:100%;padding:8px 12px;border:0;background:none;font-size:12px;color:#475569;cursor:pointer;text-align:left">
+              <span>繁體中文</span>
+              <svg class="check" data-check-for="zh-TW" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-left:auto" aria-hidden="true"><path d="M5 13l4 4L19 7"></path></svg>
+            </button>
+            <button type="button" data-locale="en" role="menuitem" onclick="window.__setLocale('en');window.__closeLangSwitcher&&window.__closeLangSwitcher()" style="display:flex;align-items:center;gap:8px;width:100%;padding:8px 12px;border:0;background:none;font-size:12px;color:#475569;cursor:pointer;text-align:left">
+              <span>English</span>
+              <svg class="check" data-check-for="en" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-left:auto;display:none" aria-hidden="true"><path d="M5 13l4 4L19 7"></path></svg>
+            </button>
+          </div>
+        </div>
+        <div class="nav-login" id="navLogin">
+          <button type="button" class="nav-login-toggle" aria-haspopup="true" aria-expanded="false" id="navLoginToggle">
+            <span data-i18n="nav.login">登入</span><span class="caret">▾</span>
+          </button>
+          <div class="nav-login-list" role="menu"></div>
+        </div>
+        <a href="https://kol.fans/signup" target="_blank" rel="noopener" class="nav-cta" data-i18n="nav.getStarted">開始使用</a>
+      </div>
+      <button type="button" class="nav-hamburger" id="navHamburger" aria-label="開啟選單" data-i18n="aria.openMenu" data-i18n-attr="aria-label" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</header>
+<div class="mobile-menu" id="mobileMenu">  <a href="https://shell.fans/aeo-geo" data-i18n="nav.aeoGeo">AEO/GEO 代管</a>
+  <a href="https://shell.fans/kol-engine" data-i18n="nav.engine">續航引擎</a>
+  <a href="https://shell.fans/fans-analysis" data-i18n="nav.fansAnalysis">粉絲分析</a>
+  <a href="https://kol.fans" target="_blank" rel="noopener" data-i18n="nav.wordOfMouth">口碑行銷</a>
+  <a href="https://kol.fans/pricing" target="_blank" rel="noopener" data-i18n="nav.pricing">查看方案</a>
+  <a href="https://blog.shell.fans/" target="_blank" rel="noopener">Klog</a>
+  <a href="https://kol.fans/login?next=https%3A%2F%2Fshell.fans%2F" data-i18n="nav.login">登入</a>
+  <a href="https://kol.fans/signup" target="_blank" rel="noopener" class="mobile-cta" data-i18n="nav.getStarted">開始使用</a>
+</div>
+
+<!-- ===== DIFY CHATBOT ===== -->
+<section class="chatbot" id="chatbot" style="padding:104px 0 80px">
+  <div class="container">
+    <div style="text-align:center;padding:0 16px 28px;max-width:780px;margin:0 auto">
+      <h1 style="font-size:clamp(30px,4.5vw,44px);font-weight:700;line-height:1.2;margin:0 0 14px;color:#0f172a;letter-spacing:-0.015em">
+        <span data-i18n="hero.subhead">對話式社群分析，問句即洞察</span>
+      </h1>
+      <p style="font-size:clamp(15px,1.8vw,18px);line-height:1.6;margin:0;color:#475569">
+        <span data-i18n="hero.sublead">熱門話題、合作 KOL、品牌聲量，讓 AI 24 小時為你掃描全社群風向</span>
+      </p>
+    </div>
+    <div style="max-width:820px;margin:0 auto;padding:0 16px">
+      <div id="sfChatOutput" role="log" aria-live="polite"
+        style="min-height:240px;max-height:480px;overflow-y:auto;padding:8px 4px;background:transparent;margin-bottom:14px">
+        <div id="sfChatPlaceholder" style="display:flex;align-items:center;justify-content:center;min-height:220px;text-align:center">
+          <span style="font-size:14px;line-height:1.7;color:#94a3b8" data-i18n="chat.placeholderEmpty">了解社群，從 Chat 開始</span>
+        </div>
+      </div>
+      <div id="sfChatQuotaRow" style="display:flex;align-items:center;justify-content:flex-end;gap:8px;margin:0 6px 8px;min-height:18px">
+        <div id="sfChatQuota" style="text-align:right;font-size:11.5px;color:#94a3b8"></div>
+      </div>
+      <div id="sfChatProgressSlot" style="margin:0 6px 10px;min-height:0"></div>
+      <form id="sfChatForm" style="position:relative;display:flex;align-items:stretch;gap:8px;padding:6px;border:1px solid #e2e8f0;background:#fff;border-radius:14px;box-shadow:0 14px 36px -16px rgba(20,40,80,0.18);flex-wrap:wrap" novalidate>
+        <input id="sfChatQuery" type="text" autocomplete="off"
+          placeholder="與 ShellFans Social AI Chat 對話" data-i18n="chat.inputPlaceholder" data-i18n-attr="placeholder"
+          style="flex:1 1 240px;min-width:0;border:0;outline:none;background:transparent;padding:0 14px;font-size:15px;color:#0f172a;height:44px" />
+        <select id="sfChatPlan" aria-label="方案" data-i18n="aria.planSelect" data-i18n-attr="aria-label"
+          style="height:44px;padding:0 12px;border:1px solid #e2e8f0;border-radius:10px;background:#fff;color:#0f172a;font-size:14px;cursor:pointer">
+          <option value="Free" data-i18n="chat.planFree">Free</option>
+          <option value="Pro" data-tier="paid" data-i18n="chat.planProUpgrade">Pro · 升級</option>
+          <option value="Max" data-tier="paid" data-i18n="chat.planMaxUpgrade">Max · 升級</option>
+        </select>
+        <button id="sfChatContextToggle" type="button" aria-label="Chat 模式 — 開啟後 AI 會記得最近 3 輪對話"
+          title="開啟後 AI 會參考最近 3 輪對話脈絡 (僅本分頁有效)" data-i18n="chat.contextModeTooltip" data-i18n-attr="title"
+          style="height:44px;padding:0 10px;border:1px solid #e2e8f0;border-radius:10px;background:#fff;color:#64748b;font-size:13px;cursor:pointer;white-space:nowrap;display:inline-flex;align-items:center;gap:4px;transition:all 120ms ease">
+          <img src="/icons/chat-mode.svg" alt="" aria-hidden="true" width="28" height="28" style="display:inline-block;vertical-align:middle" /><span id="sfChatContextToggleLabel" data-i18n="chat.contextModeOff">Chat 模式：關</span>
+        </button>
+        <div id="sfChatSearchModeHint" role="note" style="position:absolute;top:calc(100% + 8px);right:0;background:#fff;border:1px solid #e2e8f0;border-radius:10px;padding:8px 12px;font-size:12px;color:#475569;white-space:nowrap;box-shadow:0 4px 16px rgba(15,23,42,0.06);pointer-events:none;z-index:10;display:none">
+          <span style="position:absolute;top:-5px;right:18px;width:10px;height:10px;background:#fff;border-top:1px solid #e2e8f0;border-left:1px solid #e2e8f0;transform:rotate(45deg)"></span>
+          <span id="sfChatModeHintText" data-i18n="chat.modeHintOff">Chat 模式關閉時，對話將以搜索模式進行。</span>
+        </div>
+        <button id="sfChatSubmit" type="submit" aria-label="送出" data-i18n="aria.send" data-i18n-attr="aria-label"
+          style="height:44px;width:44px;border:0;border-radius:10px;background:#2563eb;color:#fff;font-size:16px;cursor:pointer;display:inline-flex;align-items:center;justify-content:center">
+          <span id="sfChatSubmitIcon" aria-hidden="true">▶</span>
+        </button>
+      </form>
+      <div id="sfChatPlatforms" style="margin-top:10px;padding:0 6px;display:flex;align-items:center;gap:14px;color:#475569;font-size:14px">
+        <span style="font-weight:500" data-i18n="chat.platformsLabel">支援平台</span>
+        <img data-platform="facebook" src="https://cdn.jsdelivr.net/gh/edent/SuperTinyIcons@latest/images/svg/facebook.svg" alt="Facebook" title="Facebook" width="18" height="18" style="display:block;transition:filter 250ms ease, opacity 250ms ease" loading="lazy" />
+        <img data-platform="instagram" src="https://cdn.jsdelivr.net/gh/edent/SuperTinyIcons@latest/images/svg/instagram.svg" alt="Instagram" title="Instagram" width="18" height="18" style="display:block;transition:filter 250ms ease, opacity 250ms ease" loading="lazy" />
+        <img data-platform="threads" src="https://cdn.jsdelivr.net/gh/edent/SuperTinyIcons@latest/images/svg/threads.svg" alt="Threads" title="Threads" width="18" height="18" style="display:block;transition:filter 250ms ease, opacity 250ms ease" loading="lazy" />
+        <img data-platform="tiktok" src="https://cdn.jsdelivr.net/gh/edent/SuperTinyIcons@latest/images/svg/tiktok.svg" alt="TikTok" title="TikTok" width="18" height="18" style="display:block;transition:filter 250ms ease, opacity 250ms ease" loading="lazy" />
+        <img data-platform="x" src="https://cdn.jsdelivr.net/gh/edent/SuperTinyIcons@latest/images/svg/twitter.svg" alt="X" title="X" width="18" height="18" style="display:block;transition:filter 250ms ease, opacity 250ms ease" loading="lazy" />
+        <img data-platform="ptt" src="/icons/ptt.webp" alt="PTT" title="PTT" width="18" height="18" style="display:block;object-fit:contain;transition:filter 250ms ease, opacity 250ms ease" loading="lazy" />
+      </div>
+      <div id="sfChatDisclaimer" style="margin-top:12px;padding:0 6px;text-align:center;font-size:11.5px;line-height:1.6;color:#94a3b8">
+        <div data-i18n="chat.disclaimer1">ShellFans Social AI 可能會出錯。ShellFans 不會使用您的資料來訓練模型。</div>
+        <div data-i18n="chat.disclaimer2">由於社群數據量龐大，AI 分析可能會需要 30s~60s 的時間，請耐心等待。</div>
+        <div data-i18n="chat.disclaimer3">未註冊用戶每天 2 次免費社群分析；如需更多請註冊成為付費會員。</div>
+      </div>
+      <div id="sfChatAboutCta" style="margin-top:16px;padding:0 6px;text-align:center">
+        <a href="/what-is-shellfans" data-i18n="chat.aboutCta"
+           style="display:inline-flex;align-items:center;gap:6px;padding:9px 20px;font-size:13.5px;font-weight:500;color:#2563eb;background:#fff;border:1px solid #c7d2fe;border-radius:999px;text-decoration:none;transition:background 200ms ease,color 200ms ease,border-color 200ms ease,box-shadow 200ms ease"
+           onmouseover="this.style.background='#2563eb';this.style.color='#fff';this.style.borderColor='#2563eb';this.style.boxShadow='0 6px 16px -6px rgba(37,99,235,0.4)'"
+           onmouseout="this.style.background='#fff';this.style.color='#2563eb';this.style.borderColor='#c7d2fe';this.style.boxShadow='none'">了解 ShellFans 是什麼 →</a>
+      </div>
+    </div>
+  </div>
+  <script data-cfasync="false">
+    (function () {
+      var form = document.getElementById("sfChatForm");
+      var queryEl = document.getElementById("sfChatQuery");
+      var planEl = document.getElementById("sfChatPlan");
+      var submitEl = document.getElementById("sfChatSubmit");
+      var iconEl = document.getElementById("sfChatSubmitIcon");
+      var outEl = document.getElementById("sfChatOutput");
+      var placeholderEl = document.getElementById("sfChatPlaceholder");
+      var quotaEl = document.getElementById("sfChatQuota");
+
+      // ── Phase A: opt-in conversation context ────────────────────────
+      // History lives only in memory — new tab / refresh = fresh. Toggle
+      // OFF clears history (so the user can deliberately reset).
+      var contextToggle = document.getElementById("sfChatContextToggle");
+      var contextToggleLabel = document.getElementById("sfChatContextToggleLabel");
+      var conversationOn = true;
+      var conversationHistory = [];  // [{q, a}, ...] max 3 entries
+      var HISTORY_MAX_TURNS = 3;
+      var HISTORY_MAX_ANSWER_CHARS = 400;
+
+      function updateContextToggleUI() {
+        if (!contextToggle) return;
+        var t = function (k, fallback) { return (window.__i18n && window.__i18n(k)) || fallback; };
+        var hint = document.getElementById("sfChatSearchModeHint");
+        var hintText = document.getElementById("sfChatModeHintText");
+        if (hint) hint.style.display = "block";
+        if (hintText) {
+          var hintKey = conversationOn ? "chat.modeHintOn" : "chat.modeHintOff";
+          var hintFallback = conversationOn
+            ? "Chat 模式開啟時，AI 會結合上下文進行思考與回應。"
+            : "Chat 模式關閉時，對話將以搜索模式進行。";
+          hintText.setAttribute("data-i18n", hintKey);
+          hintText.textContent = t(hintKey, hintFallback);
+        }
+        if (conversationOn) {
+          if (conversationHistory.length === 0) {
+            contextToggleLabel.textContent = t('chat.contextModeOn', 'Chat 模式：開');
+            contextToggle.style.borderColor = "#2563eb";
+            contextToggle.style.color = "#2563eb";
+            contextToggle.style.background = "#eff6ff";
+          } else {
+            contextToggleLabel.textContent = t('chat.contextModeRoundsPrefix', 'Chat 模式：') + conversationHistory.length + t('chat.contextModeRoundsSuffix', ' 輪');
+            contextToggle.style.borderColor = "#2563eb";
+            contextToggle.style.color = "#fff";
+            contextToggle.style.background = "#2563eb";
+          }
+        } else {
+          contextToggleLabel.textContent = t('chat.contextModeOff', 'Chat 模式：關');
+          contextToggle.style.borderColor = "#e2e8f0";
+          contextToggle.style.color = "#64748b";
+          contextToggle.style.background = "#fff";
+        }
+      }
+
+      if (contextToggle) {
+        contextToggle.addEventListener("click", function () {
+          conversationOn = !conversationOn;
+          if (!conversationOn) conversationHistory = [];
+          updateContextToggleUI();
+        });
+      }
+      updateContextToggleUI();  // reflect default-ON state on load (Chat Mode)
+
+      function buildPriorContext() {
+        if (!conversationOn || conversationHistory.length === 0) return "";
+        return conversationHistory.map(function (t) {
+          return "Q: " + t.q + "\nA: " + t.a;
+        }).join("\n\n");
+      }
+
+      function recordTurn(q, a) {
+        if (!conversationOn) return;
+        var clean = (a || "").trim();
+        var shortA = clean.slice(0, HISTORY_MAX_ANSWER_CHARS);
+        if (clean.length > HISTORY_MAX_ANSWER_CHARS) shortA += "...";
+        conversationHistory.push({ q: q, a: shortA });
+        while (conversationHistory.length > HISTORY_MAX_TURNS) {
+          conversationHistory.shift();
+        }
+        updateContextToggleUI();
+      }
+
+      // ── Chat-auth token (kol.fans SSO) ──────────────────────────────
+      // Flow:
+      //   1. User clicks ShellFans Chat CTA on kol.fans/pricing or /my-pricing.
+      //   2. kol.fans calls its own GET /api/chat-sso/issue and redirects
+      //      the browser to https://shell.fans/?chat_auth=<JWT>.
+      //   3. This script reads chat_auth from the URL, stores it in
+      //      localStorage, and strips the query so reload doesn't replay.
+      //   4. Every chat request sends Authorization: Bearer <JWT>; the
+      //      Bun shellfans-api on host 215 validates the HMAC with the
+      //      shared SSO_SHARED_SECRET and applies the user's plan's
+      //      daily quota.
+      // Anonymous visitors (no chat_auth) keep working under the IP-based
+      // ANON_DAILY_LIMIT — backward compatible.
+      var CHAT_AUTH_KEY = "shellfans_chat_auth";
+      var chatAuthPlan = null;
+
+      function getChatAuth() {
+        try { return localStorage.getItem(CHAT_AUTH_KEY); } catch (_) { return null; }
+      }
+      function setChatAuth(tok) {
+        try { localStorage.setItem(CHAT_AUTH_KEY, tok); } catch (_) {}
+      }
+      function clearChatAuth() {
+        try { localStorage.removeItem(CHAT_AUTH_KEY); } catch (_) {}
+        chatAuthPlan = null;
+      }
+      function authedFetch(url, opts) {
+        opts = opts || {};
+        var tok = getChatAuth();
+        if (tok) {
+          opts.headers = opts.headers || {};
+          if (!opts.headers["Authorization"] && !opts.headers["authorization"]) {
+            opts.headers["Authorization"] = "Bearer " + tok;
+          }
+        }
+        return fetch(url, opts);
+      }
+
+      // Pull chat_auth from URL on first paint; strip it so reload doesn't
+      // re-store stale tokens.
+      (function () {
+        try {
+          var qs = new URLSearchParams(window.location.search);
+          var t = qs.get("chat_auth");
+          if (t) {
+            setChatAuth(t);
+            qs.delete("chat_auth");
+            var clean = window.location.pathname + (qs.toString() ? "?" + qs.toString() : "") + window.location.hash;
+            window.history.replaceState({}, "", clean);
+          }
+        } catch (_) { /* ignore */ }
+      })();
+
+      // Header login state — replace the "登入" toggle text with the
+      // user's name/email + swap dropdown items to profile/logout when
+      // kol.fans reports a logged-in session.
+      function applyKolFansLoginUI(user) {
+        try {
+          var toggle = document.getElementById('navLoginToggle');
+          if (toggle && user) {
+            var display = user.name || (user.email ? String(user.email).split('@')[0] : '會員');
+            // Limit length so header doesn't break on long emails
+            if (display.length > 18) display = display.slice(0, 16) + '…';
+            toggle.innerHTML = '<span>' + display + '</span><span class="caret">▾</span>';
+            toggle.setAttribute('title', user.email || '');
+          }
+          var list = document.querySelector('#navLogin .nav-login-list');
+          if (list) {
+            list.innerHTML =
+              '<a href="https://kol.fans/my-pricing" target="_blank" rel="noopener" role="menuitem" data-i18n="nav.myPlan">我的方案</a>' +
+              '<a href="https://kol.fans/dashboard" target="_blank" rel="noopener" role="menuitem" data-i18n="nav.memberCenter">會員中心</a>' +
+              '<a href="#" id="navLogoutLink" role="menuitem" data-i18n="nav.logout">登出</a>';
+            var logoutLink = document.getElementById('navLogoutLink');
+            if (logoutLink) {
+              logoutLink.addEventListener('click', function (e) {
+                e.preventDefault();
+                // Clear local chat token first
+                clearChatAuth();
+                refreshLogoutVisibility();
+                // Then hit kol.fans logout (cross-domain) to clear session
+                fetch('https://kol.fans/api/auth/logout', {
+                  method: 'POST',
+                  credentials: 'include',
+                  mode: 'cors',
+                }).catch(function () {}).finally(function () {
+                  window.location.reload();
+                });
+              });
+            }
+          }
+        } catch (_) { /* DOM might be in odd state — ignore */ }
+      }
+
+      // Cross-domain auto-login bridge.
+      //
+      // If there's no chat token in localStorage AND the page wasn't
+      // visited with ?chat_auth=... in the URL, probe kol.fans to see
+      // whether the user is already logged in there.
+      //
+      // Two parallel calls:
+      //   1. /api/auth/me  → user info (name/email) for header
+      //   2. /api/chat-sso/issue → chat token for quota / plan info
+      //
+      // Both endpoints rely on kol.fans's session_id cookie travelling
+      // cross-domain. Requires session_id to be set with
+      // sameSite='none'; secure (handled on kol.fans login route).
+      //
+      // Best-effort, fire-and-forget; doesn't block render.
+      function autoLoginFromKolFans() {
+        if (getChatAuth()) {
+          // Already authed locally. Still refresh header user info if possible.
+          fetch("https://kol.fans/api/auth/me", { method: "GET", credentials: "include", mode: "cors" })
+            .then(function (r) { return r.ok ? r.json() : null; })
+            .then(function (d) { if (d && d.data && d.data.user) applyKolFansLoginUI(d.data.user); })
+            .catch(function () {});
+          return;
+        }
+        try {
+          // 1. Get user info for header
+          fetch("https://kol.fans/api/auth/me", {
+            method: "GET",
+            credentials: "include",
+            mode: "cors",
+          }).then(function (r) { return r.ok ? r.json() : null; })
+            .then(function (d) {
+              if (d && d.data && d.data.user) {
+                applyKolFansLoginUI(d.data.user);
+              }
+            }).catch(function () {});
+
+          // 2. Get chat token (parallel)
+          fetch("https://kol.fans/api/chat-sso/issue", {
+            method: "GET",
+            credentials: "include",
+            mode: "cors",
+          }).then(function (r) {
+            if (!r.ok) return null;
+            return r.json();
+          }).then(function (d) {
+            if (d && d.data && d.data.chat_token) {
+              setChatAuth(d.data.chat_token);
+              authedFetch("/api/dify/quota", { method: "GET" })
+                .then(function (r) { return r.ok ? r.json() : null; })
+                .then(function (q) {
+                  if (q && !q.anonymous && q.plan_tier) {
+                    var labels = { chat_free: "Free", chat_pro: "Pro", chat_x5_max: "x5 Max", chat_x20_max: "x20 Max" };
+                    chatAuthPlan = labels[q.plan_tier] || q.plan_tier;
+                    updateQuotaPill(q.remaining, q.limit);
+                  }
+                  if (q && q.searchable_platforms) applyPlatformIconStyles(q.searchable_platforms);
+                  refreshLogoutVisibility();
+                })
+                .catch(function () { refreshLogoutVisibility(); });
+            }
+          }).catch(function () { /* CORS or network — stay anon */ });
+        } catch (_) { /* ignore */ }
+      }
+
+      function applyPlatformIconStyles(allowed) {
+        var set = new Set((allowed || []).map(function (p) { return String(p).toLowerCase(); }));
+        var icons = document.querySelectorAll("#sfChatPlatforms img[data-platform]");
+        for (var i = 0; i < icons.length; i++) {
+          var p = icons[i].getAttribute("data-platform");
+          // grayscale-for-locked behaviour removed 2026-05-20 (user request).
+          // All platform icons always render full-color regardless of plan.
+          icons[i].style.filter = "";
+          icons[i].style.opacity = "1";
+        }
+      }
+
+      var _lastQuotaState = null;
+      function updateQuotaPill(remaining, limit) {
+        if (remaining === null || remaining === undefined || limit === null || limit === undefined) {
+          quotaEl.textContent = "";
+          _lastQuotaState = null;
+          return;
+        }
+        _lastQuotaState = { remaining: remaining, limit: limit };
+        var t = function (k, fallback) { return (window.__i18n && window.__i18n(k)) || fallback; };
+        var color = remaining === 0 ? "#dc2626" : remaining <= 1 ? "#ea580c" : "#64748b";
+        quotaEl.style.color = color;
+        var planLabel = chatAuthPlan ? t('chat.quotaPlanSuffix', '（{plan}）').replace('{plan}', chatAuthPlan) : "";
+        var headLabel = chatAuthPlan ? t('chat.quotaTodayLabel', '今日 Chat 剩餘') : t('chat.quotaTodayFreeLabel', '今日免費剩餘');
+        var sep = t('chat.quotaSeparator', '：');
+        var slash = t('chat.quotaSlash', ' / ');
+        var times = t('chat.quotaTimes', ' 次');
+        quotaEl.innerHTML = headLabel + planLabel + sep + "<strong style=\"color:" + color + "\">" + remaining + "</strong>" + slash + limit + times;
+      }
+      // Re-render imperative i18n strings when locale switches.
+      document.addEventListener('shellfans-locale-changed', function () {
+        try {
+          if (typeof updateContextToggleUI === 'function') updateContextToggleUI();
+          if (_lastQuotaState) updateQuotaPill(_lastQuotaState.remaining, _lastQuotaState.limit);
+        } catch (e) { /* swallow */ }
+      });
+
+      function syncQuotaFromHeaders(headers) {
+        var rem = headers.get("x-shellfans-quota-remaining");
+        var lim = headers.get("x-shellfans-quota-limit");
+        if (rem !== null && lim !== null) updateQuotaPill(parseInt(rem, 10), parseInt(lim, 10));
+      }
+
+      // Initial quota fetch — show pill for both anonymous and authed users.
+      // Authed users get a plan badge; the X-Shellfans-User-Plan header
+      // (or response body plan_tier) populates chatAuthPlan.
+      // Set anon default immediately so the icon row doesn'''t flash full
+      // color before /quota responds (which would mislead Free users).
+      applyPlatformIconStyles(["facebook"]);
+
+      // Legacy quota-row logout button removed (2026-05-17) — logout is now
+      // in the nav-login dropdown (top-right). Stub refreshLogoutVisibility
+      // so the 4 existing callers (autoLoginFromKolFans / /quota handlers)
+      // don't need code changes.
+      function refreshLogoutVisibility() {}
+
+      (function () {
+        authedFetch("/api/dify/quota", { method: "GET" })
+          .then(function (r) { return r.ok ? r.json() : null; })
+          .then(function (d) {
+            if (!d) return;
+            if (!d.anonymous && d.plan_tier) {
+              var labels = { chat_free: "Free", chat_pro: "Pro", chat_x5_max: "x5 Max", chat_x20_max: "x20 Max" };
+              chatAuthPlan = labels[d.plan_tier] || d.plan_tier;
+              updateQuotaPill(d.remaining, d.limit);
+            } else if (d.anonymous) {
+              updateQuotaPill(d.remaining, d.limit);
+            }
+            // Dim platform icons not in the user'''s plan. Anon default = ['''facebook'''].
+            applyPlatformIconStyles(d.searchable_platforms || ["facebook"]);
+            refreshLogoutVisibility();
+          })
+          .catch(function () { refreshLogoutVisibility(); })
+          .finally(function () {
+            // Always probe kol.fans session — refreshes header user info
+            // whether or not we have a local chat token, and bridges
+            // anonymous → authed when user is logged in on kol.fans.
+            autoLoginFromKolFans();
+          });
+      })();
+
+      function getUserId() {
+        var key = "shellfans_user_id";
+        try {
+          var v = localStorage.getItem(key);
+          if (!v) {
+            v = "shellfans-" + (window.crypto && crypto.randomUUID
+              ? crypto.randomUUID()
+              : Date.now().toString(36) + Math.random().toString(36).slice(2));
+            localStorage.setItem(key, v);
+          }
+          return v;
+        } catch (_) {
+          return "shellfans-ephemeral";
+        }
+      }
+
+      function lockInputs(locked) {
+        submitEl.disabled = locked;
+        queryEl.disabled = locked;
+        planEl.disabled = locked;
+        iconEl.textContent = locked ? "…" : "▶";
+      }
+
+      function scrollToBottom() {
+        outEl.scrollTop = outEl.scrollHeight;
+      }
+
+      function renderUserBubble(text) {
+        var row = document.createElement("div");
+        row.style.cssText = "display:flex;justify-content:flex-end;margin-bottom:12px";
+        var bubble = document.createElement("div");
+        bubble.style.cssText = "background:#dbeafe;color:#1e3a8a;padding:12px 16px;border-radius:16px 16px 4px 16px;max-width:80%;font-size:15px;line-height:1.6;white-space:pre-wrap;word-break:break-word";
+        bubble.textContent = text;
+        row.appendChild(bubble);
+        outEl.appendChild(row);
+        scrollToBottom();
+      }
+
+      function renderAiCard() {
+        var card = document.createElement("div");
+        card.style.cssText = "background:#fff;border:1px solid #e2e8f0;border-radius:16px 16px 16px 4px;padding:14px 18px;margin-bottom:8px;box-shadow:0 6px 24px -12px rgba(20,40,80,0.10)";
+        var steps = document.createElement("div");
+        steps.style.cssText = "font-size:12.5px;color:#94a3b8;margin-bottom:10px;display:flex;flex-direction:column;gap:4px";
+        var answer = document.createElement("div");
+        answer.style.cssText = "font-size:15px;color:#334155;line-height:1.7;white-space:pre-wrap;word-break:break-word";
+        card.appendChild(steps);
+        card.appendChild(answer);
+        outEl.appendChild(card);
+        scrollToBottom();
+        return { card: card, stepsEl: steps, answerEl: answer };
+      }
+
+      function renderErrorBubble(message) {
+        var row = document.createElement("div");
+        row.style.cssText = "background:#fef2f2;border:1px solid #fecaca;color:#b91c1c;padding:12px 16px;border-radius:12px;margin-bottom:8px;font-size:14px;line-height:1.6;white-space:pre-wrap";
+        row.textContent = message;
+        outEl.appendChild(row);
+        scrollToBottom();
+      }
+
+      function renderUpsellCard(plan) {
+        var card = document.createElement("div");
+        card.style.cssText = "background:linear-gradient(135deg,#fef3c7 0%,#fde68a 100%);border:1px solid #f59e0b;color:#78350f;padding:18px 22px;border-radius:14px;margin-bottom:12px;box-shadow:0 8px 24px -12px rgba(180,83,9,0.25)";
+        var title = document.createElement("div");
+        title.style.cssText = "font-size:16px;font-weight:700;margin-bottom:8px";
+        title.textContent = "🔒 " + plan + " 方案需要付費會員";
+        var desc = document.createElement("div");
+        desc.style.cssText = "font-size:14px;line-height:1.7;margin-bottom:14px";
+        desc.textContent = plan === "Max"
+          ? "Max 方案提供完整策略分析、KOL 媒合、競品儀表板與 API 串接。請加入付費會員以開通完整功能。"
+          : "Pro 方案提供深度社群分析、優先排程與更高查詢上限。請加入付費會員以開通完整功能。";
+        var btnRow = document.createElement("div");
+        btnRow.style.cssText = "display:flex;flex-wrap:wrap;gap:8px";
+        var joinBtn = document.createElement("a");
+        joinBtn.href = "/pricing";
+        joinBtn.textContent = "查看方案 & 加入付費會員";
+        joinBtn.style.cssText = "display:inline-flex;align-items:center;justify-content:center;height:38px;padding:0 16px;background:#b45309;color:#fff;text-decoration:none;border-radius:10px;font-size:14px;font-weight:600";
+        var freeBtn = document.createElement("button");
+        freeBtn.type = "button";
+        freeBtn.textContent = "改用 Free 方案繼續";
+        freeBtn.style.cssText = "height:38px;padding:0 14px;background:transparent;color:#78350f;border:1px solid #f59e0b;border-radius:10px;font-size:14px;cursor:pointer";
+        freeBtn.addEventListener("click", function () {
+          planEl.value = "Free";
+          form.dispatchEvent(new Event("submit", { cancelable: true }));
+        });
+        btnRow.appendChild(joinBtn);
+        btnRow.appendChild(freeBtn);
+        card.appendChild(title);
+        card.appendChild(desc);
+        card.appendChild(btnRow);
+        outEl.appendChild(card);
+        scrollToBottom();
+      }
+
+      function renderPlatformGateCard(payload) {
+        // payload shape (from shellfans-api 403 PLATFORM_NOT_ALLOWED):
+        //   { error, detail, plan_tier, denied_platforms[], allowed_platforms[], upgrade_url }
+        var card = document.createElement("div");
+        card.style.cssText = "background:linear-gradient(135deg,#fef3c7 0%,#fde68a 100%);border:1px solid #f59e0b;color:#78350f;padding:18px 22px;border-radius:14px;margin-bottom:12px;box-shadow:0 8px 24px -12px rgba(180,83,9,0.25)";
+        var title = document.createElement("div");
+        title.style.cssText = "font-size:16px;font-weight:700;margin-bottom:8px";
+        title.textContent = "🔒 " + (payload.error || "您的方案不支援此平台");
+        var desc = document.createElement("div");
+        desc.style.cssText = "font-size:14px;line-height:1.7;margin-bottom:14px";
+        desc.textContent = payload.detail || "升級方案後可解鎖更多平台分析。";
+        var btnRow = document.createElement("div");
+        btnRow.style.cssText = "display:flex;flex-wrap:wrap;gap:8px";
+        var joinBtn = document.createElement("a");
+        joinBtn.href = payload.upgrade_url || "/pricing";
+        joinBtn.textContent = "查看方案 & 升級";
+        joinBtn.style.cssText = "display:inline-flex;align-items:center;justify-content:center;height:38px;padding:0 16px;background:#b45309;color:#fff;text-decoration:none;border-radius:10px;font-size:14px;font-weight:600";
+        btnRow.appendChild(joinBtn);
+        card.appendChild(title);
+        card.appendChild(desc);
+        card.appendChild(btnRow);
+        outEl.appendChild(card);
+        scrollToBottom();
+      }
+
+      function renderQuotaCta(resetAt) {
+        var card = document.createElement("div");
+        card.style.cssText = "background:linear-gradient(135deg,#fee2e2 0%,#fecaca 100%);border:1px solid #ef4444;color:#7f1d1d;padding:18px 22px;border-radius:14px;margin-bottom:12px;box-shadow:0 8px 24px -12px rgba(220,38,38,0.25)";
+        var title = document.createElement("div");
+        title.style.cssText = "font-size:16px;font-weight:700;margin-bottom:8px";
+        title.textContent = ((window.__i18n && window.__i18n("quota.exhaustedTitlePrefix")) || "\u23f3 ") + ((window.__i18n && window.__i18n("quota.exhaustedTitle")) || "今日免費額度已用完");
+        var when = "明天 00:00 重置";
+        if (typeof resetAt === "number" && resetAt > 0) {
+          try {
+            var d = new Date(resetAt);
+            when = d.toLocaleString("zh-TW", { hour: "2-digit", minute: "2-digit", month: "2-digit", day: "2-digit" }) + " 重置";
+          } catch (_) {}
+        }
+        var desc = document.createElement("div");
+        desc.style.cssText = "font-size:14px;line-height:1.7;margin-bottom:14px";
+        desc.textContent = "未註冊用戶每日免費 2 次，如需更多請註冊成為付費會員。" + when + "。";
+        var btnRow = document.createElement("div");
+        btnRow.style.cssText = "display:flex;flex-wrap:wrap;gap:8px";
+        var joinBtn = document.createElement("a");
+        joinBtn.href = "/pricing";
+        joinBtn.textContent = "免費註冊 (享更多次數)";
+        joinBtn.style.cssText = "display:inline-flex;align-items:center;justify-content:center;height:38px;padding:0 16px;background:#dc2626;color:#fff;text-decoration:none;border-radius:10px;font-size:14px;font-weight:600";
+        btnRow.appendChild(joinBtn);
+        card.appendChild(title);
+        card.appendChild(desc);
+        card.appendChild(btnRow);
+        outEl.appendChild(card);
+        scrollToBottom();
+      }
+
+      function hidePlaceholder() {
+        if (placeholderEl && placeholderEl.parentNode === outEl) {
+          outEl.removeChild(placeholderEl);
+        }
+      }
+
+      form.addEventListener("submit", async function (e) {
+        e.preventDefault();
+        var query = (queryEl.value || "").trim();
+        if (!query) return;
+
+        // Plan gating: Pro / Max are paid plans. Anonymous visitors on the
+        // landing page only get Free; selecting a paid plan triggers an
+        // upsell card instead of hitting the API. (Legacy "Ultra" cached
+        // pages still resolve here too, kept for transition.)
+        var selectedPlan = planEl.value;
+        if (selectedPlan === "Pro" || selectedPlan === "Max" || selectedPlan === "Ultra") {
+          hidePlaceholder();
+          renderUserBubble(query);
+          // Normalise legacy 'Ultra' to 'Max' in the upsell display
+          renderUpsellCard(selectedPlan === "Ultra" ? "Max" : selectedPlan);
+          queryEl.focus();
+          return;
+        }
+
+        // 1. Immediately clear input + display user message in result area
+        var originalInput = queryEl.value;
+        queryEl.value = "";
+        hidePlaceholder();
+        renderUserBubble(query);
+
+        // 2. AI card with steps + answer area; populated as SSE arrives
+        var aiUi = renderAiCard();
+        var stepsEl = aiUi.stepsEl;
+        var answerEl = aiUi.answerEl;
+        var nodeLines = Object.create(null);
+        var sawAnswer = false; lastChargeStatus = null; lastChargeCharged = null;
+        var lastCooldownRemainingMs = null;
+        var lastCooldownUntilMs = null;
+        var streamErrorMessage = "";
+
+        lockInputs(true);
+
+        // ── Live per-step elapsed timer ────────────────────────────────────
+        // Each step shown in stepsEl updates its "(已執行 Ns)" suffix every
+        // second until finishStep() freezes it as "(Ns)".
+        var liveTimerId = null;
+        function renderStepLine(rec) {
+          if (rec.finished) {
+            rec.el.textContent = "✓ " + rec.title + "  (" + rec.duration + "s)";
+          } else {
+            var elapsed = Math.max(0, Math.floor((Date.now() - rec.startTime) / 1000));
+            rec.el.textContent = "▸ " + rec.title + "  (已執行 " + elapsed + "s)";
+          }
+        }
+        function ensureLiveTimer() {
+          if (liveTimerId) return;
+          liveTimerId = setInterval(function () {
+            var anyActive = false;
+            for (var k in nodeLines) {
+              var rec = nodeLines[k];
+              if (!rec.finished) { renderStepLine(rec); anyActive = true; }
+            }
+            if (!anyActive) { clearInterval(liveTimerId); liveTimerId = null; }
+          }, 1000);
+        }
+        function stopLiveTimer() {
+          if (liveTimerId) { clearInterval(liveTimerId); liveTimerId = null; }
+        }
+        function addStep(execId, title) {
+          if (!execId) return;
+          var line = document.createElement("div");
+          stepsEl.appendChild(line);
+          var rec = { el: line, title: title, startTime: Date.now(), finished: false, duration: 0 };
+          nodeLines[execId] = rec;
+          renderStepLine(rec);
+          ensureLiveTimer();
+          scrollToBottom();
+        }
+        function finishStep(execId) {
+          var rec = nodeLines[execId];
+          if (!rec) return;
+          rec.finished = true;
+          rec.duration = Math.max(0, Math.floor((Date.now() - rec.startTime) / 1000));
+          renderStepLine(rec);
+        }
+
+        // ── Progress bar ───────────────────────────────────────────────────
+        // Thin blue gradient bar at the top of the AI card. Linearly fills
+        // to 95% over the estimate, snaps to 95% when first answer chunk
+        // arrives, then to 100% on workflow_finished.
+        var progressBar = null;
+        var progressInterval = null;
+        function startProgressBar(estSec) {
+          if (progressBar) return;
+          var bar = document.createElement("div");
+          bar.style.cssText = "height:3px;background:#e2e8f0;border-radius:2px;overflow:hidden;width:100%";
+          var fill = document.createElement("div");
+          fill.style.cssText = "height:100%;background:linear-gradient(90deg,#3b82f6,#60a5fa);width:0%;transition:width 0.5s ease;border-radius:2px";
+          bar.appendChild(fill);
+          var slot = document.getElementById("sfChatProgressSlot");
+          if (slot) {
+            // Clear any leftover bar (defensive — should already be gone)
+            while (slot.firstChild) slot.removeChild(slot.firstChild);
+            slot.appendChild(bar);
+          } else {
+            // Fallback: original AI-card placement if slot missing
+            aiUi.card.insertBefore(bar, stepsEl);
+          }
+          progressBar = { el: bar, fill: fill, start: Date.now(), estMs: estSec * 1000, snapped: false };
+          progressInterval = setInterval(function () {
+            if (!progressBar || progressBar.snapped) return;
+            var pct = Math.min(95, (Date.now() - progressBar.start) / progressBar.estMs * 95);
+            progressBar.fill.style.width = pct.toFixed(1) + "%";
+          }, 500);
+        }
+        function progressBarSnap95() {
+          if (!progressBar || progressBar.snapped) return;
+          progressBar.snapped = true;
+          progressBar.fill.style.width = "95%";
+        }
+        function progressBarComplete() {
+          if (!progressBar) return;
+          progressBar.snapped = true;
+          progressBar.fill.style.width = "100%";
+          var b = progressBar;
+          progressBar = null;
+          if (progressInterval) { clearInterval(progressInterval); progressInterval = null; }
+          setTimeout(function () {
+            if (b.el && b.el.parentNode) b.el.parentNode.removeChild(b.el);
+          }, 700);
+        }
+
+        // Filter out <think>...</think> chain-of-thought content and replace
+        // it with an animated indicator. Markers may split across chunks;
+        // rawBuf retains a trailing partial-marker prefix until next chunk.
+        var rawBuf = "";
+        var inThink = false;
+        var thinkingHandle = null;
+        var THINKING_DEFAULT = "思考中";
+        var THINKING_AGENT = "正在抓取資料並分析，通常需 60~90 秒，請耐心等候";
+
+        function startThinkingIndicator(label) {
+          if (thinkingHandle) {
+            // already running — just update the label
+            thinkingHandle.label = label || THINKING_DEFAULT;
+            return;
+          }
+          var span = document.createElement("span");
+          span.style.cssText = "color:#94a3b8;font-size:13px;font-style:italic;display:inline-block;margin:2px 0";
+          var n = 0;
+          var state = { label: label || THINKING_DEFAULT };
+          function tick() {
+            n = (n + 1) % 4;
+            span.textContent = state.label + ".".repeat(n);
+          }
+          tick();
+          var timer = setInterval(tick, 400);
+          answerEl.appendChild(span);
+          thinkingHandle = { el: span, timer: timer, label: state.label };
+          // Make tick read the latest label via closure on state
+          state = thinkingHandle;
+          scrollToBottom();
+        }
+        function stopThinkingIndicator() {
+          if (!thinkingHandle) return;
+          clearInterval(thinkingHandle.timer);
+          if (thinkingHandle.el.parentNode) thinkingHandle.el.parentNode.removeChild(thinkingHandle.el);
+          thinkingHandle = null;
+        }
+        function trailingSafeLen(s, marker) {
+          var max = Math.min(marker.length - 1, s.length);
+          for (var k = max; k > 0; k--) {
+            if (s.substr(s.length - k) === marker.substr(0, k)) return s.length - k;
+          }
+          return s.length;
+        }
+        function emitVisible(text) {
+          if (!text) return;
+          sawAnswer = true;
+          // First visible text means the agent is past thinking-only phase
+          if (thinkingHandle && !inThink) stopThinkingIndicator();
+          answerEl.appendChild(document.createTextNode(text));
+          scrollToBottom();
+        }
+        function appendAnswer(text) {
+          if (!text) return;
+          rawBuf += text;
+          while (rawBuf.length) {
+            if (!inThink) {
+              var i = rawBuf.indexOf("<think>");
+              if (i < 0) {
+                var safe = trailingSafeLen(rawBuf, "<think>");
+                if (safe > 0) {
+                  emitVisible(rawBuf.slice(0, safe));
+                  rawBuf = rawBuf.slice(safe);
+                }
+                break;
+              } else {
+                if (i > 0) emitVisible(rawBuf.slice(0, i));
+                rawBuf = rawBuf.slice(i + 7);
+                inThink = true;
+                startThinkingIndicator();
+              }
+            } else {
+              var j = rawBuf.indexOf("</think>");
+              if (j < 0) {
+                var safe2 = trailingSafeLen(rawBuf, "</think>");
+                rawBuf = rawBuf.slice(safe2);
+                break;
+              } else {
+                rawBuf = rawBuf.slice(j + 8);
+                inThink = false;
+                stopThinkingIndicator();
+              }
+            }
+          }
+        }
+        var lastChargeStatus = null;
+        var lastChargeCharged = null;
+        function handleEvent(ev) {
+          var name = ev && ev.event;
+          if (!name || name === "ping" || name === "keepalive") return;
+          if (name === "node_started") {
+            var t = (ev.data && ev.data.title) ? ev.data.title : "思考中";
+            addStep(ev.data && ev.data.id, t);
+            // Agent node: show contextual indicator + progress bar (~90s)
+            if (ev.data && ev.data.node_type === "agent") {
+              startThinkingIndicator(THINKING_AGENT);
+              startProgressBar(90);
+            }
+          } else if (name === "node_finished") {
+            finishStep(ev.data && ev.data.id);
+            if (ev.data && ev.data.node_type === "agent") {
+              stopThinkingIndicator();
+            }
+          } else if (name === "text_chunk") {
+            if (ev.data && typeof ev.data.text === "string") {
+              appendAnswer(ev.data.text);
+              progressBarSnap95();
+            }
+          } else if (name === "message" || name === "agent_message") {
+            if (typeof ev.answer === "string") {
+              appendAnswer(ev.answer);
+              progressBarSnap95();
+            }
+          } else if (name === "workflow_finished") {
+            if (!sawAnswer && ev.data && ev.data.outputs && typeof ev.data.outputs.answer === "string") {
+              appendAnswer(ev.data.outputs.answer);
+            }
+            // Snap any unfinished step rows to ✓ with elapsed duration
+            for (var k in nodeLines) {
+              var rec = nodeLines[k];
+              if (!rec.finished) finishStep(k);
+            }
+            stopLiveTimer();
+            progressBarComplete();
+          } else if (name === "error") {
+            streamErrorMessage = (ev.message || "Dify stream error");
+            stopLiveTimer();
+            progressBarComplete();
+          } else if (name === "quota_refund" || name === "chat_settled") {
+            // Shell.fans-side refund handler. Backend emits one of these
+            // events after the audit reactor decides. We trust the server
+            // value (don't try to recompute) and update the pill in place.
+            try {
+              var remaining = (typeof ev.remaining === "number") ? ev.remaining : null;
+              var limitFromEv = (typeof ev.limit === "number") ? ev.limit : null;
+              if (remaining !== null) {
+                var lim = limitFromEv !== null
+                  ? limitFromEv
+                  : (_lastQuotaState ? _lastQuotaState.limit : null);
+                if (lim !== null) updateQuotaPill(remaining, lim);
+              }
+            } catch (_) {}
+            // Remember status so we can annotate the empty-stream fallback.
+            if (typeof ev.charge_status === "string") {
+              lastChargeStatus = ev.charge_status;
+            } else if (name === "quota_refund") {
+              lastChargeStatus = "invalid_answer_not_charged";
+            }
+            if (typeof ev.cooldown_remaining_ms === "number") {
+              lastCooldownRemainingMs = ev.cooldown_remaining_ms;
+            }
+            if (typeof ev.cooldown_until_ms === "number") {
+              lastCooldownUntilMs = ev.cooldown_until_ms;
+            }
+            if (typeof ev.charged === "boolean") {
+              lastChargeCharged = ev.charged;
+            } else if (name === "quota_refund") {
+              lastChargeCharged = false;
+            }
+          }
+        }
+
+        try {
+          var res = await authedFetch("/api/dify/workflow", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              "Accept": "text/event-stream"
+            },
+            body: (function () {
+              var b = { query: query, plan: planEl.value, userId: getUserId() };
+              var pc = buildPriorContext();
+              if (pc) b.prior_context = pc;
+              return JSON.stringify(b);
+            })()
+          });
+          syncQuotaFromHeaders(res.headers);
+          if (!res.ok) {
+            var ed = null;
+            try { ed = await res.json(); } catch (_) {}
+            // Special handling for quota exhaustion
+            if (res.status === 429 && ed && ed.code === "QUOTA_EXCEEDED") {
+              if (aiUi.card.parentNode === outEl) outEl.removeChild(aiUi.card);
+              renderQuotaCta(ed.resetAt);
+              if (!queryEl.value) queryEl.value = originalInput;
+              return;
+            }
+            // Special handling for platform-not-allowed (Free user asking
+            // about IG / TikTok etc, server-side gate trips before Dify).
+            if (res.status === 403 && ed && ed.code === "PLATFORM_NOT_ALLOWED") {
+              if (aiUi.card.parentNode === outEl) outEl.removeChild(aiUi.card);
+              renderPlatformGateCard(ed);
+              if (!queryEl.value) queryEl.value = originalInput;
+              return;
+            }
+            throw new Error((ed && ed.error) || ("查詢失敗 (HTTP " + res.status + ")"));
+          }
+          if (!res.body || !res.body.getReader) {
+            throw new Error("瀏覽器不支援串流回應，請改用較新版本。");
+          }
+          var reader = res.body.getReader();
+          var decoder = new TextDecoder();
+          var buf = "";
+          while (true) {
+            var chunk = await reader.read();
+            if (chunk.done) break;
+            buf += decoder.decode(chunk.value, { stream: true });
+            var idx;
+            while ((idx = buf.indexOf("\n\n")) >= 0) {
+              var block = buf.slice(0, idx);
+              buf = buf.slice(idx + 2);
+              var lines = block.split("\n");
+              for (var i = 0; i < lines.length; i++) {
+                var ln = lines[i];
+                if (ln.indexOf("data:") !== 0) continue;
+                var payload = ln.slice(5).trim();
+                if (!payload) continue;
+                try {
+                  handleEvent(JSON.parse(payload));
+                } catch (_) {
+                  /* malformed event, skip */
+                }
+              }
+            }
+          }
+          // Stream ended: clean up any open think state. If LLM never closed
+          // the tag we drop the buffered chain-of-thought; if the only trailing
+          // content is a partial marker (e.g. "<thi") we still drop it as it
+          // adds no value.
+          if (inThink) {
+            inThink = false;
+            stopThinkingIndicator();
+          }
+          rawBuf = "";
+
+          if (streamErrorMessage) {
+            throw new Error(streamErrorMessage);
+          }
+          if (!sawAnswer) {
+            // Default: stream finished with no answer chunks. If the
+            // backend already told us no quota was charged (via
+            // chat_settled / quota_refund), reassure the user. Otherwise
+            // we fall back to the historical text.
+            if (lastCooldownRemainingMs && lastCooldownRemainingMs > 0) {
+              // Anonymous 200s cooldown — render live countdown so the
+              // user knows when they can ask again. Keep inputs locked
+              // through the countdown; finally{} below skips re-unlock
+              // when window.__sfCooldownActive is true.
+              var _cdEndsAt = (typeof lastCooldownUntilMs === "number" && lastCooldownUntilMs > 0)
+                ? lastCooldownUntilMs
+                : (Date.now() + lastCooldownRemainingMs);
+              window.__sfCooldownActive = true;
+              function _sfCooldownPaint() {
+                var msLeft = _cdEndsAt - Date.now();
+                var secLeft = Math.max(0, Math.ceil(msLeft / 1000));
+                if (msLeft <= 0) {
+                  if (window.__sfCooldownInterval) {
+                    clearInterval(window.__sfCooldownInterval);
+                    window.__sfCooldownInterval = null;
+                  }
+                  window.__sfCooldownActive = false;
+                  answerEl.textContent = "冷卻結束，可以繼續發問了。";
+                  try { lockInputs(false); queryEl.focus(); } catch (_) {}
+                  return;
+                }
+                answerEl.textContent = "免費訪客每 200 秒可發問一次。請等待 " + secLeft + " 秒…（這項限制只在未登入時生效）";
+              }
+              _sfCooldownPaint();
+              if (window.__sfCooldownInterval) {
+                clearInterval(window.__sfCooldownInterval);
+              }
+              window.__sfCooldownInterval = setInterval(_sfCooldownPaint, 1000);
+            } else {
+              var msg = "目前LLM忙碌中請稍後再試";
+              if (lastChargeCharged === false) {
+                msg += "（本次未扣除額度）";
+              }
+              answerEl.textContent = msg;
+            }
+          } else {
+            // Phase A: record this turn into history (only when toggle ON;
+            // recordTurn is a no-op otherwise).
+            recordTurn(query, answerEl.textContent || "");
+            // 固定 footer:Dify 那邊 answer template / agent instruction 都試過
+            // 不可靠,改在 client side 答案區下方輸出一行 disclaimer。
+            var footer = document.createElement("div");
+            footer.style.cssText = "margin-top:14px;padding-top:10px;border-top:1px dashed #e2e8f0;font-size:11px;color:#94a3b8;font-style:italic";
+            footer.textContent = "本數據分析結果由唄粉智能社群 AI 模型提供";
+            aiUi.card.appendChild(footer);
+            scrollToBottom();
+          }
+        } catch (err) {
+          stopThinkingIndicator();
+          stopLiveTimer();
+          progressBarComplete();
+          // restore input + show error bubble (don't wipe history)
+          if (aiUi.card.parentNode === outEl) outEl.removeChild(aiUi.card);
+          renderErrorBubble(err && err.message ? err.message : "系統暫時無法處理，請稍後再試。");
+          if (!queryEl.value) queryEl.value = originalInput;
+        } finally {
+          if (!window.__sfCooldownActive) {
+            lockInputs(false);
+            queryEl.focus();
+          }
+        }
+      });
+    })();
+  </script>
+</section>
+
+<!-- ===== HERO ===== -->
+<section class="hero">
+  <div class="container">
+    <div class="hero-grid">
+      <div class="hero-content">
+        <span class="hero-eyebrow"><span class="dot"></span><span data-i18n="hero.eyebrow">跨平台社群 AI 指揮中心</span></span>
+        <h2 class="hero-h"><span data-i18n="hero.h2.line1">把社群經營，</span><br><span data-i18n="hero.h2.line2">變成</span><span class="accent" data-i18n="hero.h2.accent">可管理的長期資產</span></h2>
+        <p class="hero-sub" data-i18n="hero.sub">ShellFans AI 幫助創作者、經紀人與品牌主整合 IG、Facebook、Threads 等平台資料，保存內容與互動紀錄，並用 AI 分析粉絲與口碑成長。</p>
+        <div class="hero-ctas">
+          <a href="https://kol.fans/signup" target="_blank" rel="noopener" class="btn-primary" data-i18n="nav.getStarted">開始使用</a>
+          <a href="https://kol.fans/pricing" target="_blank" rel="noopener" class="btn-secondary" data-i18n="nav.pricing">查看方案</a>
+        </div>
+      </div>
+      <div class="hero-visual" aria-hidden="true">
+        <div class="hero-card">
+          <div class="hero-card-bar">
+            <div class="hero-card-dots"><span></span><span></span><span></span></div>
+            <span class="title" data-i18n="heroCard.title">ShellFans 續航引擎</span>
+            <span class="badge" data-i18n="heroCard.badge">同步中</span>
+          </div>
+          <div class="hero-card-body">
+            <div class="hero-card-greeting"><span data-i18n="heroCard.greeting">早安，</span><strong>Mei</strong><span data-i18n="heroCard.greetingSuffix">　本週社群動態</span></div>
+            <div class="hero-card-summary" data-i18n="heroCard.summary">本週新增互動 12.4K，正向情緒比例維持 92%，2 則品牌詢問待回覆。</div>
+            <div class="hero-card-stats">
+              <div class="hero-stat">
+                <div class="stat-label" data-i18n="heroCard.stat1Label">已備份貼文</div>
+                <div class="stat-val">2,847</div>
+                <div class="stat-trend" data-i18n="heroCard.stat1Trend">+38 本週</div>
+              </div>
+              <div class="hero-stat">
+                <div class="stat-label" data-i18n="heroCard.stat2Label">忠實粉絲</div>
+                <div class="stat-val">1,254</div>
+                <div class="stat-trend" data-i18n="heroCard.stat2Trend">+24 本週</div>
+              </div>
+              <div class="hero-stat">
+                <div class="stat-label" data-i18n="heroCard.stat3Label">品牌詢問</div>
+                <div class="stat-val" data-i18n="heroCard.stat3Val">7 則</div>
+                <div class="stat-trend" data-i18n="heroCard.stat3Trend">2 待回覆</div>
+              </div>
+            </div>
+            <div class="hero-card-list">
+              <div class="hero-card-row">
+                <span class="pf ig">IG</span>
+                <span class="text"><strong data-i18n="heroCard.row1Title">跨平台貼文已歸檔</strong><span data-i18n="heroCard.row1Body">本週新增 18 則 Reels、7 則貼文</span></span>
+                <span class="meta" data-i18n="heroCard.row1Time">剛剛</span>
+              </div>
+              <div class="hero-card-row">
+                <span class="pf fb">FB</span>
+                <span class="text"><strong data-i18n="heroCard.row2Title">粉絲分群更新</strong><span data-i18n="heroCard.row2Body">新增 24 位忠實粉絲、9 位潛力粉絲</span></span>
+                <span class="meta" data-i18n="heroCard.row2Time">10 分前</span>
+              </div>
+              <div class="hero-card-row">
+                <span class="pf th">TH</span>
+                <span class="text"><strong data-i18n="heroCard.row3Title">品牌洽談信號</strong><span data-i18n="heroCard.row3Body">style_brand 來訊，受眾契合度 92%</span></span>
+                <span class="meta" data-i18n="heroCard.row3Time">15 分前</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== VALUES (3 cards) ===== -->
+<section class="values" id="values">
+  <div class="container">
+    <div class="section-header">
+      <div class="overline">Why ShellFans AI</div>
+      <h2><span data-i18n="values.h2.line1">把分散在各平台的成果，</span><br><span data-i18n="values.h2.line2">整理成你真正握住的長期資產</span></h2>
+      <p data-i18n="values.sub">三件事，幫你在演算法、平台與合作機會的變動中，仍然清楚自己經營了什麼。</p>
+    </div>
+    <div class="values-grid">
+      <div class="value-card">
+        <div class="value-icon"><svg viewBox="0 0 24 24"><path d="M3 7l9-4 9 4v10l-9 4-9-4V7z"></path><path d="M3 7l9 4 9-4"></path><path d="M12 11v10"></path></svg></div>
+        <h3 data-i18n="values.card1.title">保存社群資產</h3>
+        <p data-i18n="values.card1.body">跨平台一鍵備份，內容、留言、粉絲名單都歸你所有。即使演算法或平台變動，多年經營都還在。</p>
+      </div>
+      <div class="value-card">
+        <div class="value-icon"><svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3"></circle><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6"></path><circle cx="17" cy="8" r="2.5"></circle><path d="M16 14c2.8.5 5 2.7 5 6"></path></svg></div>
+        <h3 data-i18n="values.card2.title">看懂粉絲互動</h3>
+        <p data-i18n="values.card2.body">AI 自動分群識別忠實粉、潛力粉與新粉，理解情緒走向與話題熱度，讓你看見每位粉絲的真實樣貌。</p>
+      </div>
+      <div class="value-card">
+        <div class="value-icon"><svg viewBox="0 0 24 24"><path d="M3 12h4l3-7 4 14 3-7h4"></path></svg></div>
+        <h3 data-i18n="values.card3.title">同步經營口碑</h3>
+        <p data-i18n="values.card3.body">跨平台佈局內容、串連口碑聲量分析與品牌合作機會，讓每一次互動都成為下一次成長的養分。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FLOW (3 steps) ===== -->
+<section class="flow" id="flow">
+  <div class="container">
+    <div class="section-header">
+      <div class="overline">How it works</div>
+      <h2 data-i18n="flow.h2">三步驟，把多平台資料變成可行動的洞察</h2>
+      <p data-i18n="flow.sub">不需要工程設定，授權即可開始。資料越久，洞察越準。</p>
+    </div>
+    <div class="flow-steps">
+      <div class="flow-step">
+        <div class="flow-num">1</div>
+        <h3 data-i18n="flow.step1.title">連接平台</h3>
+        <p data-i18n="flow.step1.body">以官方授權連接 IG、Facebook、Threads、TikTok 等帳號，安全合規地引入內容、留言與粉絲資料。</p>
+        <div class="flow-tags">
+          <span class="flow-tag" data-i18n="flow.step1.tag1">官方 OAuth</span>
+          <span class="flow-tag" data-i18n="flow.step1.tag2">多帳號</span>
+          <span class="flow-tag" data-i18n="flow.step1.tag3">免工程</span>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-num">2</div>
+        <h3 data-i18n="flow.step2.title">備份與分析</h3>
+        <p data-i18n="flow.step2.body">系統持續歸檔內容、留言、粉絲清單與互動紀錄，AI 進行分群、情緒分析與口碑趨勢偵測。</p>
+        <div class="flow-tags">
+          <span class="flow-tag" data-i18n="flow.step2.tag1">自動歸檔</span>
+          <span class="flow-tag" data-i18n="flow.step2.tag2">粉絲分群</span>
+          <span class="flow-tag" data-i18n="flow.step2.tag3">情緒分析</span>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-num">3</div>
+        <h3 data-i18n="flow.step3.title">產出行動建議</h3>
+        <p data-i18n="flow.step3.body">每週洞察報告、貼文時機、粉絲關注重點與潛在合作對象，把資料變成下一步要做的事。</p>
+        <div class="flow-tags">
+          <span class="flow-tag" data-i18n="flow.step3.tag1">每週報告</span>
+          <span class="flow-tag" data-i18n="flow.step3.tag2">內容建議</span>
+          <span class="flow-tag" data-i18n="flow.step3.tag3">合作媒合</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== ROLES ===== -->
+<section class="roles" id="roles">
+  <div class="container">
+    <div class="section-header">
+      <div class="overline">Who it's for</div>
+      <h2><span data-i18n="roles.h2.line1">創作者、經紀人、品牌主，</span><br><span data-i18n="roles.h2.line2">同一套資料各取所需</span></h2>
+      <p data-i18n="roles.sub">無論你站在社群經營的哪個位置，都能在 ShellFans AI 找到對應的視角。</p>
+    </div>
+    <div class="roles-grid">
+      <div class="role-card">
+        <div class="role-tag">For Creator</div>
+        <h3 data-i18n="roles.creator.title">建立屬於自己的內容資產庫</h3>
+        <p data-i18n="roles.creator.body">把每篇貼文、每則留言、每位粉絲都視為長期資產，不再依賴單一平台的觸及。</p>
+        <div class="role-features">
+          <div class="role-feature" data-i18n="roles.creator.feat1">跨平台內容備份與檢索</div>
+          <div class="role-feature" data-i18n="roles.creator.feat2">忠實粉絲與潛力粉絲識別</div>
+          <div class="role-feature" data-i18n="roles.creator.feat3">完整 Creator Profile 自我介紹</div>
+        </div>
+      </div>
+      <div class="role-card">
+        <div class="role-tag">For Manager</div>
+        <h3 data-i18n="roles.manager.title">多位 KOL 集中管理與報表</h3>
+        <p data-i18n="roles.manager.body">把旗下創作者的內容資產、互動品質、合作紀錄集中查看，讓提案與分潤更有依據。</p>
+        <div class="role-features">
+          <div class="role-feature" data-i18n="roles.manager.feat1">多帳號統一儀表板</div>
+          <div class="role-feature" data-i18n="roles.manager.feat2">合作成效與分潤紀錄</div>
+          <div class="role-feature" data-i18n="roles.manager.feat3">創作者間表現比較</div>
+        </div>
+      </div>
+      <div class="role-card">
+        <div class="role-tag">For Brand</div>
+        <h3 data-i18n="roles.brand.title">找到粉絲真的會買單的合作對象</h3>
+        <p data-i18n="roles.brand.body">不只看追蹤數，看 KOL 背後真實的粉絲輪廓、互動品質與情感傾向，量化合作成效。</p>
+        <div class="role-features">
+          <div class="role-feature" data-i18n="roles.brand.feat1">粉絲輪廓與品牌受眾比對</div>
+          <div class="role-feature" data-i18n="roles.brand.feat2">互動真實性與情感分析</div>
+          <div class="role-feature" data-i18n="roles.brand.feat3">合作前後口碑成效追蹤</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FINAL CTA ===== -->
+<section class="final-cta">
+  <div class="container">
+    <div class="final-cta-inner">
+      <h2><span data-i18n="finalCta.h2.line1">讓每一次發文、留言與互動，</span><br><span data-i18n="finalCta.h2.line2">都成為可以累積的資產</span></h2>
+      <p data-i18n="finalCta.sub">從今天開始，把分散在 IG、Facebook、Threads 的社群成果，整理成你真正握住的長期資產。</p>
+      <div class="final-cta-buttons">
+        <a href="https://kol.fans/signup" target="_blank" rel="noopener" class="btn-primary" data-i18n="finalCta.btnPrimary">免費開始使用</a>
+        <a href="https://kol.fans/login?next=https%3A%2F%2Fshell.fans%2F" class="btn-secondary" data-i18n="nav.login">登入</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FOOTER ===== -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-top">
+      <div>
+        <div class="footer-brand">
+          <img src="https://shell.fans/images/nav_logo.svg" alt="ShellFans" width="162" height="32">
+        </div>
+        <p class="footer-desc" data-i18n="footer.desc">跨平台社群 AI 指揮中心。保存社群資產，看懂粉絲，同步經營與口碑成長。</p>
+      </div>
+      <div class="footer-col">
+        <h4 data-i18n="footer.colProduct">產品</h4>
+        <a href="https://shell.fans/kol-engine" data-i18n="nav.engine">續航引擎</a>
+        <a href="https://shell.fans/fans-analysis" data-i18n="nav.fansAnalysis">粉絲分析</a>
+        <a href="https://kol.fans" target="_blank" rel="noopener" data-i18n="nav.wordOfMouth">口碑行銷</a>
+        <a href="https://kol.fans/pricing" target="_blank" rel="noopener" data-i18n="nav.pricing">查看方案</a>
+      </div>
+      <div class="footer-col">
+        <h4 data-i18n="footer.colResource">資源</h4>
+        <a href="https://blog.shell.fans/" target="_blank" rel="noopener" data-i18n="footer.klog">Klog 部落格</a>
+        <a href="https://shell.fans/helpcenter" data-i18n="footer.helpCenter">幫助中心</a>
+        <a href="https://shell.fans/support" data-i18n="footer.customerSupport">客服支援</a>
+      </div>
+      <div class="footer-col">
+        <h4 data-i18n="footer.colContact">聯繫</h4>
+        <a href="https://shell.fans/contact" data-i18n="footer.aboutUs">關於我們</a>
+        <a href="https://shell.fans/contact" data-i18n="footer.contactUs">歡迎聯繫</a>
+        <a href="https://shell.fans/co-founder" data-i18n="footer.cofounder">創辦人</a>
+      </div>
+    </div>
+
+    <!-- Company info -->
+    <div class="footer-company" aria-label="公司資訊" data-i18n="aria.companyInfo" data-i18n-attr="aria-label">
+      <span class="footer-company-row" data-i18n="footer.companyName">日商唄粉智能科技有限公司</span>
+      <span class="footer-company-row" data-i18n="footer.address">地址：臺北市內湖區瑞光路335號4樓</span>
+      <span class="footer-company-row"><span data-i18n="footer.emailLabel">信箱：</span><a href="mailto:hello@shell.fans">hello@shell.fans</a></span>
+      <span class="footer-company-row"><span data-i18n="footer.phoneLabel">電話：</span><a href="tel:0277143635">02-77143635</a></span>
+      <span class="footer-company-row" data-i18n="footer.taxId">統編：83032387</span>
+    </div>
+
+    <!-- Patent / trademark -->
+    <div class="footer-patent">
+      <span data-i18n="footer.patent.before">唄粉智能科技及其產品受商標、</span><a href="https://tiponet.tipo.gov.tw/gpss2/gpsskmc/gpssbkm?!!FRURLTWI908295B" target="_blank" rel="noopener noreferrer" data-i18n="footer.patent.link">發明專利 I908295(臺灣)</a><span data-i18n="footer.patent.after">及其他申請中美國、日本之專利保護。</span>
+    </div>
+
+    <!-- Bottom row -->
+    <div class="footer-bottom">
+      <span class="footer-copy">© 2026 ShellFans AI Technology. All rights reserved. 由 <a href="https://shell.fans" target="_blank" rel="noopener noreferrer">shell.fans</a> 提供 AI Chat 口碑經營技術支援</span>
+      <button type="button" class="footer-lang" aria-label="目前語言：繁體中文" data-i18n="aria.langCurrent" data-i18n-attr="aria-label" disabled>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="12" cy="12" r="10"></circle>
+          <path d="M2 12h20"></path>
+          <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+        </svg>
+        <span data-i18n="footer.langLabel">繁體中文</span>
+      </button>
+      <div class="footer-social" aria-label="社群連結" data-i18n="aria.socialLinks" data-i18n-attr="aria-label">
+        <a href="https://www.facebook.com/profile.php?id=61581243232686" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
+          <img src="https://shell.fans/images/facebook.svg" alt="Facebook" width="16" height="16">
+        </a>
+        <a href="https://www.instagram.com/shell_fansai/" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+          <img src="https://shell.fans/images/instagram.svg" alt="Instagram" width="16" height="16">
+        </a>
+      </div>
+      <div class="footer-legal">
+        <a href="https://shell.fans/privacy-policy" data-i18n="footer.privacyPolicy">隱私權政策</a>
+        <a href="https://shell.fans/terms-and-conditions" data-i18n="footer.termsOfService">服務條款</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var nav=document.getElementById('nav');
+  if(nav){window.addEventListener('scroll',function(){nav.classList.toggle('scrolled',window.scrollY>20)},{passive:true})}
+
+  var loginWrap=document.getElementById('navLogin');
+  var loginToggle=document.getElementById('navLoginToggle');
+  if(loginWrap&&loginToggle){
+    loginToggle.addEventListener('click',function(e){
+      e.stopPropagation();
+      // Pre-login: nav-login-list is empty (no user menu yet) → unified
+      // single login redirect to kol.fans/login. Post-login: applyKolFansLoginUI
+      // has populated the list, so click toggles the user dropdown.
+      var list=loginWrap.querySelector('.nav-login-list');
+      var hasUserMenu=list&&list.children.length>0;
+      if(!hasUserMenu){
+        window.location.href='https://kol.fans/login?next=' + encodeURIComponent(window.location.href);
+        return;
+      }
+      var open=loginWrap.classList.toggle('open');
+      loginToggle.setAttribute('aria-expanded',open?'true':'false');
+    });
+    document.addEventListener('click',function(e){
+      if(!loginWrap.contains(e.target)){
+        loginWrap.classList.remove('open');
+        loginToggle.setAttribute('aria-expanded','false');
+      }
+    });
+  }
+
+  var hamb=document.getElementById('navHamburger');
+  var menu=document.getElementById('mobileMenu');
+  if(hamb&&menu){
+    hamb.addEventListener('click',function(){
+      var open=menu.classList.toggle('active');
+      hamb.setAttribute('aria-expanded',open?'true':'false');
+      document.body.style.overflow=open?'hidden':'';
+    });
+    menu.querySelectorAll('a').forEach(function(a){
+      a.addEventListener('click',function(){
+        menu.classList.remove('active');
+        hamb.setAttribute('aria-expanded','false');
+        document.body.style.overflow='';
+      });
+    });
+  }
+})();
+</script>
+
+<script data-shellfans-i18n-bootstrap="1">
+(function () {
+  var STORAGE_KEY = 'shellfans_locale';
+  var I18N_URL = 'https://kol.fans/api/site/i18n?site=shell';
+
+  // Inline base dictionaries — keep in sync with src/i18n/shell-{zh-TW,en}.ts
+  // on the kol.fans repo. These are the fallback if /api/site/i18n is
+  // unreachable.
+  var BASE = {
+    'zh-TW': {
+      'nav.aeoGeo': 'AEO/GEO 代管','nav.engine': '續航引擎','nav.fansAnalysis': '粉絲分析','nav.wordOfMouth': '口碑行銷','nav.pricing': '查看方案','nav.login': '登入','nav.engineLogin': '續航引擎登入','nav.womLogin': '口碑行銷登入','nav.getStarted': '開始使用','nav.myPlan': '我的方案','nav.memberCenter': '會員中心','nav.logout': '登出',
+      'aria.mainMenu': '主選單','aria.openMenu': '開啟選單','aria.planSelect': '方案','aria.send': '送出','aria.companyInfo': '公司資訊','aria.socialLinks': '社群連結','aria.langCurrent': '目前語言：繁體中文',
+      'hero.eyebrow': '跨平台社群 AI 指揮中心','hero.h2.line1': '把社群經營，','hero.h2.line2': '變成','hero.h2.accent': '可管理的長期資產','hero.sub': 'ShellFans AI 幫助創作者、經紀人與品牌主整合 IG、Facebook、Threads 等平台資料，保存內容與互動紀錄，並用 AI 分析粉絲與口碑成長。',
+      'hero.subhead': '對話式社群分析，問句即洞察','hero.sublead': '熱門話題、合作 KOL、品牌聲量，讓 AI 24 小時為你掃描全社群風向',
+      'heroCard.title': 'ShellFans 續航引擎','heroCard.badge': '同步中','heroCard.greeting': '早安，','heroCard.greetingSuffix': '　本週社群動態','heroCard.summary': '本週新增互動 12.4K，正向情緒比例維持 92%，2 則品牌詢問待回覆。',
+      'heroCard.stat1Label': '已備份貼文','heroCard.stat1Trend': '+38 本週','heroCard.stat2Label': '忠實粉絲','heroCard.stat2Trend': '+24 本週','heroCard.stat3Label': '品牌詢問','heroCard.stat3Val': '7 則','heroCard.stat3Trend': '2 待回覆',
+      'heroCard.row1Title': '跨平台貼文已歸檔','heroCard.row1Body': '本週新增 18 則 Reels、7 則貼文','heroCard.row1Time': '剛剛',
+      'heroCard.row2Title': '粉絲分群更新','heroCard.row2Body': '新增 24 位忠實粉絲、9 位潛力粉絲','heroCard.row2Time': '10 分前',
+      'heroCard.row3Title': '品牌洽談信號','heroCard.row3Body': 'style_brand 來訊，受眾契合度 92%','heroCard.row3Time': '15 分前',
+      'values.h2.line1': '把分散在各平台的成果，','values.h2.line2': '整理成你真正握住的長期資產','values.sub': '三件事，幫你在演算法、平台與合作機會的變動中，仍然清楚自己經營了什麼。',
+      'values.card1.title': '保存社群資產','values.card1.body': '跨平台一鍵備份，內容、留言、粉絲名單都歸你所有。即使演算法或平台變動，多年經營都還在。',
+      'values.card2.title': '看懂粉絲互動','values.card2.body': 'AI 自動分群識別忠實粉、潛力粉與新粉，理解情緒走向與話題熱度，讓你看見每位粉絲的真實樣貌。',
+      'values.card3.title': '同步經營口碑','values.card3.body': '跨平台佈局內容、串連口碑聲量分析與品牌合作機會，讓每一次互動都成為下一次成長的養分。',
+      'flow.h2': '三步驟，把多平台資料變成可行動的洞察','flow.sub': '不需要工程設定，授權即可開始。資料越久，洞察越準。',
+      'flow.step1.title': '連接平台','flow.step1.body': '以官方授權連接 IG、Facebook、Threads、TikTok 等帳號，安全合規地引入內容、留言與粉絲資料。','flow.step1.tag1': '官方 OAuth','flow.step1.tag2': '多帳號','flow.step1.tag3': '免工程',
+      'flow.step2.title': '備份與分析','flow.step2.body': '系統持續歸檔內容、留言、粉絲清單與互動紀錄，AI 進行分群、情緒分析與口碑趨勢偵測。','flow.step2.tag1': '自動歸檔','flow.step2.tag2': '粉絲分群','flow.step2.tag3': '情緒分析',
+      'flow.step3.title': '產出行動建議','flow.step3.body': '每週洞察報告、貼文時機、粉絲關注重點與潛在合作對象，把資料變成下一步要做的事。','flow.step3.tag1': '每週報告','flow.step3.tag2': '內容建議','flow.step3.tag3': '合作媒合',
+      'roles.h2.line1': '創作者、經紀人、品牌主，','roles.h2.line2': '同一套資料各取所需','roles.sub': '無論你站在社群經營的哪個位置，都能在 ShellFans AI 找到對應的視角。',
+      'roles.creator.title': '建立屬於自己的內容資產庫','roles.creator.body': '把每篇貼文、每則留言、每位粉絲都視為長期資產，不再依賴單一平台的觸及。','roles.creator.feat1': '跨平台內容備份與檢索','roles.creator.feat2': '忠實粉絲與潛力粉絲識別','roles.creator.feat3': '完整 Creator Profile 自我介紹',
+      'roles.manager.title': '多位 KOL 集中管理與報表','roles.manager.body': '把旗下創作者的內容資產、互動品質、合作紀錄集中查看，讓提案與分潤更有依據。','roles.manager.feat1': '多帳號統一儀表板','roles.manager.feat2': '合作成效與分潤紀錄','roles.manager.feat3': '創作者間表現比較',
+      'roles.brand.title': '找到粉絲真的會買單的合作對象','roles.brand.body': '不只看追蹤數，看 KOL 背後真實的粉絲輪廓、互動品質與情感傾向，量化合作成效。','roles.brand.feat1': '粉絲輪廓與品牌受眾比對','roles.brand.feat2': '互動真實性與情感分析','roles.brand.feat3': '合作前後口碑成效追蹤',
+      'finalCta.h2.line1': '讓每一次發文、留言與互動，','finalCta.h2.line2': '都成為可以累積的資產','finalCta.sub': '從今天開始，把分散在 IG、Facebook、Threads 的社群成果，整理成你真正握住的長期資產。','finalCta.btnPrimary': '免費開始使用','finalCta.btnSecondary': '登入續航引擎',
+      'footer.desc': '跨平台社群 AI 指揮中心。保存社群資產，看懂粉絲，同步經營與口碑成長。',
+      'footer.colProduct': '產品','footer.colResource': '資源','footer.colContact': '聯繫','footer.klog': 'Klog 部落格','footer.helpCenter': '幫助中心','footer.customerSupport': '客服支援','footer.aboutUs': '關於我們','footer.contactUs': '歡迎聯繫','footer.cofounder': '創辦人',
+      'footer.companyName': '日商唄粉智能科技有限公司','footer.address': '地址：臺北市內湖區瑞光路335號4樓','footer.emailLabel': '信箱：','footer.phoneLabel': '電話：','footer.taxId': '統編：83032387',
+      'footer.patent.before': '唄粉智能科技及其產品受商標、','footer.patent.link': '發明專利 I908295(臺灣)','footer.patent.after': '及其他申請中美國、日本之專利保護。',
+      'footer.copyright': '\u00a9 2026 ShellFans AI. 日商唄粉智能科技有限公司. All rights reserved.','footer.langLabel': '繁體中文','footer.privacyPolicy': '隱私權政策','footer.termsOfService': '服務條款',
+      'chat.placeholderEmpty': '了解社群，從 Chat 開始','chat.inputPlaceholder': '與 ShellFans Social AI Chat 對話','chat.planFree': 'Free','chat.planProUpgrade': 'Pro · 升級','chat.planMaxUpgrade': 'Max · 升級','chat.logout': '登出','chat.platformsLabel': '支援平台',
+      'chat.contextModeOff': 'Chat 模式：關','chat.modeHintOff': 'Chat 模式關閉時，對話將以搜索模式進行。','chat.modeHintOn': 'Chat 模式開啟時，AI 會結合上下文進行思考與回應。','chat.contextModeTooltip': '開啟後 AI 會參考最近 3 輪對話脈絡 (僅本分頁有效)','meta.title': 'ShellFans AI — AI Chat 社群分析，問句即洞察，把社群經營，變成可管理的長期資產','meta.description': 'ShellFans AI 是跨平台社群 AI 指揮中心，幫助創作者、經紀人與品牌主整合 IG、Facebook、Threads 等平台資料，保存社群資產、看懂粉絲、同步經營與口碑成長。','chat.contextModeOn': 'Chat 模式：開','chat.contextModeRoundsPrefix': 'Chat 模式：','chat.contextModeRoundsSuffix': ' 輪','chat.quotaTodayLabel': '今日 Chat 剩餘','chat.quotaTodayFreeLabel': '今日免費剩餘','chat.quotaPlanSuffix': '（{plan}）','chat.quotaSeparator': '：','chat.quotaTimes': ' 次','chat.quotaSlash': ' / ','quota.exhaustedTitlePrefix': '⏳ ','quota.exhaustedTitle': '今日免費額度已用完',
+      'chat.disclaimer1': 'ShellFans Social AI 可能會出錯。ShellFans 不會使用您的資料來訓練模型。','chat.disclaimer2': '由於社群數據量龐大，AI 分析可能會需要 30s~60s 的時間，請耐心等待。','chat.disclaimer3': '未註冊用戶每天 2 次免費社群分析；如需更多請註冊成為付費會員。','chat.aboutCta': '了解 ShellFans 是什麼 →'
+    },
+    'en': {
+      'nav.aeoGeo': 'AEO/GEO Hosting','nav.engine': 'Engagement Engine','nav.fansAnalysis': 'Fans Analysis','nav.wordOfMouth': 'Word-of-Mouth','nav.pricing': 'Pricing','nav.login': 'Log in','nav.engineLogin': 'Engine Login','nav.womLogin': 'WoM Login','nav.getStarted': 'Get Started','nav.myPlan': 'My Plan','nav.memberCenter': 'Member Center','nav.logout': 'Log out',
+      'aria.mainMenu': 'Main menu','aria.openMenu': 'Open menu','aria.planSelect': 'Plan','aria.send': 'Send','aria.companyInfo': 'Company info','aria.socialLinks': 'Social links','aria.langCurrent': 'Current language: English',
+      'hero.eyebrow': 'Cross-platform Social AI Command','hero.h2.line1': 'Turn social into','hero.h2.line2': 'a','hero.h2.accent': 'manageable long-term asset','hero.sub': 'ShellFans AI helps creators, talent managers, and brand owners unify IG, Facebook, Threads, and other platform data — preserving content and engagement records, and applying AI to analyze fans and reputation growth.',
+      'hero.subhead': 'Conversational social analytics — ask, get insight','hero.sublead': "Trending topics, partner KOLs, brand voice — AI scans social trends 24/7 across every channel",
+      'heroCard.title': 'ShellFans Engagement Engine','heroCard.badge': 'Syncing','heroCard.greeting': 'Good morning, ','heroCard.greetingSuffix': '  This week\u2019s social pulse','heroCard.summary': 'This week +12.4K engagements, positive sentiment held at 92%, 2 brand inquiries pending reply.',
+      'heroCard.stat1Label': 'Posts archived','heroCard.stat1Trend': '+38 this week','heroCard.stat2Label': 'Loyal fans','heroCard.stat2Trend': '+24 this week','heroCard.stat3Label': 'Brand inquiries','heroCard.stat3Val': '7 items','heroCard.stat3Trend': '2 pending',
+      'heroCard.row1Title': 'Cross-platform posts archived','heroCard.row1Body': 'Added 18 Reels and 7 posts this week','heroCard.row1Time': 'Just now',
+      'heroCard.row2Title': 'Fan segmentation updated','heroCard.row2Body': '+24 loyal fans, +9 potential fans','heroCard.row2Time': '10 min ago',
+      'heroCard.row3Title': 'Brand outreach signal','heroCard.row3Body': 'style_brand reached out — 92% audience fit','heroCard.row3Time': '15 min ago',
+      'values.h2.line1': 'Turn results scattered across platforms','values.h2.line2': 'into a long-term asset you truly own','values.sub': 'Three things that keep you clear about what you\u2019ve built — through algorithm shifts, platform changes, and partnership swings.',
+      'values.card1.title': 'Preserve social assets','values.card1.body': 'One-click cross-platform backup. Content, comments, and fan lists are yours. Years of work survive algorithm and platform changes.',
+      'values.card2.title': 'Understand fan engagement','values.card2.body': 'AI auto-segments loyal, potential, and new fans. See sentiment drift and topic heat — the true picture of every fan.',
+      'values.card3.title': 'Grow reputation in sync','values.card3.body': 'Cross-platform content distribution paired with reputation-volume analysis and brand-partnership matches. Every interaction feeds the next round of growth.',
+      'flow.h2': 'Three steps to turn multi-platform data into actionable insight','flow.sub': 'No engineering setup. Authorize and start — insight sharpens with time.',
+      'flow.step1.title': 'Connect platforms','flow.step1.body': 'Authorize IG, Facebook, Threads, TikTok, and more via official OAuth — bringing content, comments, and fan data in safely and compliantly.','flow.step1.tag1': 'Official OAuth','flow.step1.tag2': 'Multi-account','flow.step1.tag3': 'No code',
+      'flow.step2.title': 'Backup & analyze','flow.step2.body': 'The system continuously archives content, comments, fan lists, and engagement records. AI handles segmentation, sentiment, and reputation-trend detection.','flow.step2.tag1': 'Auto-archive','flow.step2.tag2': 'Fan segmentation','flow.step2.tag3': 'Sentiment analysis',
+      'flow.step3.title': 'Action recommendations','flow.step3.body': 'Weekly insight reports, post-timing, fan focus topics, and potential partners — turning data into the next thing to do.','flow.step3.tag1': 'Weekly report','flow.step3.tag2': 'Content suggestions','flow.step3.tag3': 'Partnership matching',
+      'roles.h2.line1': 'Creators, managers, brand owners — ','roles.h2.line2': 'one dataset, multiple perspectives','roles.sub': 'Wherever you sit in the social ecosystem, ShellFans AI has the lens for you.',
+      'roles.creator.title': 'Build your own content asset library','roles.creator.body': 'Treat every post, comment, and fan as a long-term asset — no longer dependent on a single platform\u2019s reach.','roles.creator.feat1': 'Cross-platform content backup & search','roles.creator.feat2': 'Loyal & potential fan identification','roles.creator.feat3': 'Complete creator profile',
+      'roles.manager.title': 'Centralized KOL management & reports','roles.manager.body': 'Review your creators\u2019 content, engagement quality, and partnership records in one place — making proposals and revenue splits defensible.','roles.manager.feat1': 'Multi-account unified dashboard','roles.manager.feat2': 'Partnership ROI & payout records','roles.manager.feat3': 'Cross-creator performance comparison',
+      'roles.brand.title': 'Find KOLs whose fans actually convert','roles.brand.body': 'Beyond follower count — see real fan profiles, engagement quality, and sentiment behind the KOL. Quantify partnership effectiveness.','roles.brand.feat1': 'Fan profile vs. brand audience fit','roles.brand.feat2': 'Engagement authenticity & sentiment','roles.brand.feat3': 'Pre- and post-collab reputation tracking',
+      'finalCta.h2.line1': 'Let every post, comment, and interaction','finalCta.h2.line2': 'become an asset you accumulate','finalCta.sub': 'Starting today — turn social results scattered across IG, Facebook, and Threads into a long-term asset you truly own.','finalCta.btnPrimary': 'Get started free','finalCta.btnSecondary': 'Sign in to Engine',
+      'footer.desc': 'Cross-platform Social AI Command. Preserve social assets, understand fans, grow engagement and reputation in sync.',
+      'footer.colProduct': 'Product','footer.colResource': 'Resources','footer.colContact': 'Contact','footer.klog': 'Klog Blog','footer.helpCenter': 'Help Center','footer.customerSupport': 'Support','footer.aboutUs': 'About Us','footer.contactUs': 'Contact Us','footer.cofounder': 'Co-Founder',
+      'footer.companyName': 'ShellFans AI Technology Co., Ltd.','footer.address': 'Address: 4F, No. 335, Ruiguang Rd., Neihu Dist., Taipei','footer.emailLabel': 'Email: ','footer.phoneLabel': 'Phone: ','footer.taxId': 'Business ID: 83032387',
+      'footer.patent.before': 'ShellFans AI Technology and its products are protected by trademark, ','footer.patent.link': 'Invention Patent I908295 (Taiwan)','footer.patent.after': ', and other patents pending in the US and Japan.',
+      'footer.copyright': '\u00a9 2026 ShellFans AI. ShellFans AI Technology Co., Ltd. All rights reserved.','footer.langLabel': 'English','footer.privacyPolicy': 'Privacy Policy','footer.termsOfService': 'Terms of Service',
+      'chat.placeholderEmpty': 'Understand your community — start with Chat','chat.inputPlaceholder': 'Chat with ShellFans Social AI','chat.planFree': 'Free','chat.planProUpgrade': 'Pro · Upgrade','chat.planMaxUpgrade': 'Max · Upgrade','chat.logout': 'Log out','chat.platformsLabel': 'Supported platforms',
+      'chat.contextModeOff': 'ChatMode: Off','chat.modeHintOff': 'When ChatMode is off, conversations run in Search Mode.','chat.modeHintOn': 'When ChatMode is on, AI uses dialogue context to think and respond.','chat.contextModeTooltip': 'When on, AI references the last 3 turns of dialogue (this tab only)','meta.title': 'ShellFans AI — AI Chat social analytics: ask, get insight. Turn social into a manageable long-term asset.','meta.description': 'ShellFans AI is your cross-platform Social AI Command — unify IG, Facebook, Threads, TikTok data; preserve social assets, understand fans, grow engagement and reputation.','chat.contextModeOn': 'ChatMode: On','chat.contextModeRoundsPrefix': 'ChatMode: ','chat.contextModeRoundsSuffix': ' turns','chat.quotaTodayLabel': "Chat remaining today",'chat.quotaTodayFreeLabel': "Free remaining today",'chat.quotaPlanSuffix': ' ({plan})','chat.quotaSeparator': ': ','chat.quotaTimes': ' queries','chat.quotaSlash': ' / ','quota.exhaustedTitlePrefix': '\u23f3 ','quota.exhaustedTitle': "Today's free quota used up",
+      'chat.disclaimer1': 'ShellFans Social AI may make mistakes. ShellFans does not use your data to train models.','chat.disclaimer2': 'Due to the large volume of community data, AI analysis may take 30\u201360 seconds. Please be patient.','chat.disclaimer3': 'Unregistered users get 2 free community analyses per day; sign up for a paid plan for more.','chat.aboutCta': 'Learn what ShellFans is \u2192'
+    }
+  };
+
+  var currentLocale = 'zh-TW';
+  try { currentLocale = localStorage.getItem(STORAGE_KEY) || 'zh-TW'; } catch (_) {}
+  if (currentLocale !== 'zh-TW' && currentLocale !== 'en') currentLocale = 'zh-TW';
+
+  var overrides = {};
+
+  function resolve(key) {
+    var loc = currentLocale;
+    return (overrides[loc] && overrides[loc][key])
+        || (BASE[loc] && BASE[loc][key])
+        || (overrides['zh-TW'] && overrides['zh-TW'][key])
+        || (BASE['zh-TW'] && BASE['zh-TW'][key])
+        || key;
+  }
+
+  function applyTranslations() {
+    var els = document.querySelectorAll('[data-i18n]');
+    for (var i = 0; i < els.length; i++) {
+      var el = els[i];
+      var key = el.getAttribute('data-i18n');
+      var attr = el.getAttribute('data-i18n-attr');
+      var val = resolve(key);
+      if (attr) {
+        el.setAttribute(attr, val);
+      } else {
+        el.textContent = val;
+      }
+    }
+    document.documentElement.lang = currentLocale === 'en' ? 'en' : 'zh-TW';
+    // Update picker active state
+    var pickers = document.querySelectorAll('[data-i18n-picker]');
+    for (var j = 0; j < pickers.length; j++) {
+      var pl = pickers[j].getAttribute('data-i18n-picker');
+      if (pl === currentLocale) {
+        pickers[j].style.background = '#2563eb';
+        pickers[j].style.color = '#fff';
+      } else {
+        pickers[j].style.background = 'transparent';
+        pickers[j].style.color = '#64748b';
+      }
+    }
+  }
+
+  // Expose helpers so other JS (chat handlers, quota pill) can resolve keys.
+  window.__i18n = resolve;
+  window.__i18nGetLocale = function () { return currentLocale; };
+
+  window.__setLocale = function (locale) {
+    if (locale !== 'zh-TW' && locale !== 'en') return;
+    currentLocale = locale;
+    try { localStorage.setItem(STORAGE_KEY, locale); } catch (_) {}
+    applyTranslations();
+    // Notify imperative renderers (chat toggle / quota pill) to re-render.
+    document.dispatchEvent(new CustomEvent('shellfans-locale-changed', { detail: { locale: locale } }));
+  };
+
+  // Fetch overrides cross-domain from kol.fans
+  fetch(I18N_URL).then(function (r) { return r.ok ? r.json() : null; })
+    .then(function (d) {
+      if (d && d.data) {
+        overrides = d.data;
+        applyTranslations();
+      }
+    }).catch(function () { /* keep base dict */ });
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', applyTranslations);
+  } else {
+    applyTranslations();
+  }
+})();
+</script>
+
+
+<script data-shellfans-meta-i18n="1">
+(function () {
+  function update() {
+    var t = window.__i18n;
+    if (!t) return;
+    var title = t('meta.title');
+    var desc = t('meta.description');
+    if (title) document.title = title;
+    var metaDesc = document.querySelector('meta[name="description"]');
+    if (metaDesc && desc) metaDesc.setAttribute('content', desc);
+    var ogTitle = document.querySelector('meta[property="og:title"]');
+    if (ogTitle && title) ogTitle.setAttribute('content', title);
+    var ogDesc = document.querySelector('meta[property="og:description"]');
+    if (ogDesc && desc) ogDesc.setAttribute('content', desc);
+  }
+  document.addEventListener('shellfans-locale-changed', update);
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', update);
+  } else {
+    update();
+  }
+})();
+</script>
+<script data-shellfans-lang-switcher="1">
+(function () {
+  var toggle = document.getElementById('langSwitcherToggle');
+  var list = document.getElementById('langSwitcherList');
+  var chevron = document.getElementById('langSwitcherChevron');
+  var labelEl = document.getElementById('langSwitcherLabel');
+  if (!toggle || !list) return;
+
+  var LABELS = { 'zh-TW': '繁體中文', 'en': 'English' };
+
+  function close() {
+    list.style.display = 'none';
+    toggle.setAttribute('aria-expanded', 'false');
+    if (chevron) chevron.style.transform = '';
+  }
+  function open() {
+    list.style.display = 'block';
+    toggle.setAttribute('aria-expanded', 'true');
+    if (chevron) chevron.style.transform = 'rotate(180deg)';
+  }
+  window.__closeLangSwitcher = close;
+
+  toggle.addEventListener('click', function (e) {
+    e.stopPropagation();
+    var isOpen = list.style.display === 'block';
+    if (isOpen) close(); else open();
+  });
+  document.addEventListener('click', function (e) {
+    if (!toggle.parentElement.contains(e.target)) close();
+  });
+
+  // Sync active state + label when locale changes
+  function syncActive() {
+    var current = (window.__i18nGetLocale && window.__i18nGetLocale()) || 'zh-TW';
+    if (labelEl) labelEl.textContent = LABELS[current] || current;
+    var checks = list.querySelectorAll('[data-check-for]');
+    for (var i = 0; i < checks.length; i++) {
+      checks[i].style.display = checks[i].getAttribute('data-check-for') === current ? '' : 'none';
+    }
+  }
+  document.addEventListener('shellfans-locale-changed', syncActive);
+  // Initial sync (after i18n bootstrap has run)
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', syncActive);
+  } else {
+    syncActive();
+  }
+})();
+</script>
+</body>
+</html>

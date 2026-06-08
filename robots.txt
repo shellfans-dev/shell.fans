@@ -1,0 +1,92 @@
+# robots.txt for shell.fans
+# Last updated: 2026-05-31
+#
+# We explicitly welcome the AI search & answer engines used by
+# ChatGPT, Perplexity, Claude, Google AI Overviews, Apple
+# Intelligence, Microsoft Copilot, Meta AI, DuckAssist, and others.
+# The /what-is-shellfans page (brand AEO/GEO hub) and its FAQPage
+# JSON-LD are designed to be cited directly by these systems.
+#
+# robots.txt semantics: when a User-agent group exists, that group's
+# rules ARE NOT inherited from User-agent: *. So we list each AI
+# crawler explicitly with Allow: /.
+
+# ===== Default =====
+User-agent: *
+Allow: /
+
+# ===== OpenAI (ChatGPT, ChatGPT Search) =====
+User-agent: GPTBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+# ===== Anthropic (Claude, Claude Search) =====
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Claude-Web
+Allow: /
+
+User-agent: Claude-SearchBot
+Allow: /
+
+User-agent: anthropic-ai
+Allow: /
+
+# ===== Google AI (Gemini training, AI Overviews) =====
+User-agent: Google-Extended
+Allow: /
+
+# ===== Perplexity =====
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Perplexity-User
+Allow: /
+
+# ===== Apple Intelligence =====
+User-agent: Applebot-Extended
+Allow: /
+
+# ===== Meta AI =====
+User-agent: meta-externalagent
+Allow: /
+
+User-agent: FacebookBot
+Allow: /
+
+# ===== Microsoft (Copilot, Bing) =====
+User-agent: bingbot
+Allow: /
+
+# ===== Amazon =====
+User-agent: Amazonbot
+Allow: /
+
+# ===== DuckDuckGo AI =====
+User-agent: DuckAssistBot
+Allow: /
+
+# ===== You.com =====
+User-agent: YouBot
+Allow: /
+
+# ===== ByteDance (Doubao, TikTok AI) =====
+User-agent: Bytespider
+Allow: /
+
+# ===== Common Crawl (corpus used by many LLMs) =====
+User-agent: CCBot
+Allow: /
+
+# ===== Cohere =====
+User-agent: cohere-ai
+Allow: /
+
+# ===== Sitemap =====
+Sitemap: https://shell.fans/sitemap.xml

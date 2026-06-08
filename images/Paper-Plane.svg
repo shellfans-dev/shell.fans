@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="_圖層_1" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 72 72">
+  <!-- Generator: Adobe Illustrator 29.8.3, SVG Export Plug-In . SVG Version: 2.1.1 Build 3)  -->
+  <defs>
+    <style>
+      .st0, .st1 {
+        fill: #fff;
+        isolation: isolate;
+      }
+
+      .st2 {
+        fill: #caf2f5;
+      }
+
+      .st3 {
+        fill: none;
+        stroke: #fff;
+        stroke-miterlimit: 10;
+        stroke-width: .93px;
+      }
+
+      .st1 {
+        font-family: SourceHanSansTC-Bold-B5pc-H, 'Source Han Sans TC';
+        font-size: 13px;
+        font-weight: 700;
+        letter-spacing: .08em;
+      }
+
+      .st4 {
+        fill: #78d2c8;
+      }
+    </style>
+  </defs>
+  <rect class="st4" y="0" width="72" height="72"/>
+  <rect class="st3" x="10.33" y="47.55" width="51.33" height="15.36" rx="6.76" ry="6.76"/>
+  <g>
+    <g>
+      <path class="st0" d="M50.02,10.35s-1.64,18.28-3.35,27.98c-.33,2.02-2.02,4.04-3.71,2.58l-8.86-6.87-.24.26c-1.02,1.21-1.89,2.76-2.94,3.93-.9,1.01-2.27.52-2.45-.76l-1.23-8.66c-2.95-2.19-5.97-4.27-8.94-6.43-.88-.69-.63-1.99.41-2.36l29.2-10.62c.73-.36,2.14-.17,2.11.95ZM30.8,33.97s.02-.09.06-.16c.78-.99,1.52-2.02,2.26-3.04,2.74-4.02,5.5-8.02,8.26-12.02.04-.05.13-.16.09-.22l-11.53,10.02c.21,1.7.47,3.38.72,5.07,0,.05-.02.53.13.34h0Z"/>
+      <path class="st2" d="M30.8,33.97c-.15.19-.12-.29-.13-.34-.25-1.69-.51-3.38-.72-5.07l11.53-10.02c.03.06-.06.17-.09.22-2.76,4-5.52,8-8.26,12.02-.74,1.02-1.48,2.04-2.26,3.04-.05.06-.05.15-.06.16h0Z"/>
+    </g>
+    <path class="st2" d="M34.11,34.04l-.24.26c-1.02,1.21-1.89,2.76-2.94,3.93-.9,1.01-2.27.52-2.45-.76l-1.23-8.66,20.36-16.89-13.5,22.12h0Z"/>
+  </g>
+  <text class="st1" transform="translate(18.31 60.27)"><tspan x="0" y="0">FREE</tspan></text>
+</svg>

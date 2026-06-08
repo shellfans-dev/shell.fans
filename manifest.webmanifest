@@ -1,0 +1,70 @@
+{
+  "name": "ShellFans AI — 跨平台社群指揮中心",
+  "short_name": "ShellFans",
+  "description": "ShellFans AI 是您的跨平台社群資產保險箱。保存經營成果、備份還原帳號資料、粉絲情感分析與多平台同步經營，打造品牌長期價值的 AI 社群營運入口。",
+  "start_url": "/",
+  "scope": "/",
+  "id": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#ffffff",
+  "theme_color": "#146cb5",
+  "lang": "zh-TW",
+  "categories": ["business", "productivity", "social"],
+  "icons": [
+    {
+      "src": "/images/favicon.png",
+      "sizes": "32x32",
+      "type": "image/png"
+    },
+    {
+      "src": "/images/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/images/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/images/icon-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "/images/webclip.png",
+      "sizes": "256x256",
+      "type": "image/png"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "續航引擎",
+      "short_name": "引擎",
+      "url": "/kol-engine",
+      "description": "認識 ShellFans 續航引擎產品"
+    },
+    {
+      "name": "方案與定價",
+      "short_name": "方案",
+      "url": "https://kol.fans/pricing",
+      "description": "瀏覽產品方案與定價"
+    },
+    {
+      "name": "前往產品站",
+      "short_name": "產品",
+      "url": "https://kol.fans",
+      "description": "進入 KOL.fans 產品操作入口"
+    },
+    {
+      "name": "聯繫我們",
+      "short_name": "聯繫",
+      "url": "/contact",
+      "description": "與 ShellFans AI 團隊聯繫"
+    }
+  ]
+}

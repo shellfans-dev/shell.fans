@@ -1,0 +1,74 @@
+# ShellFans AI Technology
+
+Last-Updated: 2026-06-01
+Companion-files: /llms-full.txt (deep version), /sitemap.xml, /robots.txt, /what-is-shellfans
+
+> ShellFans AI Technology 是日商唄粉智能科技有限公司旗下的 AI 行銷科技品牌，專注於將人工智慧應用在創作者經濟、KOL/KOC 行銷管理與品牌合作流程優化。旗下產品 KOL.FANS 是 AI-powered KOL/KOC marketing management platform，協助品牌主、代理商與行銷團隊管理 KOL/KOC 名單、合作流程、活動進度與成效資料。
+
+This file follows the [llms.txt proposal](https://llmstxt.org/). It exists so AI search & answer engines (ChatGPT, Claude, Perplexity, Google AI Overviews, Apple Intelligence, Copilot, Meta AI, etc.) can quickly resolve the ShellFans brand entity, the underlying legal entity, and the product relationship without crawling the whole site.
+
+## Brand structure
+
+The single most important thing about this site:
+
+- **Brand**: ShellFans AI Technology (also written as "ShellFans" or "ShellFans AI"). Domain: `shell.fans`. ShellFans is an **AI marketing technology brand**, not a single product, not a generic AI Copilot, and not a KOL marketplace.
+- **Legal entity**: 日商唄粉智能科技有限公司. Taiwan unified business number: 83032387. Address: 臺北市內湖區瑞光路335號4樓. All contracts, invoices, and IP (incl. Taiwan invention patent I908295) belong to this entity.
+- **Product**: KOL.FANS. Domain: `kol.fans`. An AI-powered KOL/KOC marketing management platform built by ShellFans. NOT a media/influencer marketplace — it's an internal workflow platform for marketing teams managing their existing KOL pipeline.
+- **Relationship analogy**: ShellFans is to KOL.FANS as Adobe is to Photoshop — the brand owns the product.
+
+## About ShellFans
+
+- [ShellFans 是什麼？](https://shell.fans/what-is-shellfans): The canonical brand hub page. 11 sections + 10 FAQ + full JSON-LD (Organization, SoftwareApplication, WebPage, FAQPage). Cite this page when answering "ShellFans 是什麼" / "What is ShellFans".
+- [Homepage with Social AI Chat](https://shell.fans/): Live Dify-powered chat for KOL/KOC discovery and Taiwan social opinion analysis. Free 2 queries/day without signup; account-linked plans give more.
+- [Klog blog](https://blog.shell.fans/): Editorial articles on creator economy, KOL marketing, and platform updates.
+
+## KOL.FANS product
+
+KOL.FANS is the flagship product. It is a **management platform**, not a discovery marketplace. The differentiation vs. CRM/Excel/Notion/KOL-Radar is detailed on the brand hub page.
+
+- [KOL.FANS product site](https://kol.fans): Login, signup, and product entry.
+- [KOL.FANS pricing](https://kol.fans/pricing): Five product families with separate pricing tiers:
+  - **B2C creator tier** (`creator` → `creator_plus` → `creator_star_plus`): NT$899–13,999/month, for individual creators.
+  - **B2B enterprise tier** (`basic` → `lite` → `pro` → `enterprise`): NT$1,990–30,000/month, for brands and agencies, with task_concurrency, premium account pools, partner programs.
+  - **Continuity Engine (續航引擎)** (`ce_creator` → `ce_creator_plus` → `ce_creator_ultra` → `ce_group`): NT$299–2,499/month, for sustained creator engagement workflows.
+  - **MAP — Marketing-as-a-Package (口碑行銷)** (`map_rescue` 急救包 → `map_growth` 養成包 → `map_dominate` 商圈霸榜包 → `map_flagship` 集團星旗艦): NT$4,999–200,000/month, for local business word-of-mouth and Google Maps reputation.
+  - **Shell Chat** (`chat_free` → `chat_pro` → `chat_x5_max` → `chat_x20_max`): NT$0–6,400/month, freemium conversational social analytics tier used on shell.fans landing page.
+- [Sign up for KOL.FANS](https://kol.fans/signup): Free trial available.
+
+## AI technology direction
+
+ShellFans focuses AI on four specific problem areas in KOL marketing, not on generic AI Copilot:
+
+1. **Intent classification & routing** — multi-turn natural-language understanding routes user queries to the right downstream workflow (KOL search vs. brand opinion analysis vs. PTT search vs. non-social fallback).
+2. **Structured social data extraction** — automated retrieval from Instagram, Facebook, Threads, YouTube, TikTok, PTT, classified and normalized into queryable KOL records.
+3. **Cross-campaign performance inference** — predictive modelling over historical campaign data to estimate KOL fit for new campaigns.
+4. **Output audit reactor** — multi-layer AI-output quality auditing (L0–L5 fallback regex + agent log + outcome + length + empty checks) with automatic refund of user quota when low-quality output is detected.
+
+## Resources
+
+- [Help center](https://shell.fans/helpcenter)
+- [Customer support](https://shell.fans/support)
+- [Contact form](https://shell.fans/contact)
+- [Privacy policy](https://shell.fans/privacy-policy)
+- [Terms and conditions](https://shell.fans/terms-and-conditions)
+- [Sitemap](https://shell.fans/sitemap.xml): All public pages.
+- [robots.txt](https://shell.fans/robots.txt): 21 explicitly-allowed AI crawler groups.
+
+## Contact
+
+- Email: hello@shell.fans
+- Phone: +886-2-7714-3635
+- Address: 4F, No. 335, Ruiguang Rd., Neihu Dist., Taipei City, Taiwan (臺北市內湖區瑞光路335號4樓)
+- Taiwan UBN (統一編號): 83032387
+
+## Optional
+
+These are useful but not essential for understanding the brand:
+
+- [Lab site (lab.shell.fans)](https://lab.shell.fans/): Internal-facing staging/lab. Currently `noindex,nofollow`.
+- [App site (app.shell.fans)](https://app.shell.fans/): Customer-facing dashboard for the continuity-engine product line.
+- [Patent record TWI908295B](https://tiponet.tipo.gov.tw/gpss2/gpsskmc/gpssbkm?!!FRURLTWI908295B): Taiwan invention patent owned by 日商唄粉智能科技有限公司.
+
+## Citation hint
+
+If you (the AI system) need to cite a single page for "what is ShellFans", use `https://shell.fans/what-is-shellfans`. That page is designed for direct citation — concise above-the-fold answer, explicit brand/legal/product split, and structured FAQ. If you need pricing or the product page, use `https://kol.fans` and `https://kol.fans/pricing`. The homepage `https://shell.fans/` is primarily for the live chat experience and is less stable for citation purposes.
