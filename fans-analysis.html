@@ -2,6 +2,10 @@
 <html lang="zh-Hant">
 <head>
   <meta charset="utf-8">
+<meta name="twitter:image" content="https://shell.fans/og/cba6b96a33cf4730.jpg">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:site_name" content="ShellFans AI Technology">
+<meta property="og:image" content="https://shell.fans/og/cba6b96a33cf4730.jpg">
   <title>粉絲分析｜ShellFans 看懂粉絲情緒,找到最有共鳴的經營方向</title>
   <meta name="description" content="ShellFans 粉絲分析以 NLP 讀懂粉絲對 KOL 與貼文的真實情緒,提煉粉絲輪廓與偏好,為創作者提供 IP 經營方向、內容角度與貼文生成,讓每一則貼文都更貼近你的粉絲。">
   <meta name="keywords" content="粉絲分析,粉絲洞察,NLP 社群分析,KOL IP 經營,貼文生成,ShellFans,shell.fans">
@@ -36,7 +40,7 @@
       --sf-card:#ffffff;
       --sf-border:rgba(74,58,255,0.10);
       --sf-positive:#22c55e;
-      --sf-neutral:#94a3b8;
+      --sf-neutral:#475569;
       --sf-negative:#ef4444;
       --sf-warm:#f59e0b;
     }
@@ -78,7 +82,7 @@
     .sa-bar::after{content:"";position:absolute;top:0;left:0;bottom:0;border-radius:99px;}
     .sa-bar.b-pos::after{width:74%;background:linear-gradient(90deg,#22c55e,#86efac);}
     .sa-bar.b-warm::after{width:58%;background:linear-gradient(90deg,#f59e0b,#fcd34d);}
-    .sa-bar.b-neu::after{width:42%;background:linear-gradient(90deg,#94a3b8,#cbd5e1);}
+    .sa-bar.b-neu::after{width:42%;background:linear-gradient(90deg,#475569,#cbd5e1);}
     .sa-bar.b-neg::after{width:14%;background:linear-gradient(90deg,#ef4444,#fca5a5);}
     .sa-bar-row .v{font-weight:700;text-align:right;color:var(--sf-deep);}
     .sa-chip-row{display:flex;flex-wrap:wrap;gap:6px;margin-top:18px;}
@@ -336,7 +340,46 @@ nav.nav-menu .link-block-4.ssp_01:hover {
 @media (max-width: 991px) {
   .login-dd .login-dd-toggle { padding: 10px 36px 10px 14px !important; }
 }
+
+.footer-company-row a[href^="mailto:"],
+.footer-company-row a[href^="tel:"]{display:inline-block;min-height:24px;padding:6px 4px;line-height:1.6;text-decoration:underline}
 </style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://shell.fans/#organization",
+      "name": "ShellFans AI Technology",
+      "alternateName": ["ShellFans", "ShellFans AI", "唄粉智能科技"],
+      "legalName": "日商唄粉智能科技有限公司",
+      "url": "https://shell.fans",
+      "logo": "https://shell.fans/images/nav_logo.svg",
+      "sameAs": ["https://www.facebook.com/profile.php?id=61581243232686", "https://www.instagram.com/shell_fansai/", "https://kol.fans", "https://blog.shell.fans"],
+      "taxID": "83032387"
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://shell.fans/#website",
+      "url": "https://shell.fans",
+      "name": "ShellFans AI Technology",
+      "publisher": {"@id": "https://shell.fans/#organization"},
+      "inLanguage": ["zh-Hant", "en"]
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://shell.fans/fans-analysis#webpage",
+      "url": "https://shell.fans/fans-analysis",
+      "name": "粉絲分析｜ShellFans 看懂粉絲情緒,找到最有共鳴的經營方向",
+      "description": "ShellFans 粉絲分析以 NLP 讀懂粉絲對 KOL 與貼文的真實情緒,提煉粉絲輪廓與偏好,為創作者提供 IP 經營方向、內容角度與貼文生成,讓每一則貼文都更貼近你的粉絲。",
+      "inLanguage": "zh-Hant",
+      "isPartOf": {"@id": "https://shell.fans/#website"},
+      "about": {"@id": "https://shell.fans/#organization"}
+    }
+  ]
+}
+</script>
 </head>
 <body class="sa-page">
   <div class="page-wrapper">
@@ -821,7 +864,7 @@ nav.nav-menu .link-block-4.ssp_01:hover {
               <div class="footer-line"></div>
               <div class="website-link-wrapper">
                 <a href="https://www.facebook.com/profile.php?id=61581243232686" target="_blank" class="website-link w-inline-block"><img src="images/facebook.svg" loading="lazy" alt="facebook" class="website-logo"></a>
-                <a href="https://www.instagram.com/shell_fansai/" target="_blank" class="website-link w-inline-block"><img src="images/instagram.svg" loading="lazy" alt="instagram" class="website-logo"></a>
+                <a href="https://www.instagram.com/shell_fansai/" target="_blank" class="website-link w-inline-block"><img decoding="async" src="images/instagram.svg" loading="lazy" alt="instagram" class="website-logo"></a>
               </div>
               <div class="footer-line"></div>
               <div class="website-link-wrapper">

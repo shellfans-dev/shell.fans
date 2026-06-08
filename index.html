@@ -2,6 +2,10 @@
 <html lang="zh-Hant">
 <head>
 <meta charset="utf-8">
+<meta name="theme-color" content="#1A1D21">
+<meta name="twitter:description" content="ShellFans AI 是跨平台社群 AI 指揮中心，幫助創作者、經紀人與品牌主整合 IG、Facebook、Threads 等平台資料，保存社群資產、看懂粉絲、同步經營與口碑成長。">
+<meta name="twitter:title" content="ShellFans AI — AI Chat 社群分析，問句即洞察，把社群經營，變成可管理的長期資產">
+<meta property="og:locale" content="zh_TW">
 <title>ShellFans AI — AI Chat 社群分析，問句即洞察，把社群經營，變成可管理的長期資產</title>
 <link rel="canonical" href="https://shell.fans">
 <meta name="description" content="ShellFans AI 是跨平台社群 AI 指揮中心，幫助創作者、經紀人與品牌主整合 IG、Facebook、Threads 等平台資料，保存社群資產、看懂粉絲、同步經營與口碑成長。">
@@ -610,6 +614,9 @@ html[data-embed="1"] footer.footer { display: none !important; }
 html[data-embed="1"] .chatbot { padding: 16px 0 !important; }
 html[data-embed="1"] .chatbot > .container > div:first-child { display: none !important; }
 
+
+.footer-company-row a[href^="mailto:"],
+.footer-company-row a[href^="tel:"]{display:inline-block;min-height:24px;padding:6px 4px;line-height:1.6;text-decoration:underline}
 </style>
 <script data-shellfans-embed-bootstrap="1">
 (function () {
@@ -624,7 +631,43 @@ html[data-embed="1"] .chatbot > .container > div:first-child { display: none !im
   <script async data-shellfans-ga="1" src="https://www.googletagmanager.com/gtag/js?id=G-NE4639EL2B"></script><script data-shellfans-ga="1">window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag("js",new Date());gtag("config","G-NE4639EL2B");</script>
     <meta name="keywords" content="ShellFans AI, ShellFans, 跨平台社群指揮中心, 社群資產保險箱, 社群資產備份, 社群備份還原, Facebook 備份, Instagram 備份, 粉絲情感分析, 多平台同步經營, 社群資產管理, 創作者備份工具, AI 社群經營工具">
     <meta name="robots" content="index, follow">
-  </head>
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://shell.fans/#organization",
+      "name": "ShellFans AI Technology",
+      "alternateName": ["ShellFans", "ShellFans AI", "唄粉智能科技"],
+      "legalName": "日商唄粉智能科技有限公司",
+      "url": "https://shell.fans",
+      "logo": "https://shell.fans/images/nav_logo.svg",
+      "sameAs": ["https://www.facebook.com/profile.php?id=61581243232686", "https://www.instagram.com/shell_fansai/", "https://kol.fans", "https://blog.shell.fans"],
+      "taxID": "83032387"
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://shell.fans/#website",
+      "url": "https://shell.fans",
+      "name": "ShellFans AI Technology",
+      "publisher": {"@id": "https://shell.fans/#organization"},
+      "inLanguage": ["zh-Hant", "en"]
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://shell.fans#webpage",
+      "url": "https://shell.fans",
+      "name": "ShellFans AI — AI Chat 社群分析，問句即洞察，把社群經營，變成可管理的長期資產",
+      "description": "ShellFans AI 是跨平台社群 AI 指揮中心，幫助創作者、經紀人與品牌主整合 IG、Facebook、Threads 等平台資料，保存社群資產、看懂粉絲、同步經營與口碑成長。",
+      "inLanguage": "zh-Hant",
+      "isPartOf": {"@id": "https://shell.fans/#website"},
+      "about": {"@id": "https://shell.fans/#organization"}
+    }
+  ]
+}
+</script>
+</head>
 <body>
 <!-- ===== NAV ===== -->
 <header class="nav" id="nav">
@@ -645,7 +688,7 @@ html[data-embed="1"] .chatbot > .container > div:first-child { display: none !im
           <button type="button" id="langSwitcherToggle" aria-haspopup="true" aria-expanded="false" style="display:flex;align-items:center;gap:6px;border:1px solid #e2e8f0;border-radius:8px;background:#fff;padding:6px 10px;font-size:12px;font-weight:500;color:#475569;cursor:pointer;transition:all 120ms">
             <img src="/icons/globe-animated.svg" alt="" width="16" height="16" aria-hidden="true" style="display:inline-block;vertical-align:middle" />
             <span id="langSwitcherLabel" data-i18n="footer.langLabel">繁體中文</span>
-            <svg id="langSwitcherChevron" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="transition:transform 200ms;color:#94a3b8" aria-hidden="true"><path d="M19 9l-7 7-7-7"></path></svg>
+            <svg id="langSwitcherChevron" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="transition:transform 200ms;color:#475569" aria-hidden="true"><path d="M19 9l-7 7-7-7"></path></svg>
           </button>
           <div class="lang-switcher-list" role="menu" id="langSwitcherList" style="display:none;position:absolute;top:calc(100% + 4px);right:0;background:#fff;border:1px solid #e2e8f0;border-radius:8px;box-shadow:0 4px 12px rgba(0,0,0,0.08);min-width:140px;z-index:50;padding:4px 0">
             <button type="button" data-locale="zh-TW" role="menuitem" onclick="window.__setLocale('zh-TW');window.__closeLangSwitcher&&window.__closeLangSwitcher()" style="display:flex;align-items:center;gap:8px;width:100%;padding:8px 12px;border:0;background:none;font-size:12px;color:#475569;cursor:pointer;text-align:left">
@@ -672,6 +715,8 @@ html[data-embed="1"] .chatbot > .container > div:first-child { display: none !im
     </div>
   </div>
 </header>
+<main id="main">
+
 <div class="mobile-menu" id="mobileMenu">  <a href="https://shell.fans/aeo-geo" data-i18n="nav.aeoGeo">AEO/GEO 代管</a>
   <a href="https://shell.fans/kol-engine" data-i18n="nav.engine">續航引擎</a>
   <a href="https://shell.fans/fans-analysis" data-i18n="nav.fansAnalysis">粉絲分析</a>
@@ -697,11 +742,11 @@ html[data-embed="1"] .chatbot > .container > div:first-child { display: none !im
       <div id="sfChatOutput" role="log" aria-live="polite"
         style="min-height:240px;max-height:480px;overflow-y:auto;padding:8px 4px;background:transparent;margin-bottom:14px">
         <div id="sfChatPlaceholder" style="display:flex;align-items:center;justify-content:center;min-height:220px;text-align:center">
-          <span style="font-size:14px;line-height:1.7;color:#94a3b8" data-i18n="chat.placeholderEmpty">了解社群，從 Chat 開始</span>
+          <span style="font-size:14px;line-height:1.7;color:#475569" data-i18n="chat.placeholderEmpty">了解社群，從 Chat 開始</span>
         </div>
       </div>
       <div id="sfChatQuotaRow" style="display:flex;align-items:center;justify-content:flex-end;gap:8px;margin:0 6px 8px;min-height:18px">
-        <div id="sfChatQuota" style="text-align:right;font-size:11.5px;color:#94a3b8"></div>
+        <div id="sfChatQuota" style="text-align:right;font-size:11.5px;color:#475569"></div>
       </div>
       <div id="sfChatProgressSlot" style="margin:0 6px 10px;min-height:0"></div>
       <form id="sfChatForm" style="position:relative;display:flex;align-items:stretch;gap:8px;padding:6px;border:1px solid #e2e8f0;background:#fff;border-radius:14px;box-shadow:0 14px 36px -16px rgba(20,40,80,0.18);flex-wrap:wrap" novalidate>
@@ -714,8 +759,7 @@ html[data-embed="1"] .chatbot > .container > div:first-child { display: none !im
           <option value="Pro" data-tier="paid" data-i18n="chat.planProUpgrade">Pro · 升級</option>
           <option value="Max" data-tier="paid" data-i18n="chat.planMaxUpgrade">Max · 升級</option>
         </select>
-        <button id="sfChatContextToggle" type="button" aria-label="Chat 模式 — 開啟後 AI 會記得最近 3 輪對話"
-          title="開啟後 AI 會參考最近 3 輪對話脈絡 (僅本分頁有效)" data-i18n="chat.contextModeTooltip" data-i18n-attr="title"
+        <button id="sfChatContextToggle" type="button" title="開啟後 AI 會參考最近 3 輪對話脈絡 (僅本分頁有效)" data-i18n="chat.contextModeTooltip" data-i18n-attr="title"
           style="height:44px;padding:0 10px;border:1px solid #e2e8f0;border-radius:10px;background:#fff;color:#64748b;font-size:13px;cursor:pointer;white-space:nowrap;display:inline-flex;align-items:center;gap:4px;transition:all 120ms ease">
           <img src="/icons/chat-mode.svg" alt="" aria-hidden="true" width="28" height="28" style="display:inline-block;vertical-align:middle" /><span id="sfChatContextToggleLabel" data-i18n="chat.contextModeOff">Chat 模式：關</span>
         </button>
@@ -730,14 +774,14 @@ html[data-embed="1"] .chatbot > .container > div:first-child { display: none !im
       </form>
       <div id="sfChatPlatforms" style="margin-top:10px;padding:0 6px;display:flex;align-items:center;gap:14px;color:#475569;font-size:14px">
         <span style="font-weight:500" data-i18n="chat.platformsLabel">支援平台</span>
-        <img data-platform="facebook" src="https://cdn.jsdelivr.net/gh/edent/SuperTinyIcons@latest/images/svg/facebook.svg" alt="Facebook" title="Facebook" width="18" height="18" style="display:block;transition:filter 250ms ease, opacity 250ms ease" loading="lazy" />
-        <img data-platform="instagram" src="https://cdn.jsdelivr.net/gh/edent/SuperTinyIcons@latest/images/svg/instagram.svg" alt="Instagram" title="Instagram" width="18" height="18" style="display:block;transition:filter 250ms ease, opacity 250ms ease" loading="lazy" />
-        <img data-platform="threads" src="https://cdn.jsdelivr.net/gh/edent/SuperTinyIcons@latest/images/svg/threads.svg" alt="Threads" title="Threads" width="18" height="18" style="display:block;transition:filter 250ms ease, opacity 250ms ease" loading="lazy" />
-        <img data-platform="tiktok" src="https://cdn.jsdelivr.net/gh/edent/SuperTinyIcons@latest/images/svg/tiktok.svg" alt="TikTok" title="TikTok" width="18" height="18" style="display:block;transition:filter 250ms ease, opacity 250ms ease" loading="lazy" />
-        <img data-platform="x" src="https://cdn.jsdelivr.net/gh/edent/SuperTinyIcons@latest/images/svg/twitter.svg" alt="X" title="X" width="18" height="18" style="display:block;transition:filter 250ms ease, opacity 250ms ease" loading="lazy" />
-        <img data-platform="ptt" src="/icons/ptt.webp" alt="PTT" title="PTT" width="18" height="18" style="display:block;object-fit:contain;transition:filter 250ms ease, opacity 250ms ease" loading="lazy" />
+        <img decoding="async" data-platform="facebook" src="https://cdn.jsdelivr.net/gh/edent/SuperTinyIcons@latest/images/svg/facebook.svg" alt="Facebook" title="Facebook" width="18" height="18" style="display:block;transition:filter 250ms ease, opacity 250ms ease" loading="lazy" />
+        <img decoding="async" data-platform="instagram" src="https://cdn.jsdelivr.net/gh/edent/SuperTinyIcons@latest/images/svg/instagram.svg" alt="Instagram" title="Instagram" width="18" height="18" style="display:block;transition:filter 250ms ease, opacity 250ms ease" loading="lazy" />
+        <img decoding="async" data-platform="threads" src="https://cdn.jsdelivr.net/gh/edent/SuperTinyIcons@latest/images/svg/threads.svg" alt="Threads" title="Threads" width="18" height="18" style="display:block;transition:filter 250ms ease, opacity 250ms ease" loading="lazy" />
+        <img decoding="async" data-platform="tiktok" src="https://cdn.jsdelivr.net/gh/edent/SuperTinyIcons@latest/images/svg/tiktok.svg" alt="TikTok" title="TikTok" width="18" height="18" style="display:block;transition:filter 250ms ease, opacity 250ms ease" loading="lazy" />
+        <img decoding="async" data-platform="x" src="https://cdn.jsdelivr.net/gh/edent/SuperTinyIcons@latest/images/svg/twitter.svg" alt="X" title="X" width="18" height="18" style="display:block;transition:filter 250ms ease, opacity 250ms ease" loading="lazy" />
+        <img decoding="async" data-platform="ptt" src="/icons/ptt.webp" alt="PTT" title="PTT" width="18" height="18" style="display:block;object-fit:contain;transition:filter 250ms ease, opacity 250ms ease" loading="lazy" />
       </div>
-      <div id="sfChatDisclaimer" style="margin-top:12px;padding:0 6px;text-align:center;font-size:11.5px;line-height:1.6;color:#94a3b8">
+      <div id="sfChatDisclaimer" style="margin-top:12px;padding:0 6px;text-align:center;font-size:11.5px;line-height:1.6;color:#475569">
         <div data-i18n="chat.disclaimer1">ShellFans Social AI 可能會出錯。ShellFans 不會使用您的資料來訓練模型。</div>
         <div data-i18n="chat.disclaimer2">由於社群數據量龐大，AI 分析可能會需要 30s~60s 的時間，請耐心等待。</div>
         <div data-i18n="chat.disclaimer3">未註冊用戶每天 2 次免費社群分析；如需更多請註冊成為付費會員。</div>
@@ -1115,7 +1159,7 @@ html[data-embed="1"] .chatbot > .container > div:first-child { display: none !im
         var card = document.createElement("div");
         card.style.cssText = "background:#fff;border:1px solid #e2e8f0;border-radius:16px 16px 16px 4px;padding:14px 18px;margin-bottom:8px;box-shadow:0 6px 24px -12px rgba(20,40,80,0.10)";
         var steps = document.createElement("div");
-        steps.style.cssText = "font-size:12.5px;color:#94a3b8;margin-bottom:10px;display:flex;flex-direction:column;gap:4px";
+        steps.style.cssText = "font-size:12.5px;color:#475569;margin-bottom:10px;display:flex;flex-direction:column;gap:4px";
         var answer = document.createElement("div");
         answer.style.cssText = "font-size:15px;color:#334155;line-height:1.7;white-space:pre-wrap;word-break:break-word";
         card.appendChild(steps);
@@ -1371,7 +1415,7 @@ html[data-embed="1"] .chatbot > .container > div:first-child { display: none !im
             return;
           }
           var span = document.createElement("span");
-          span.style.cssText = "color:#94a3b8;font-size:13px;font-style:italic;display:inline-block;margin:2px 0";
+          span.style.cssText = "color:#475569;font-size:13px;font-style:italic;display:inline-block;margin:2px 0";
           var n = 0;
           var state = { label: label || THINKING_DEFAULT };
           function tick() {
@@ -1641,7 +1685,7 @@ html[data-embed="1"] .chatbot > .container > div:first-child { display: none !im
             // 固定 footer:Dify 那邊 answer template / agent instruction 都試過
             // 不可靠,改在 client side 答案區下方輸出一行 disclaimer。
             var footer = document.createElement("div");
-            footer.style.cssText = "margin-top:14px;padding-top:10px;border-top:1px dashed #e2e8f0;font-size:11px;color:#94a3b8;font-style:italic";
+            footer.style.cssText = "margin-top:14px;padding-top:10px;border-top:1px dashed #e2e8f0;font-size:11px;color:#475569;font-style:italic";
             footer.textContent = "本數據分析結果由唄粉智能社群 AI 模型提供";
             aiUi.card.appendChild(footer);
             scrollToBottom();
@@ -1858,30 +1902,32 @@ html[data-embed="1"] .chatbot > .container > div:first-child { display: none !im
 </section>
 
 <!-- ===== FOOTER ===== -->
+
+</main>
 <footer class="footer">
   <div class="container">
     <div class="footer-top">
       <div>
         <div class="footer-brand">
-          <img src="https://shell.fans/images/nav_logo.svg" alt="ShellFans" width="162" height="32">
+          <img decoding="async" loading="lazy" src="https://shell.fans/images/nav_logo.svg" alt="ShellFans" width="162" height="32">
         </div>
         <p class="footer-desc" data-i18n="footer.desc">跨平台社群 AI 指揮中心。保存社群資產，看懂粉絲，同步經營與口碑成長。</p>
       </div>
       <div class="footer-col">
-        <h4 data-i18n="footer.colProduct">產品</h4>
+        <h3 data-i18n="footer.colProduct">產品</h3>
         <a href="https://shell.fans/kol-engine" data-i18n="nav.engine">續航引擎</a>
         <a href="https://shell.fans/fans-analysis" data-i18n="nav.fansAnalysis">粉絲分析</a>
         <a href="https://kol.fans" target="_blank" rel="noopener" data-i18n="nav.wordOfMouth">口碑行銷</a>
         <a href="https://kol.fans/pricing" target="_blank" rel="noopener" data-i18n="nav.pricing">查看方案</a>
       </div>
       <div class="footer-col">
-        <h4 data-i18n="footer.colResource">資源</h4>
+        <h3 data-i18n="footer.colResource">資源</h3>
         <a href="https://blog.shell.fans/" target="_blank" rel="noopener" data-i18n="footer.klog">Klog 部落格</a>
         <a href="https://shell.fans/helpcenter" data-i18n="footer.helpCenter">幫助中心</a>
         <a href="https://shell.fans/support" data-i18n="footer.customerSupport">客服支援</a>
       </div>
       <div class="footer-col">
-        <h4 data-i18n="footer.colContact">聯繫</h4>
+        <h3 data-i18n="footer.colContact">聯繫</h3>
         <a href="https://shell.fans/contact" data-i18n="footer.aboutUs">關於我們</a>
         <a href="https://shell.fans/contact" data-i18n="footer.contactUs">歡迎聯繫</a>
         <a href="https://shell.fans/co-founder" data-i18n="footer.cofounder">創辦人</a>
@@ -1915,10 +1961,10 @@ html[data-embed="1"] .chatbot > .container > div:first-child { display: none !im
       </button>
       <div class="footer-social" aria-label="社群連結" data-i18n="aria.socialLinks" data-i18n-attr="aria-label">
         <a href="https://www.facebook.com/profile.php?id=61581243232686" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
-          <img src="https://shell.fans/images/facebook.svg" alt="Facebook" width="16" height="16">
+          <img decoding="async" loading="lazy" src="https://shell.fans/images/facebook.svg" alt="Facebook" width="16" height="16">
         </a>
         <a href="https://www.instagram.com/shell_fansai/" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
-          <img src="https://shell.fans/images/instagram.svg" alt="Instagram" width="16" height="16">
+          <img decoding="async" loading="lazy" src="https://shell.fans/images/instagram.svg" alt="Instagram" width="16" height="16">
         </a>
       </div>
       <div class="footer-legal">

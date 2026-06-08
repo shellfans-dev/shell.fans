@@ -2,6 +2,7 @@
 <html lang="zh-Hant">
 <head>
 <meta charset="utf-8">
+<meta name="twitter:image" content="https://shell.fans/images/nav_logo.svg">
 <title>ShellFans AEO Managed Hosting — 為 AI 搜尋時代而生的網站代管 | ShellFans AI Technology</title>
 <meta name="description" content="ShellFans AEO Managed Hosting：多主機代管 × AEO/GEO 整備 × 結構化內容。不只把網站架起來，更讓網站被 AI 看懂、答案引擎引用、生成式搜尋找到。">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -261,6 +262,9 @@ footer small{color:rgba(255,255,255,0.45);display:block;margin-top:14px;font-siz
 .aeo-finding .fr strong{color:var(--ink);font-weight:600}
 @media (max-width:768px){.aeo-finding-ring{width:80px;height:80px}.aeo-finding-ring text{font-size:18px}.aeo-finding{padding:12px 14px}}
 
+
+.footer-company-row a[href^="mailto:"],
+.footer-company-row a[href^="tel:"]{display:inline-block;min-height:24px;padding:6px 4px;line-height:1.6;text-decoration:underline}
 </style>
 <link rel="preload" href="https://shell.fans/images/nav_logo.svg" as="image" type="image/svg+xml">
 </head>
@@ -285,7 +289,7 @@ footer small{color:rgba(255,255,255,0.45);display:block;margin-top:14px;font-siz
           <button type="button" id="langSwitcherToggle" aria-haspopup="true" aria-expanded="false" style="display:flex;align-items:center;gap:6px;border:1px solid #e2e8f0;border-radius:8px;background:#fff;padding:6px 10px;font-size:12px;font-weight:500;color:#475569;cursor:pointer;transition:all 120ms">
             <img src="/icons/globe-animated.svg" alt="" width="16" height="16" aria-hidden="true" style="display:inline-block;vertical-align:middle" />
             <span id="langSwitcherLabel" data-i18n="footer.langLabel">繁體中文</span>
-            <svg id="langSwitcherChevron" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="transition:transform 200ms;color:#94a3b8" aria-hidden="true"><path d="M19 9l-7 7-7-7"></path></svg>
+            <svg id="langSwitcherChevron" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="transition:transform 200ms;color:#475569" aria-hidden="true"><path d="M19 9l-7 7-7-7"></path></svg>
           </button>
           <div class="lang-switcher-list" role="menu" id="langSwitcherList" style="display:none;position:absolute;top:calc(100% + 4px);right:0;background:#fff;border:1px solid #e2e8f0;border-radius:8px;box-shadow:0 4px 12px rgba(0,0,0,0.08);min-width:140px;z-index:50;padding:4px 0">
             <button type="button" data-locale="zh-TW" role="menuitem" onclick="window.__setLocale('zh-TW');window.__closeLangSwitcher&&window.__closeLangSwitcher()" style="display:flex;align-items:center;gap:8px;width:100%;padding:8px 12px;border:0;background:none;font-size:12px;color:#475569;cursor:pointer;text-align:left">

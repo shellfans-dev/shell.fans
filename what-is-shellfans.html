@@ -162,6 +162,9 @@ section > .container > p{font-size:1.04rem;max-width:820px;margin-bottom:18px;co
 .footer-legal a:hover{color:#fff}
 @media (max-width:780px){.footer-top{grid-template-columns:1fr 1fr;gap:32px 20px}}
 @media (max-width:480px){.footer-top{grid-template-columns:1fr}}
+
+.footer-company-row a[href^="mailto:"],
+.footer-company-row a[href^="tel:"]{display:inline-block;min-height:24px;padding:6px 4px;line-height:1.6;text-decoration:underline}
 </style>
 
 <!-- ===== JSON-LD structured data (locale-neutral; en alternate exists at same URL) ===== -->
@@ -253,7 +256,7 @@ section > .container > p{font-size:1.04rem;max-width:820px;margin-bottom:18px;co
         <div class="lang-switcher" id="langSwitcher">
           <button type="button" id="langSwitcherToggle" aria-haspopup="true" aria-expanded="false">
             <span id="langSwitcherLabel" data-i18n="footer.langLabel">繁體中文</span>
-            <svg id="langSwitcherChevron" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="transition:transform 200ms;color:#94a3b8" aria-hidden="true"><path d="M19 9l-7 7-7-7"></path></svg>
+            <svg id="langSwitcherChevron" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="transition:transform 200ms;color:#475569" aria-hidden="true"><path d="M19 9l-7 7-7-7"></path></svg>
           </button>
           <div role="menu" id="langSwitcherList">
             <button type="button" data-locale="zh-TW" role="menuitem" onclick="window.__setLocale('zh-TW');window.__closeLangSwitcher&&window.__closeLangSwitcher()">
@@ -529,20 +532,20 @@ section > .container > p{font-size:1.04rem;max-width:820px;margin-bottom:18px;co
         <p class="footer-desc" data-i18n="wis.footer.desc">ShellFans AI Technology 是 AI 行銷科技品牌，旗下產品 KOL.FANS 協助行銷團隊管理 KOL/KOC 合作資產。</p>
       </div>
       <div class="footer-col">
-        <h4 data-i18n="wis.footer.colProduct">產品</h4>
+        <h3 data-i18n="wis.footer.colProduct">產品</h3>
         <a href="/what-is-shellfans" data-i18n="wis.footer.linkAbout">關於 ShellFans</a>
         <a href="https://kol.fans" target="_blank" rel="noopener">KOL.FANS</a>  <a href="/aeo-geo" data-i18n="nav.aeoGeo">AEO/GEO 代管</a>
         <a href="/kol-engine" data-i18n="nav.engine">續航引擎</a>
         <a href="https://kol.fans/pricing" target="_blank" rel="noopener" data-i18n="nav.pricing">查看方案</a>
       </div>
       <div class="footer-col">
-        <h4 data-i18n="wis.footer.colResource">資源</h4>
+        <h3 data-i18n="wis.footer.colResource">資源</h3>
         <a href="https://blog.shell.fans/" target="_blank" rel="noopener" data-i18n="wis.footer.linkKlog">Klog 部落格</a>
         <a href="/helpcenter" data-i18n="wis.footer.linkHelp">幫助中心</a>
         <a href="/support" data-i18n="wis.footer.linkSupport">客服支援</a>
       </div>
       <div class="footer-col">
-        <h4 data-i18n="wis.footer.colContact">聯繫</h4>
+        <h3 data-i18n="wis.footer.colContact">聯繫</h3>
         <a href="https://shell.fans/co-founder" data-i18n="wis.footer.cofounder">創辦人</a>
         <a href="/contact" data-i18n="wis.footer.linkAboutUs">關於我們</a>
         <a href="mailto:hello@shell.fans">hello@shell.fans</a>
