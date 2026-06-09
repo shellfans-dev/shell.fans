@@ -75,7 +75,7 @@ p{line-height:1.85}
 .btn-primary:hover{background:#d35d4c;transform:translateY(-1px);box-shadow:0 6px 18px rgba(233,111,94,0.32)}
 .btn-secondary{background:transparent;color:var(--ink);border-color:var(--border-medium)}
 .btn-secondary:hover{background:var(--ink);color:#fff;border-color:var(--ink)}
-@media (max-width:820px){.nav-menu,.nav-login,.nav-cta{display:none}}
+@media (max-width:991px){.nav-menu,.nav-login,.nav-cta{display:none}.nav-hamburger{display:flex}.nav-inner{justify-content:space-between}}
 
 /* Hero */
 .hero{padding:56px 0 72px;background:linear-gradient(180deg,#FFFFFF 0%,var(--warm-paper) 100%);border-bottom:1px solid var(--border-light)}
@@ -242,7 +242,12 @@ footer small{color:rgba(255,255,255,0.45);display:block;margin-top:14px;font-siz
   font-family:var(--font-sans);
 }
 .nav-cta:hover{transform:translateY(-1px);box-shadow:0 6px 18px rgba(233,111,94,0.3)}
-.nav-hamburger{
+.nav-hamburger{display:none;flex-direction:column;gap:5px;background:none;border:none;cursor:pointer;padding:8px}
+.nav-hamburger span{display:block;width:22px;height:2px;background:var(--ink);border-radius:2px}
+.mobile-menu{display:none;position:fixed;top:72px;left:0;right:0;bottom:0;background:#fff;padding:1.5rem var(--gutter) 2rem;flex-direction:column;z-index:99;overflow-y:auto}
+.mobile-menu.active{display:flex}
+.mobile-menu a{font-size:1.05rem;font-weight:500;padding:1rem 0;border-bottom:1px solid var(--border-light);color:var(--ink)}
+.mobile-menu .mobile-cta{display:inline-flex;align-items:center;justify-content:center;margin-top:1.5rem;padding:14px 24px;background:var(--signal-coral);color:#fff;border-radius:8px;font-weight:600;border:none}
 
 /* ===== Findings grid (2-col cards with impact ring) ===== */
 .aeo-findings-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
@@ -265,6 +270,16 @@ footer small{color:rgba(255,255,255,0.45);display:block;margin-top:14px;font-siz
 
 .footer-company-row a[href^="mailto:"],
 .footer-company-row a[href^="tel:"]{display:inline-block;min-height:24px;padding:6px 4px;line-height:1.6;text-decoration:underline}
+
+/* ===== Mobile nav override — last-word rule (must come AFTER the duplicate
+       .nav-cta + .nav-hamburger declarations above, otherwise the unconditional
+       display:inline-flex / display:none would win the cascade). Mirrors
+       the homepage's @media (max-width:991px) navigation collapse. ===== */
+@media (max-width:991px){
+  .nav-menu,.nav-login,.nav-cta{display:none}
+  .nav-hamburger{display:flex}
+  .nav-inner{justify-content:space-between}
+}
 </style>
 <link rel="preload" href="https://shell.fans/images/nav_logo.svg" as="image" type="image/svg+xml">
 </head>
