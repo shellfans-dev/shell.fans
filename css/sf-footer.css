@@ -1,0 +1,76 @@
+/* shell.fans unified footer — self-contained, no dependency on page CSS vars.
+   Injected on every page via <link rel="stylesheet" href="/css/sf-footer.css">.
+   Markup is rendered by /js/sf-footer.js from the live config at
+   kol.fans /api/site/footer?site=shell (falls back to embedded defaults).
+   Class names are sf- prefixed so they never collide with the legacy
+   Webflow .section-footer / .footer styles on the older pages. */
+footer.sf-footer {
+  padding: 56px 0 28px;
+  background: #101214;
+  color: rgba(255, 255, 255, 0.7);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", sans-serif;
+}
+.sf-footer * { box-sizing: border-box; }
+.sf-footer .sf-container { width: 100%; max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+.sf-footer-top {
+  display: grid;
+  grid-template-columns: 1.6fr 1fr 1fr 1fr;
+  gap: 2.5rem;
+  margin-bottom: 2rem;
+  padding-bottom: 1.75rem;
+}
+.sf-footer-brand img { height: 32px; width: auto; margin-bottom: 1rem; filter: brightness(0) invert(1); }
+.sf-footer-desc { font-size: 0.9rem; color: rgba(255, 255, 255, 0.55); line-height: 1.7; max-width: 320px; }
+.sf-footer-col h3 { color: #fff; font-size: 0.92rem; font-weight: 700; margin: 0 0 1rem; }
+.sf-footer-col a { display: block; font-size: 0.88rem; color: rgba(255, 255, 255, 0.6); padding: 5px 0; transition: color .2s; text-decoration: none; }
+.sf-footer-col a:hover { color: #fff; }
+.sf-footer-company {
+  display: flex; flex-wrap: wrap; justify-content: center; align-items: center;
+  gap: 4px 18px; margin: 0 auto; padding: 8px 0 4px; max-width: 920px;
+  text-align: center; font-size: 0.85rem; line-height: 1.55; color: rgba(255, 255, 255, 0.62);
+}
+.sf-footer-company-row { display: inline-flex; align-items: center; }
+.sf-footer-company-row a { color: rgba(255, 255, 255, 0.85); text-decoration: none; }
+.sf-footer-company-row a:hover { color: #fff; text-decoration: underline; text-underline-offset: 2px; }
+.sf-footer-patent {
+  margin: 0 auto; padding: 6px 0 4px; max-width: 780px; text-align: center;
+  font-size: 0.8rem; line-height: 1.6; color: rgba(255, 255, 255, 0.48);
+}
+.sf-footer-patent a { color: rgba(255, 255, 255, 0.72); text-decoration: underline; text-decoration-color: rgba(255, 255, 255, 0.25); text-underline-offset: 2px; }
+.sf-footer-patent a:hover { color: #fff; text-decoration-color: #fff; }
+.sf-footer-bottom {
+  display: flex; justify-content: center; align-items: center; flex-wrap: wrap;
+  gap: 10px 18px; margin-top: 12px; padding-top: 12px;
+  font-size: 0.8rem; color: rgba(255, 255, 255, 0.5); text-align: center;
+}
+.sf-footer-copy { flex-basis: 100%; text-align: center; color: rgba(255, 255, 255, 0.5); margin-bottom: 4px; }
+.sf-footer-lang {
+  display: inline-flex; align-items: center; gap: 6px; color: rgba(255, 255, 255, 0.6);
+  background: none; border: none; font-family: inherit; font-size: inherit;
+  padding: 4px 6px; border-radius: 6px; cursor: pointer; line-height: 1;
+}
+.sf-footer-lang:hover { color: #fff; }
+.sf-footer-lang svg { flex-shrink: 0; opacity: 0.7; }
+.sf-footer-social { display: inline-flex; align-items: center; gap: 8px; }
+.sf-footer-social a {
+  display: inline-flex; align-items: center; justify-content: center; width: 30px; height: 30px;
+  background: rgba(255, 255, 255, 0.06); border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 8px; transition: background .2s, border-color .2s;
+}
+.sf-footer-social a:hover { background: rgba(255, 255, 255, 0.12); border-color: rgba(255, 255, 255, 0.18); }
+.sf-footer-social img { width: 14px; height: 14px; filter: brightness(0) invert(1); opacity: 0.85; }
+.sf-footer-social a:hover img { opacity: 1; }
+.sf-footer-legal { display: inline-flex; align-items: center; gap: 14px; }
+.sf-footer-legal a { color: rgba(255, 255, 255, 0.55); transition: color .2s; text-decoration: none; }
+.sf-footer-legal a:hover { color: #fff; }
+.sf-footer-extra { color: rgba(255, 255, 255, 0.5); }
+.sf-footer-extra a { color: #a5b4fc; text-decoration: underline; }
+@media (max-width: 900px) { .sf-footer-top { grid-template-columns: 1fr 1fr; gap: 2rem; } }
+@media (max-width: 600px) {
+  .sf-footer-top { grid-template-columns: 1fr; text-align: center; }
+  .sf-footer-brand img { margin-left: auto; margin-right: auto; }
+  .sf-footer-desc { margin-left: auto; margin-right: auto; }
+  .sf-footer-company { flex-direction: column; gap: 2px; }
+}
+/* Embedded (in-app) mode hides the marketing footer, same as the legacy rule. */
+html[data-embed="1"] footer.sf-footer { display: none !important; }
