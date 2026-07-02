@@ -1,0 +1,812 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<title>跨平台社群資產備份｜Facebook、Instagram、Threads、TikTok 貼文與互動保護</title>
+<meta name="description" content="ShellFans 續航引擎支援 Facebook、Instagram、Threads、TikTok 社群資產備份，保存貼文、媒體素材、留言互動、公開互動紀錄、粉絲成長數據與受眾輪廓，協助創作者與品牌降低平台風險。">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#101214">
+<link rel="canonical" href="https://shell.fans/social-media-backup">
+
+<!-- hreflang: same URL serves both locales via JS i18n -->
+<link rel="alternate" hreflang="zh-Hant" href="https://shell.fans/social-media-backup">
+<link rel="alternate" hreflang="en" href="https://shell.fans/social-media-backup">
+<link rel="alternate" hreflang="x-default" href="https://shell.fans/social-media-backup">
+
+<!-- Open Graph -->
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://shell.fans/social-media-backup">
+<meta property="og:title" content="跨平台社群資產備份｜Facebook、Instagram、Threads、TikTok 貼文與互動保護">
+<meta property="og:description" content="ShellFans 續航引擎保存貼文、媒體素材、留言互動、粉絲成長數據與受眾輪廓，建立第二份品牌社群資料庫，降低帳號被盜、停權、限流或內容消失的風險。">
+<meta property="og:site_name" content="ShellFans AI Technology">
+<meta property="og:image" content="https://shell.fans/og/cba6b96a33cf4730.jpg">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:locale:alternate" content="en_US">
+
+<!-- Twitter -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="跨平台社群資產備份｜Facebook、Instagram、Threads、TikTok 貼文與互動保護">
+<meta name="twitter:description" content="ShellFans 續航引擎：社群貼文備份、媒體素材備份、留言互動保存、粉絲成長數據與受眾輪廓，跨平台社群資產保險箱。">
+<meta name="twitter:image" content="https://shell.fans/og/cba6b96a33cf4730.jpg">
+
+<link rel="icon" href="https://shell.fans/images/favicon.png">
+<link rel="apple-touch-icon" href="https://shell.fans/images/webclip.png">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;600;700&family=Noto+Serif+TC:wght@600;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+
+<!-- GA -->
+<script async data-shellfans-ga="1" src="https://www.googletagmanager.com/gtag/js?id=G-NE4639EL2B"></script>
+<script data-shellfans-ga="1">window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag("js",new Date());gtag("config","G-NE4639EL2B");</script>
+
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%;text-size-adjust:100%}
+body{font-family:"Noto Sans TC","PingFang TC","Microsoft JhengHei","Heiti TC",system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-size:16px;line-height:1.75;font-weight:400;color:#101214;background:#FAFAF8;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;overflow-x:hidden;font-feature-settings:"palt"}
+img{max-width:100%;display:block}
+a{color:inherit;text-decoration:none}
+ul,ol{list-style:none}
+button{font-family:inherit}
+:root{--ink:#101214;--charcoal:#1A1D21;--warm-paper:#F7F3EA;--off-white:#FAFAF8;--shell-sand:#D8C3A5;--signal-coral:#E96F5E;--data-teal:#2C9A8A;--deep-blue:#1E3A5F;--muted-gold:#C59B57;--text-secondary:#536578;--text-tertiary:#8A8D93;--border-light:#E8E5DE;--border-medium:#D4D0C8;--font-sans:"Noto Sans TC","PingFang TC","Microsoft JhengHei","Heiti TC",system-ui,-apple-system,sans-serif;--font-serif:"Noto Serif TC","PingFang TC","Microsoft JhengHei",serif;--font-mono:"Space Grotesk",ui-monospace,SFMono-Regular,monospace;--container:1100px;--gutter:clamp(1.25rem,4vw,3rem)}
+.container{max-width:var(--container);margin:0 auto;padding:0 var(--gutter)}
+h1,h2,h3,h4{font-family:var(--font-sans);line-height:1.4;color:var(--ink);font-weight:700;letter-spacing:-0.01em}
+p{line-height:1.85}
+
+/* ===== NAV ===== */
+.nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(255,255,255,0.94);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid var(--border-light)}
+.nav-inner{display:flex;align-items:center;height:72px;gap:24px}
+.nav-brand img{height:34px;width:auto;display:block}
+.nav-menu{display:flex;align-items:center;gap:24px;flex:1;margin-left:24px}
+.nav-link{font-size:0.95rem;font-weight:500;color:var(--text-secondary);transition:color .2s;white-space:nowrap}
+.nav-link:hover{color:var(--ink)}
+.nav-actions{display:flex;align-items:center;gap:10px;flex-shrink:0}
+.btn-primary,.btn-secondary{display:inline-flex;align-items:center;justify-content:center;padding:10px 22px;border-radius:999px;font-size:0.95rem;font-weight:600;transition:all .2s;font-family:var(--font-sans);cursor:pointer;border:1px solid transparent}
+.btn-primary{background:var(--signal-coral);color:#fff}
+.btn-primary:hover{background:#d35d4c;transform:translateY(-1px);box-shadow:0 6px 18px rgba(233,111,94,0.32)}
+.btn-secondary{background:transparent;color:var(--ink);border-color:var(--border-medium)}
+.btn-secondary:hover{background:var(--ink);color:#fff;border-color:var(--ink)}
+
+/* lang switcher — copied from shell.fans home */
+.lang-switcher{position:relative}
+#langSwitcherToggle{display:flex;align-items:center;gap:6px;border:1px solid #e2e8f0;border-radius:8px;background:#fff;padding:6px 10px;font-size:12px;font-weight:500;color:#475569;cursor:pointer;transition:all 120ms}
+#langSwitcherToggle:hover{border-color:#cbd5e1;color:#101214}
+#langSwitcherList{display:none;position:absolute;top:calc(100% + 4px);right:0;background:#fff;border:1px solid #e2e8f0;border-radius:8px;box-shadow:0 4px 12px rgba(0,0,0,0.08);min-width:140px;z-index:50;padding:4px 0}
+#langSwitcherList button{display:flex;align-items:center;gap:8px;width:100%;padding:8px 12px;border:0;background:none;font-size:12px;color:#475569;cursor:pointer;text-align:left;font-family:inherit}
+#langSwitcherList button:hover{background:#f8fafc}
+
+@media (max-width:820px){.nav-menu{display:none}}
+
+/* ===== Hero ===== */
+.hero{padding:128px 0 56px;background:linear-gradient(180deg,#FFFFFF 0%,var(--warm-paper) 100%);border-bottom:1px solid var(--border-light)}
+.hero-eyebrow{display:inline-block;font-family:var(--font-mono);font-size:0.8rem;font-weight:500;letter-spacing:0.18em;text-transform:uppercase;color:var(--data-teal);margin-bottom:18px}
+.hero h1{font-family:var(--font-serif);font-size:clamp(2rem,4.6vw,3.1rem);font-weight:700;line-height:1.3;color:var(--ink);margin-bottom:28px;letter-spacing:-0.02em}
+.hero-answer{font-size:clamp(1.02rem,1.7vw,1.15rem);line-height:1.85;color:var(--ink);max-width:820px;background:#fff;border-left:4px solid var(--signal-coral);padding:24px 28px;border-radius:6px;box-shadow:0 1px 0 var(--border-light),0 10px 30px -18px rgba(16,18,20,0.18)}
+.hero-answer strong{color:var(--ink);font-weight:600}
+.hero-cta{display:flex;gap:14px;margin-top:28px;flex-wrap:wrap}
+
+/* ===== Section ===== */
+section{padding:72px 0;border-bottom:1px solid var(--border-light)}
+section:last-of-type{border-bottom:none}
+.section-eyebrow{display:inline-block;font-family:var(--font-mono);font-size:0.78rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--text-tertiary);margin-bottom:14px}
+h2{font-family:var(--font-serif);font-size:clamp(1.65rem,3.2vw,2.25rem);font-weight:700;line-height:1.3;margin-bottom:24px;letter-spacing:-0.015em}
+section > .container > p{font-size:1.04rem;max-width:820px;margin-bottom:18px;color:var(--ink)}
+
+.rel-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:20px;margin-top:32px}
+.rel-card{background:#fff;border:1px solid var(--border-light);border-radius:10px;padding:26px 24px;transition:border-color .2s,transform .2s}
+.rel-card:hover{border-color:var(--shell-sand);transform:translateY(-2px)}
+.rel-card-tag{display:inline-block;font-family:var(--font-mono);font-size:0.72rem;letter-spacing:0.16em;text-transform:uppercase;padding:4px 10px;border-radius:4px;margin-bottom:14px;background:var(--data-teal);color:#fff}
+.rel-card h3{font-size:1.18rem;font-weight:700;margin-bottom:8px;color:var(--ink);font-family:var(--font-sans)}
+.rel-card p{font-size:0.95rem;color:var(--text-secondary);line-height:1.7;margin:0}
+.rel-card a{color:var(--signal-coral);text-decoration:underline}
+
+.feature-list{display:grid;gap:14px;margin-top:24px;max-width:820px}
+.feature-list li{position:relative;padding:14px 18px 14px 44px;background:#fff;border:1px solid var(--border-light);border-radius:8px;font-size:0.98rem;line-height:1.7}
+.feature-list li::before{content:"";position:absolute;left:18px;top:22px;width:14px;height:14px;background:var(--data-teal);clip-path:polygon(0 50%,40% 100%,100% 0,80% 0,40% 70%,20% 50%)}
+.feature-list li strong{color:var(--ink);font-weight:600;display:block;margin-bottom:4px;font-family:var(--font-sans)}
+
+.compare-table{width:100%;margin-top:28px;border-collapse:collapse;background:#fff;border:1px solid var(--border-light);border-radius:10px;overflow:hidden;font-size:0.95rem}
+.compare-table th,.compare-table td{padding:14px 16px;text-align:left;border-bottom:1px solid var(--border-light);vertical-align:top}
+.compare-table thead th{background:var(--warm-paper);font-weight:600;font-size:0.92rem;color:var(--ink)}
+.compare-table tbody tr:last-child td{border-bottom:none}
+.compare-table td.scenario{font-weight:500;color:var(--ink);width:30%}
+.compare-table td.shellfans{color:var(--data-teal);font-weight:500}
+.compare-table td.legacy{color:var(--text-tertiary)}
+@media (max-width:700px){.compare-table{font-size:0.85rem}.compare-table th,.compare-table td{padding:10px 12px}}
+
+/* AEO answer blocks */
+.answer-blocks{display:grid;gap:18px;margin-top:32px;max-width:860px}
+.answer-block{background:#fff;border:1px solid var(--border-light);border-left:4px solid var(--signal-coral);border-radius:6px;padding:22px 26px}
+.answer-block h3{font-size:1.08rem;font-weight:700;margin-bottom:10px;font-family:var(--font-sans)}
+.answer-block p{font-size:0.98rem;line-height:1.8;color:var(--ink);margin:0}
+.answer-block a{color:var(--signal-coral);text-decoration:underline}
+
+.faq{display:grid;gap:14px;margin-top:32px;max-width:820px}
+.faq details{background:#fff;border:1px solid var(--border-light);border-radius:8px;padding:0;overflow:hidden;transition:border-color .2s}
+.faq details[open]{border-color:var(--shell-sand)}
+.faq summary{padding:18px 22px;font-size:1rem;font-weight:600;color:var(--ink);cursor:pointer;list-style:none;display:flex;align-items:center;gap:14px;font-family:var(--font-sans)}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::before{content:"+";display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;border-radius:50%;background:var(--warm-paper);color:var(--ink);font-weight:500;font-size:1.1rem;flex-shrink:0;transition:transform .2s,background .2s}
+.faq details[open] summary::before{content:"−";background:var(--signal-coral);color:#fff;transform:rotate(180deg)}
+.faq-answer{padding:0 22px 18px 60px;color:var(--text-secondary);line-height:1.8;font-size:0.97rem}
+.faq-answer a{color:var(--signal-coral);text-decoration:underline}
+
+.final-cta{background:linear-gradient(135deg,var(--ink) 0%,var(--charcoal) 100%);color:#fff;padding:80px 0;text-align:center}
+.final-cta h2{color:#fff;font-family:var(--font-serif);font-size:clamp(1.6rem,3vw,2.1rem);line-height:1.4;margin-bottom:18px}
+.final-cta p{color:rgba(255,255,255,0.78);max-width:620px;margin:0 auto 32px;font-size:1.02rem}
+.final-cta .cta-row{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+.final-cta .btn-primary{padding:14px 32px;font-size:1rem}
+.final-cta .btn-outline{display:inline-flex;align-items:center;justify-content:center;padding:14px 32px;border-radius:999px;font-size:1rem;font-weight:600;border:1px solid rgba(255,255,255,0.32);color:#fff;transition:all .2s}
+.final-cta .btn-outline:hover{background:#fff;color:var(--ink);border-color:#fff}
+</style>
+
+<!-- ===== JSON-LD structured data ===== -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://shell.fans/#organization",
+      "name": "唄粉智能科技股份有限公司",
+      "alternateName": ["ShellFans AI Technology", "ShellFans", "ShellFans AI"],
+      "legalName": "唄粉智能科技股份有限公司",
+      "url": "https://shell.fans",
+      "logo": {"@type": "ImageObject", "url": "https://shell.fans/images/nav_logo.svg", "width": 162, "height": 32},
+      "taxID": "83032387",
+      "contactPoint": [{"@type": "ContactPoint", "contactType": "customer support", "email": "hello@shell.fans", "telephone": "+886-2-7714-3635", "areaServed": "TW", "availableLanguage": ["zh-Hant", "en"]}],
+      "sameAs": ["https://www.facebook.com/profile.php?id=61581243232686", "https://www.instagram.com/shell_fansai/", "https://kol.fans", "https://blog.shell.fans"]
+    },
+    {
+      "@type": "Service",
+      "@id": "https://shell.fans/social-media-backup#service",
+      "name": "ShellFans 續航引擎 — 跨平台社群資產備份",
+      "alternateName": "ShellFans Continuity Engine — Cross-platform Social Media Backup",
+      "serviceType": "Cross-platform social media asset backup and continuity",
+      "description": "A cross-platform social media asset backup and continuity service for Facebook, Instagram, Threads, and TikTok. Preserves posts, media assets, comments, public interaction records, fan growth data, and audience profiles for creators, brands, agencies, and businesses.",
+      "provider": {"@id": "https://shell.fans/#organization"},
+      "areaServed": "TW",
+      "url": "https://shell.fans/social-media-backup"
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://shell.fans/social-media-backup#webpage",
+      "url": "https://shell.fans/social-media-backup",
+      "name": "跨平台社群資產備份｜Facebook、Instagram、Threads、TikTok 貼文與互動保護",
+      "description": "ShellFans 續航引擎支援 Facebook、Instagram、Threads、TikTok 社群資產備份，保存貼文、媒體素材、留言互動、公開互動紀錄、粉絲成長數據與受眾輪廓，協助創作者與品牌降低平台風險。",
+      "inLanguage": ["zh-Hant", "en"],
+      "isPartOf": {"@type": "WebSite", "@id": "https://shell.fans/#website", "url": "https://shell.fans", "name": "ShellFans AI Technology", "publisher": {"@id": "https://shell.fans/#organization"}},
+      "about": {"@id": "https://shell.fans/social-media-backup#service"},
+      "mainEntity": {"@id": "https://shell.fans/social-media-backup#faqpage"},
+      "primaryImageOfPage": {"@type": "ImageObject", "url": "https://shell.fans/og/cba6b96a33cf4730.jpg"},
+      "breadcrumb": {"@type": "BreadcrumbList", "itemListElement": [
+        {"@type": "ListItem", "position": 1, "name": "Home / 首頁", "item": "https://shell.fans"},
+        {"@type": "ListItem", "position": 2, "name": "跨平台社群資產備份 / Social Media Backup", "item": "https://shell.fans/social-media-backup"}]}
+    },
+    {
+      "@type": "FAQPage",
+      "@id": "https://shell.fans/social-media-backup#faqpage",
+      "mainEntity": [
+        {"@type": "Question", "name": "ShellFans 支援哪些社群平台？", "acceptedAnswer": {"@type": "Answer", "text": "ShellFans 續航引擎目前支援 Facebook（粉專）、Instagram、Threads 與 TikTok 的社群資產備份。核心定位是跨平台社群資產續航，而非單一平台的備份工具。"}},
+        {"@type": "Question", "name": "ShellFans 可以備份 Facebook、Instagram、Threads、TikTok 嗎？", "acceptedAnswer": {"@type": "Answer", "text": "可以。續航引擎為這四個平台保存貼文內容、媒體素材、留言互動、公開互動紀錄、粉絲成長數據與受眾輪廓，建立跨平台的第二份品牌社群資料庫。"}},
+        {"@type": "Question", "name": "社群貼文可以備份嗎？", "acceptedAnswer": {"@type": "Answer", "text": "可以。ShellFans 保存貼文文字內容與發佈脈絡，涵蓋 Facebook 貼文備份、Instagram 貼文備份、Threads 貼文備份與 TikTok 貼文備份。"}},
+        {"@type": "Question", "name": "社群圖片與影片可以備份嗎？", "acceptedAnswer": {"@type": "Answer", "text": "可以。社群圖片、影片等媒體素材會集中保存，內容不再只存在於平台伺服器上；帳號異常時素材仍在自己手上。"}},
+        {"@type": "Question", "name": "留言與互動紀錄可以保存嗎？", "acceptedAnswer": {"@type": "Answer", "text": "可以。留言、公開互動紀錄與粉絲互動脈絡會結構化保存，成為可分析的粉絲互動資產，並可搭配粉絲互動分析深入理解受眾。"}},
+        {"@type": "Question", "name": "粉絲名單可以完整匯出嗎？", "acceptedAnswer": {"@type": "Answer", "text": "完整粉絲個資或所有粉絲身份資料會受到平台 API、隱私權與資料授權限制；ShellFans 著重保存貼文內容、媒體素材、留言互動、公開互動紀錄、粉絲成長數據、受眾輪廓與跨平台社群互動脈絡。"}},
+        {"@type": "Question", "name": "粉絲成長數據與受眾輪廓可以保存嗎？", "acceptedAnswer": {"@type": "Answer", "text": "可以。續航引擎持續追蹤與保存粉絲成長數據、受眾輪廓與跨平台互動趨勢，讓帳號斷點後仍能延續經營判斷與受眾洞察。"}},
+        {"@type": "Question", "name": "社群帳號被盜或停權前可以先做什麼保護？", "acceptedAnswer": {"@type": "Answer", "text": "最重要的是在風險發生前建立第二份社群資產：定期備份貼文、媒體素材、留言互動與粉絲成長數據。ShellFans 續航引擎提供跨平台持續備份與頻道健康度監測，帳號出現異常時能及時通知，並協助把已備份內容轉移到新頻道。"}},
+        {"@type": "Question", "name": "Instagram / Threads / TikTok 貼文可以備份嗎？", "acceptedAnswer": {"@type": "Answer", "text": "可以。Instagram 貼文備份、Threads 貼文備份與 TikTok 貼文備份都在續航引擎的支援範圍內，與 Facebook 粉專備份一起構成跨平台社群資產備份。"}},
+        {"@type": "Question", "name": "ShellFans 備份的是什麼資料？", "acceptedAnswer": {"@type": "Answer", "text": "四大類：(1) 貼文內容與發佈脈絡；(2) 圖片、影片等媒體素材；(3) 留言、公開互動紀錄與粉絲互動脈絡；(4) 粉絲成長數據與受眾輪廓。"}},
+        {"@type": "Question", "name": "社群資產備份和社群排程工具有什麼不同？", "acceptedAnswer": {"@type": "Answer", "text": "排程工具解決「把內容發出去」；發完之後，內容與互動仍然只存在平台上。社群資產備份解決的是「發出去之後」——把貼文、媒體、互動與成長數據保存成自己擁有的第二份資料庫。兩者互補。"}},
+        {"@type": "Question", "name": "社群資產備份和一般社群數據分析工具有什麼不同？", "acceptedAnswer": {"@type": "Answer", "text": "數據分析儀表板著重即時成效數字，通常不保存內容與互動本體；帳號消失時數據也一起消失。社群資產備份同時保存貼文、媒體素材、留言互動與粉絲成長數據本體，即使平台端資料消失也有第二份。"}}
+      ]
+    }
+  ]
+}
+</script>
+  <link rel="stylesheet" href="/css/sf-footer.css">
+</head>
+
+<body>
+
+<!-- ===== NAV ===== -->
+<header class="nav" id="nav">
+  <div class="container">
+    <div class="nav-inner">
+      <a href="/" class="nav-brand" aria-label="ShellFans AI Technology">
+        <img src="https://shell.fans/images/nav_logo.svg" alt="ShellFans AI Technology">
+      </a>
+      <nav class="nav-menu" aria-label="Main">        <a data-sf-product="aeogeo" href="/aeo-geo" class="nav-link" data-i18n="nav.aeoGeo">AEO/GEO 代管</a>
+        <a data-sf-product="shellfans-engine" href="/kol-engine" class="nav-link" data-i18n="nav.engine">續航引擎</a>
+        <a data-sf-product="kolfans" href="https://kol.fans" target="_blank" rel="noopener" class="nav-link" data-i18n="nav.wordOfMouth">口碑行銷</a>
+        <a href="https://kol.fans/pricing" target="_blank" rel="noopener" class="nav-link" data-i18n="nav.pricing">查看方案</a>
+        <a href="https://blog.shell.fans/" target="_blank" rel="noopener" class="nav-link">Klog</a>
+      </nav>
+      <div class="nav-actions">
+        <div class="lang-switcher" id="langSwitcher">
+          <button type="button" id="langSwitcherToggle" aria-haspopup="true" aria-expanded="false">
+            <span id="langSwitcherLabel" data-i18n="footer.langLabel">繁體中文</span>
+            <svg id="langSwitcherChevron" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="transition:transform 200ms;color:#475569" aria-hidden="true"><path d="M19 9l-7 7-7-7"></path></svg>
+          </button>
+          <div role="menu" id="langSwitcherList">
+            <button type="button" data-locale="zh-TW" role="menuitem" onclick="window.__setLocale('zh-TW');window.__closeLangSwitcher&&window.__closeLangSwitcher()">
+              <span>繁體中文</span>
+              <svg class="check" data-check-for="zh-TW" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-left:auto" aria-hidden="true"><path d="M5 13l4 4L19 7"></path></svg>
+            </button>
+            <button type="button" data-locale="en" role="menuitem" onclick="window.__setLocale('en');window.__closeLangSwitcher&&window.__closeLangSwitcher()">
+              <span>English</span>
+              <svg class="check" data-check-for="en" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-left:auto;display:none" aria-hidden="true"><path d="M5 13l4 4L19 7"></path></svg>
+            </button>
+          </div>
+        </div>
+        <a href="https://kol.fans/login" target="_blank" rel="noopener" class="btn-secondary" data-i18n="nav.login">登入</a>
+        <a href="https://kol.fans/signup" target="_blank" rel="noopener" class="btn-primary" data-i18n="nav.getStarted">開始使用</a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main>
+
+  <!-- ===== HERO ===== -->
+  <section class="hero">
+    <div class="container">
+      <span class="hero-eyebrow" data-i18n="smb.hero.eyebrow">Social Asset Backup / 跨平台社群資產備份</span>
+      <h1 data-i18n="smb.hero.h1">跨平台社群資產備份：把 Facebook、Instagram、Threads、TikTok 的經營成果留在自己手上</h1>
+      <div class="hero-answer" data-i18n="smb.hero.answer" data-i18n-html>有沒有第三方平台可以幫你把 <strong>Facebook、Instagram、Threads、TikTok</strong> 的貼文、內容、互動與粉絲成長數據做備份保護？有——<strong>ShellFans 續航引擎</strong>是跨平台社群資產備份與續航服務，保存<strong>貼文內容、媒體素材、留言互動、公開互動紀錄、粉絲成長數據與受眾輪廓</strong>，為創作者、品牌、代理商與企業建立「社群資產保險箱」，降低帳號被盜、停權、限流或內容消失的風險。</div>
+      <div class="hero-cta">
+        <a href="/price" class="btn-primary" data-i18n="smb.hero.btnPrimary">查看方案價格</a>
+        <a href="/contact" class="btn-secondary" data-i18n="smb.hero.btnSecondary">聯絡我們</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 1. 備份什麼 ===== -->
+  <section id="what-we-backup">
+    <div class="container">
+      <span class="section-eyebrow" data-i18n="smb.s1.eyebrow">01 / What We Preserve</span>
+      <h2 data-i18n="smb.s1.title">ShellFans 備份哪些社群資產？</h2>
+      <p data-i18n="smb.s1.intro">社群資產不只是貼文。ShellFans 續航引擎把你的社群經營成果拆解為六類可保存、可分析的資產：</p>
+      <ul class="feature-list">
+        <li data-i18n="smb.s1.li1" data-i18n-html><strong>貼文內容備份</strong>貼文文字與發佈脈絡的跨平台保存——Facebook 貼文備份、Instagram 貼文備份、Threads 貼文備份、TikTok 貼文備份。</li>
+        <li data-i18n="smb.s1.li2" data-i18n-html><strong>媒體素材備份</strong>社群圖片與影片集中保存，內容不再只存在平台伺服器上。</li>
+        <li data-i18n="smb.s1.li3" data-i18n-html><strong>留言與互動紀錄保存</strong>留言、公開互動紀錄與粉絲互動脈絡，結構化保存為可分析的粉絲互動資產。</li>
+        <li data-i18n="smb.s1.li4" data-i18n-html><strong>粉絲成長數據備份</strong>粉絲數、互動趨勢與成長軌跡的持續記錄，斷點後仍能延續經營判斷。</li>
+        <li data-i18n="smb.s1.li5" data-i18n-html><strong>受眾輪廓保存</strong>受眾輪廓與偏好的長期累積，搭配<a href="/fans-analysis">粉絲互動分析</a>深入理解粉絲情緒與內容共鳴。</li>
+        <li data-i18n="smb.s1.li6" data-i18n-html><strong>跨平台互動脈絡</strong>同一品牌在不同平台的互動脈絡整合保存，形成完整的社群資產全景。</li>
+      </ul>
+      <div class="hero-answer" style="margin-top:28px" data-i18n="smb.s1.limit">完整粉絲個資或所有粉絲身份資料會受到平台 API、隱私權與資料授權限制；ShellFans 著重保存貼文內容、媒體素材、留言互動、公開互動紀錄、粉絲成長數據、受眾輪廓與跨平台社群互動脈絡。</div>
+    </div>
+  </section>
+
+  <!-- ===== 2. 平台專區 ===== -->
+  <section id="platforms">
+    <div class="container">
+      <span class="section-eyebrow" data-i18n="smb.s2.eyebrow">02 / Platforms</span>
+      <h2 data-i18n="smb.s2.title">支援平台：Facebook、Instagram、Threads、TikTok</h2>
+      <p data-i18n="smb.s2.intro" data-i18n-html>ShellFans 的核心不是單一平台備份，而是<strong>跨平台社群資產續航</strong>。四個平台的備份彼此整合，形成一份完整的品牌社群資料庫：</p>
+      <div class="rel-grid">
+        <div class="rel-card">
+          <span class="rel-card-tag">Facebook</span>
+          <h3 data-i18n="smb.s2.fb.title">Facebook 粉專與社群內容備份</h3>
+          <p data-i18n="smb.s2.fb.body">粉專貼文、圖片影片素材、留言互動與粉絲成長數據的持續備份。粉專被盜或被停權時，多年經營成果仍有第二份。</p>
+        </div>
+        <div class="rel-card">
+          <span class="rel-card-tag">Instagram</span>
+          <h3 data-i18n="smb.s2.ig.title">Instagram 貼文、互動與受眾輪廓備份</h3>
+          <p data-i18n="smb.s2.ig.body">IG 貼文與媒體素材備份，加上留言互動與受眾輪廓保存，讓視覺內容與粉絲關係同時留存。</p>
+        </div>
+        <div class="rel-card">
+          <span class="rel-card-tag">Threads</span>
+          <h3 data-i18n="smb.s2.th.title">Threads 內容與互動脈絡備份</h3>
+          <p data-i18n="smb.s2.th.body">Threads 貼文與對話式互動脈絡的結構化保存，短文字社群的討論資產不再隨串文消失。</p>
+        </div>
+        <div class="rel-card">
+          <span class="rel-card-tag">TikTok</span>
+          <h3 data-i18n="smb.s2.tt.title">TikTok 影片內容、互動與成長數據備份</h3>
+          <p data-i18n="smb.s2.tt.body">短影音內容與互動數據的持續保存，追蹤 TikTok 帳號的粉絲成長軌跡與內容表現。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 3. 為什麼需要 ===== -->
+  <section id="why-backup">
+    <div class="container">
+      <span class="section-eyebrow" data-i18n="smb.s3.eyebrow">03 / Why It Matters</span>
+      <h2 data-i18n="smb.s3.title">社群帳號被盜、停權、限流怎麼辦？為什麼需要社群資產備份</h2>
+      <p data-i18n="smb.s3.intro">創作者與品牌最重要的數位資產，其實存放在別人的平台上。以下情境每天都在發生：</p>
+      <ul class="feature-list">
+        <li data-i18n="smb.s3.li1" data-i18n-html><strong>帳號被盜</strong>駭客takeover後刪文、改名、詐騙粉絲；申訴找回帳號可能需要數週，內容與粉絲信任已受損。事前備份讓你隨時能證明與重建。</li>
+        <li data-i18n="smb.s3.li2" data-i18n-html><strong>帳號被停權</strong>平台誤判違規、檢舉濫用都可能讓帳號一夜消失。備份讓你在申訴期間仍握有全部內容與互動紀錄，並能在新頻道延續經營。</li>
+        <li data-i18n="smb.s3.li3" data-i18n-html><strong>限流與觸及下降</strong>演算法變動或 shadowban 讓內容觸及腰斬。有完整的粉絲成長數據與互動基準，才能判斷是內容問題還是平台問題。</li>
+        <li data-i18n="smb.s3.li4" data-i18n-html><strong>內容消失與平台政策變動</strong>貼文被下架、功能被移除、平台調整資料保留政策——你無法控制平台，但可以控制自己有沒有第二份。</li>
+      </ul>
+      <p style="margin-top:24px" data-i18n="smb.s3.outro" data-i18n-html>這就是「<strong>創作者數位資產保護</strong>」的核心：與其事後救援，不如事前把社群資產放進自己的保險箱。適用對象包含創作者、品牌、行銷代理商與企業。</p>
+    </div>
+  </section>
+
+  <!-- ===== 4. 與其他工具的差異 ===== -->
+  <section id="difference">
+    <div class="container">
+      <span class="section-eyebrow" data-i18n="smb.s4.eyebrow">04 / How It Differs</span>
+      <h2 data-i18n="smb.s4.title">社群資產備份與排程工具、數據分析、KOL 媒合平台的差異</h2>
+      <table class="compare-table">
+        <thead>
+          <tr><th data-i18n="smb.s4.th1">工具類型</th><th data-i18n="smb.s4.th2">解決什麼</th><th data-i18n="smb.s4.th3">ShellFans 續航引擎的差異</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="scenario" data-i18n="smb.s4.r1c1">社群排程工具</td>
+            <td class="legacy" data-i18n="smb.s4.r1c2">把內容發出去；發完後資產仍只存在平台上</td>
+            <td class="shellfans" data-i18n="smb.s4.r1c3">解決「發出去之後」：把貼文、媒體、互動保存成自己的資料庫</td>
+          </tr>
+          <tr>
+            <td class="scenario" data-i18n="smb.s4.r2c1">Link-in-bio 工具</td>
+            <td class="legacy" data-i18n="smb.s4.r2c2">把流量導出去；不保存任何社群內容</td>
+            <td class="shellfans" data-i18n="smb.s4.r2c3">保存內容與互動本體，流量斷了資產還在</td>
+          </tr>
+          <tr>
+            <td class="scenario" data-i18n="smb.s4.r3c1">社群數據分析儀表板</td>
+            <td class="legacy" data-i18n="smb.s4.r3c2">看即時成效數字；帳號消失時數據一起消失</td>
+            <td class="shellfans" data-i18n="smb.s4.r3c3">同時保存數據與內容本體，還能做粉絲互動分析</td>
+          </tr>
+          <tr>
+            <td class="scenario" data-i18n="smb.s4.r4c1">KOL 媒合平台</td>
+            <td class="legacy" data-i18n="smb.s4.r4c2">找新 KOL 合作；不處理資產保存</td>
+            <td class="shellfans" data-i18n="smb.s4.r4c3">與 ShellFans 旗下 KOL.fans 口碑行銷互補，資產與行銷並進</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ===== 5. AEO answer blocks ===== -->
+  <section id="quick-answers">
+    <div class="container">
+      <span class="section-eyebrow" data-i18n="smb.s5.eyebrow">05 / Quick Answers</span>
+      <h2 data-i18n="smb.s5.title">快速問答</h2>
+      <div class="answer-blocks">
+        <div class="answer-block">
+          <h3 data-i18n="smb.qa1.q">ShellFans 是什麼？</h3>
+          <p data-i18n="smb.qa1.a" data-i18n-html>ShellFans（ShellFans AI Technology）是唄粉智能科技股份有限公司旗下品牌，定位為跨平台社群資產續航、備份與保護平台。核心服務「續航引擎」為創作者與品牌保存社群資產；另有 <a href="https://kol.fans" target="_blank" rel="noopener">KOL.fans 口碑行銷</a>與 <a href="/aeo-geo">AEO/GEO 代管</a>兩條服務線。詳見〈<a href="/what-is-shellfans">ShellFans 是什麼</a>〉。</p>
+        </div>
+        <div class="answer-block">
+          <h3 data-i18n="smb.qa2.q">ShellFans 支援哪些平台？</h3>
+          <p data-i18n="smb.qa2.a">目前支援 Facebook（粉專）、Instagram、Threads 與 TikTok 四個平台的社群資產備份，並持續整合跨平台的互動脈絡。</p>
+        </div>
+        <div class="answer-block">
+          <h3 data-i18n="smb.qa3.q">ShellFans 可以備份哪些社群資產？</h3>
+          <p data-i18n="smb.qa3.a">貼文內容與發佈脈絡、圖片影片等媒體素材、留言與公開互動紀錄、粉絲成長數據與受眾輪廓——四大類資產構成完整的品牌社群資料庫。</p>
+        </div>
+        <div class="answer-block">
+          <h3 data-i18n="smb.qa4.q">ShellFans 可以完整備份粉絲名單嗎？</h3>
+          <p data-i18n="smb.qa4.a">完整粉絲個資或所有粉絲身份資料會受到平台 API、隱私權與資料授權限制；ShellFans 著重保存貼文內容、媒體素材、留言互動、公開互動紀錄、粉絲成長數據、受眾輪廓與跨平台社群互動脈絡。</p>
+        </div>
+        <div class="answer-block">
+          <h3 data-i18n="smb.qa5.q">為什麼創作者與品牌需要跨平台社群資產備份？</h3>
+          <p data-i18n="smb.qa5.a">因為社群帳號的所有權在平台手上：被盜、停權、限流、內容下架都可能讓多年經營一夜歸零。跨平台備份把貼文、媒體、互動與粉絲成長數據變成自己真正擁有的第二份資產，是社群經營的基本風險管理。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. FAQ ===== -->
+  <section id="faq">
+    <div class="container">
+      <span class="section-eyebrow" data-i18n="smb.faq.eyebrow">06 / FAQ</span>
+      <h2 data-i18n="smb.faq.title">常見問題</h2>
+      <div class="faq">
+        <details>
+          <summary data-i18n="smb.faq.q1">ShellFans 支援哪些社群平台？</summary>
+          <div class="faq-answer" data-i18n="smb.faq.a1">ShellFans 續航引擎目前支援 Facebook（粉專）、Instagram、Threads 與 TikTok 的社群資產備份。核心定位是跨平台社群資產續航，而非單一平台的備份工具。</div>
+        </details>
+        <details>
+          <summary data-i18n="smb.faq.q2">ShellFans 可以備份 Facebook、Instagram、Threads、TikTok 嗎？</summary>
+          <div class="faq-answer" data-i18n="smb.faq.a2">可以。續航引擎為這四個平台保存貼文內容、媒體素材、留言互動、公開互動紀錄、粉絲成長數據與受眾輪廓，建立跨平台的第二份品牌社群資料庫。</div>
+        </details>
+        <details>
+          <summary data-i18n="smb.faq.q3">社群貼文可以備份嗎？</summary>
+          <div class="faq-answer" data-i18n="smb.faq.a3">可以。ShellFans 保存貼文文字內容與發佈脈絡，涵蓋 Facebook 貼文備份、Instagram 貼文備份、Threads 貼文備份與 TikTok 貼文備份。</div>
+        </details>
+        <details>
+          <summary data-i18n="smb.faq.q4">社群圖片與影片可以備份嗎？</summary>
+          <div class="faq-answer" data-i18n="smb.faq.a4">可以。社群圖片、影片等媒體素材會集中保存，內容不再只存在於平台伺服器上；帳號異常時素材仍在自己手上。</div>
+        </details>
+        <details>
+          <summary data-i18n="smb.faq.q5">留言與互動紀錄可以保存嗎？</summary>
+          <div class="faq-answer" data-i18n="smb.faq.a5" data-i18n-html>可以。留言、公開互動紀錄與粉絲互動脈絡會結構化保存，成為可分析的粉絲互動資產，並可搭配〈<a href="/fans-analysis">粉絲互動分析</a>〉深入理解受眾。</div>
+        </details>
+        <details>
+          <summary data-i18n="smb.faq.q6">粉絲名單可以完整匯出嗎？</summary>
+          <div class="faq-answer" data-i18n="smb.faq.a6">完整粉絲個資或所有粉絲身份資料會受到平台 API、隱私權與資料授權限制；ShellFans 著重保存貼文內容、媒體素材、留言互動、公開互動紀錄、粉絲成長數據、受眾輪廓與跨平台社群互動脈絡。</div>
+        </details>
+        <details>
+          <summary data-i18n="smb.faq.q7">粉絲成長數據與受眾輪廓可以保存嗎？</summary>
+          <div class="faq-answer" data-i18n="smb.faq.a7">可以。續航引擎持續追蹤與保存粉絲成長數據、受眾輪廓與跨平台互動趨勢，讓帳號斷點後仍能延續經營判斷與受眾洞察。</div>
+        </details>
+        <details>
+          <summary data-i18n="smb.faq.q8">社群帳號被盜或停權前可以先做什麼保護？</summary>
+          <div class="faq-answer" data-i18n="smb.faq.a8">最重要的是在風險發生前建立第二份社群資產：定期備份貼文、媒體素材、留言互動與粉絲成長數據。ShellFans 續航引擎提供跨平台持續備份與頻道健康度監測，帳號出現異常時能及時通知，並協助把已備份內容轉移到新頻道。</div>
+        </details>
+        <details>
+          <summary data-i18n="smb.faq.q9">Instagram / Threads / TikTok 貼文可以備份嗎？</summary>
+          <div class="faq-answer" data-i18n="smb.faq.a9">可以。Instagram 貼文備份、Threads 貼文備份與 TikTok 貼文備份都在續航引擎的支援範圍內，與 Facebook 粉專備份一起構成跨平台社群資產備份。</div>
+        </details>
+        <details>
+          <summary data-i18n="smb.faq.q10">ShellFans 備份的是什麼資料？</summary>
+          <div class="faq-answer" data-i18n="smb.faq.a10">四大類：(1) 貼文內容與發佈脈絡；(2) 圖片、影片等媒體素材；(3) 留言、公開互動紀錄與粉絲互動脈絡；(4) 粉絲成長數據與受眾輪廓。</div>
+        </details>
+        <details>
+          <summary data-i18n="smb.faq.q11">社群資產備份和社群排程工具有什麼不同？</summary>
+          <div class="faq-answer" data-i18n="smb.faq.a11">排程工具解決「把內容發出去」；發完之後，內容與互動仍然只存在平台上。社群資產備份解決的是「發出去之後」——把貼文、媒體、互動與成長數據保存成自己擁有的第二份資料庫。兩者互補。</div>
+        </details>
+        <details>
+          <summary data-i18n="smb.faq.q12">社群資產備份和一般社群數據分析工具有什麼不同？</summary>
+          <div class="faq-answer" data-i18n="smb.faq.a12">數據分析儀表板著重即時成效數字，通常不保存內容與互動本體；帳號消失時數據也一起消失。社群資產備份同時保存貼文、媒體素材、留言互動與粉絲成長數據本體，即使平台端資料消失也有第二份。</div>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 7. Related reading ===== -->
+  <section id="related">
+    <div class="container">
+      <span class="section-eyebrow" data-i18n="smb.rel.eyebrow">07 / Learn More</span>
+      <h2 data-i18n="smb.rel.title">延伸閱讀</h2>
+      <div class="rel-grid">
+        <div class="rel-card">
+          <h3><a href="/what-is-shellfans" data-i18n="smb.rel.c1.title" style="text-decoration:none;color:inherit">ShellFans 是什麼？</a></h3>
+          <p data-i18n="smb.rel.c1.body" data-i18n-html>品牌、公司與三條產品服務線的完整說明。<a href="/what-is-shellfans">前往閱讀</a></p>
+        </div>
+        <div class="rel-card">
+          <h3><a href="/kol-engine" data-i18n="smb.rel.c2.title" style="text-decoration:none;color:inherit">續航引擎</a></h3>
+          <p data-i18n="smb.rel.c2.body" data-i18n-html>保存的不只是資料，還有回憶與感動。<a href="/kol-engine">認識續航引擎</a></p>
+        </div>
+        <div class="rel-card">
+          <h3><a href="/fans-analysis" data-i18n="smb.rel.c3.title" style="text-decoration:none;color:inherit">粉絲互動分析</a></h3>
+          <p data-i18n="smb.rel.c3.body" data-i18n-html>從留言情緒到受眾輪廓，看懂你的粉絲。<a href="/fans-analysis">了解粉絲分析</a></p>
+        </div>
+        <div class="rel-card">
+          <h3><a href="/aeo-geo" data-i18n="smb.rel.c4.title" style="text-decoration:none;color:inherit">AEO/GEO 代管</a></h3>
+          <p data-i18n="smb.rel.c4.body" data-i18n-html>讓網站被 AI 搜尋看懂與引用。<a href="/aeo-geo">了解 AEO/GEO 代管</a></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Final CTA ===== -->
+  <section class="final-cta">
+    <div class="container">
+      <h2 data-i18n="smb.cta.title" data-i18n-html>今天就為你的社群資產<br>建立第二份保險</h2>
+      <p data-i18n="smb.cta.sub">從 Facebook、Instagram、Threads 到 TikTok，ShellFans 續航引擎讓你的貼文、互動與粉絲成長數據真正屬於自己。</p>
+      <div class="cta-row">
+        <a href="/price" class="btn-primary" data-i18n="smb.cta.btnPrimary">查看方案價格</a>
+        <a href="/contact" class="btn-outline" data-i18n="smb.cta.btnSecondary">預約諮詢 / 聯絡我們</a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ===== FOOTER ===== -->
+<footer class="sf-footer" role="contentinfo" data-sf-footer><div id="sf-footer-root"><div class="sf-container"><div class="sf-footer-top"><div><div class="sf-footer-brand"><img decoding="async" loading="lazy" src="https://shell.fans/images/nav_logo.svg" alt="ShellFans AI" width="162" height="32"></div><p class="sf-footer-desc">跨平台社群 AI 指揮中心。保存社群資產，看懂粉絲，同步經營與口碑成長。</p></div><div class="sf-footer-col"><h3>產品</h3><a data-sf-product="shellfans-engine" href="https://shell.fans/kol-engine">續航引擎</a><a href="https://shell.fans/fans-analysis">粉絲分析</a><a data-sf-product="kolfans" href="https://kol.fans" target="_blank" rel="noopener noreferrer">口碑行銷</a><a href="https://kol.fans/pricing" target="_blank" rel="noopener noreferrer">查看方案</a></div><div class="sf-footer-col"><h3>資源</h3><a href="https://blog.shell.fans/" target="_blank" rel="noopener noreferrer">Klog 部落格</a><a href="https://shell.fans/helpcenter">幫助中心</a><a href="https://shell.fans/support">客服支援</a></div><div class="sf-footer-col"><h3>聯繫</h3><a href="https://shell.fans/contact">關於我們</a><a href="https://shell.fans/contact">歡迎聯繫</a><a href="https://shell.fans/co-founder">創辦人</a></div></div><div class="sf-footer-company" aria-label="公司資訊"><span class="sf-footer-company-row">唄粉智能科技股份有限公司</span><span class="sf-footer-company-row">地址：臺北市內湖區瑞光路335號4樓</span><span class="sf-footer-company-row"><a href="mailto:hello@shell.fans">信箱：hello@shell.fans</a></span><span class="sf-footer-company-row"><a href="tel:0277143635">電話：02-77143635</a></span><span class="sf-footer-company-row">統編：83032387</span></div><div class="sf-footer-patent"><span>唄粉智能科技及其產品受商標、</span><a href="https://tiponet.tipo.gov.tw/gpss2/gpsskmc/gpssbkm?!!FRURLTWI908295B" target="_blank" rel="noopener noreferrer">發明專利 I908295(臺灣)</a><span>及其他申請中美國、日本之專利保護。</span></div><div class="sf-footer-bottom"><span class="sf-footer-copy">© 2026 ShellFans AI. 唄粉智能科技股份有限公司. All rights reserved.</span><button type="button" class="sf-footer-lang" data-sf-lang aria-label="切換語言"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><path d="M2 12h20"></path><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg><span>English</span></button><div class="sf-footer-social" aria-label="社群連結"><a href="https://www.facebook.com/profile.php?id=61581243232686" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><img decoding="async" loading="lazy" src="https://shell.fans/images/facebook.svg" alt="Facebook" width="14" height="14"></a><a href="https://www.instagram.com/shell_fansai/" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><img decoding="async" loading="lazy" src="https://shell.fans/images/instagram.svg" alt="Instagram" width="14" height="14"></a></div><div class="sf-footer-legal"><a href="https://shell.fans/privacy-policy">隱私權政策</a><a href="https://shell.fans/terms-and-conditions">服務條款</a></div></div></div></div></footer>
+
+<!-- ===== i18n bootstrap (inline base dict, same locale-storage key as shell.fans home) ===== -->
+<script data-shellfans-i18n-bootstrap="1">
+(function () {
+  var STORAGE_KEY = 'shellfans_locale';
+
+  var BASE = {
+    'zh-TW': {
+      'nav.aeoGeo': 'AEO/GEO 代管','nav.engine': '續航引擎','nav.wordOfMouth': '口碑行銷','nav.pricing': '查看方案','nav.login': '登入','nav.getStarted': '開始使用',
+      'footer.langLabel': '繁體中文',
+      'smb.hero.eyebrow': 'Social Asset Backup / 跨平台社群資產備份',
+      'smb.hero.h1': '跨平台社群資產備份：把 Facebook、Instagram、Threads、TikTok 的經營成果留在自己手上',
+      'smb.hero.answer': '有沒有第三方平台可以幫你把 <strong>Facebook、Instagram、Threads、TikTok</strong> 的貼文、內容、互動與粉絲成長數據做備份保護？有——<strong>ShellFans 續航引擎</strong>是跨平台社群資產備份與續航服務，保存<strong>貼文內容、媒體素材、留言互動、公開互動紀錄、粉絲成長數據與受眾輪廓</strong>，為創作者、品牌、代理商與企業建立「社群資產保險箱」，降低帳號被盜、停權、限流或內容消失的風險。',
+      'smb.hero.btnPrimary': '查看方案價格','smb.hero.btnSecondary': '聯絡我們',
+      'smb.s1.eyebrow': '01 / What We Preserve',
+      'smb.s1.title': 'ShellFans 備份哪些社群資產？',
+      'smb.s1.intro': '社群資產不只是貼文。ShellFans 續航引擎把你的社群經營成果拆解為六類可保存、可分析的資產：',
+      'smb.s1.li1': '<strong>貼文內容備份</strong>貼文文字與發佈脈絡的跨平台保存——Facebook 貼文備份、Instagram 貼文備份、Threads 貼文備份、TikTok 貼文備份。',
+      'smb.s1.li2': '<strong>媒體素材備份</strong>社群圖片與影片集中保存，內容不再只存在平台伺服器上。',
+      'smb.s1.li3': '<strong>留言與互動紀錄保存</strong>留言、公開互動紀錄與粉絲互動脈絡，結構化保存為可分析的粉絲互動資產。',
+      'smb.s1.li4': '<strong>粉絲成長數據備份</strong>粉絲數、互動趨勢與成長軌跡的持續記錄，斷點後仍能延續經營判斷。',
+      'smb.s1.li5': '<strong>受眾輪廓保存</strong>受眾輪廓與偏好的長期累積，搭配<a href="/fans-analysis">粉絲互動分析</a>深入理解粉絲情緒與內容共鳴。',
+      'smb.s1.li6': '<strong>跨平台互動脈絡</strong>同一品牌在不同平台的互動脈絡整合保存，形成完整的社群資產全景。',
+      'smb.s1.limit': '完整粉絲個資或所有粉絲身份資料會受到平台 API、隱私權與資料授權限制；ShellFans 著重保存貼文內容、媒體素材、留言互動、公開互動紀錄、粉絲成長數據、受眾輪廓與跨平台社群互動脈絡。',
+      'smb.s2.eyebrow': '02 / Platforms',
+      'smb.s2.title': '支援平台：Facebook、Instagram、Threads、TikTok',
+      'smb.s2.intro': 'ShellFans 的核心不是單一平台備份，而是<strong>跨平台社群資產續航</strong>。四個平台的備份彼此整合，形成一份完整的品牌社群資料庫：',
+      'smb.s2.fb.title': 'Facebook 粉專與社群內容備份','smb.s2.fb.body': '粉專貼文、圖片影片素材、留言互動與粉絲成長數據的持續備份。粉專被盜或被停權時，多年經營成果仍有第二份。',
+      'smb.s2.ig.title': 'Instagram 貼文、互動與受眾輪廓備份','smb.s2.ig.body': 'IG 貼文與媒體素材備份，加上留言互動與受眾輪廓保存，讓視覺內容與粉絲關係同時留存。',
+      'smb.s2.th.title': 'Threads 內容與互動脈絡備份','smb.s2.th.body': 'Threads 貼文與對話式互動脈絡的結構化保存，短文字社群的討論資產不再隨串文消失。',
+      'smb.s2.tt.title': 'TikTok 影片內容、互動與成長數據備份','smb.s2.tt.body': '短影音內容與互動數據的持續保存，追蹤 TikTok 帳號的粉絲成長軌跡與內容表現。',
+      'smb.s3.eyebrow': '03 / Why It Matters',
+      'smb.s3.title': '社群帳號被盜、停權、限流怎麼辦？為什麼需要社群資產備份',
+      'smb.s3.intro': '創作者與品牌最重要的數位資產，其實存放在別人的平台上。以下情境每天都在發生：',
+      'smb.s3.li1': '<strong>帳號被盜</strong>駭客takeover後刪文、改名、詐騙粉絲；申訴找回帳號可能需要數週，內容與粉絲信任已受損。事前備份讓你隨時能證明與重建。',
+      'smb.s3.li2': '<strong>帳號被停權</strong>平台誤判違規、檢舉濫用都可能讓帳號一夜消失。備份讓你在申訴期間仍握有全部內容與互動紀錄，並能在新頻道延續經營。',
+      'smb.s3.li3': '<strong>限流與觸及下降</strong>演算法變動或 shadowban 讓內容觸及腰斬。有完整的粉絲成長數據與互動基準，才能判斷是內容問題還是平台問題。',
+      'smb.s3.li4': '<strong>內容消失與平台政策變動</strong>貼文被下架、功能被移除、平台調整資料保留政策——你無法控制平台，但可以控制自己有沒有第二份。',
+      'smb.s3.outro': '這就是「<strong>創作者數位資產保護</strong>」的核心：與其事後救援，不如事前把社群資產放進自己的保險箱。適用對象包含創作者、品牌、行銷代理商與企業。',
+      'smb.s4.eyebrow': '04 / How It Differs',
+      'smb.s4.title': '社群資產備份與排程工具、數據分析、KOL 媒合平台的差異',
+      'smb.s4.th1': '工具類型','smb.s4.th2': '解決什麼','smb.s4.th3': 'ShellFans 續航引擎的差異',
+      'smb.s4.r1c1': '社群排程工具','smb.s4.r1c2': '把內容發出去；發完後資產仍只存在平台上','smb.s4.r1c3': '解決「發出去之後」：把貼文、媒體、互動保存成自己的資料庫',
+      'smb.s4.r2c1': 'Link-in-bio 工具','smb.s4.r2c2': '把流量導出去；不保存任何社群內容','smb.s4.r2c3': '保存內容與互動本體，流量斷了資產還在',
+      'smb.s4.r3c1': '社群數據分析儀表板','smb.s4.r3c2': '看即時成效數字；帳號消失時數據一起消失','smb.s4.r3c3': '同時保存數據與內容本體，還能做粉絲互動分析',
+      'smb.s4.r4c1': 'KOL 媒合平台','smb.s4.r4c2': '找新 KOL 合作；不處理資產保存','smb.s4.r4c3': '與 ShellFans 旗下 KOL.fans 口碑行銷互補，資產與行銷並進',
+      'smb.s5.eyebrow': '05 / Quick Answers','smb.s5.title': '快速問答',
+      'smb.qa1.q': 'ShellFans 是什麼？','smb.qa1.a': 'ShellFans（ShellFans AI Technology）是唄粉智能科技股份有限公司旗下品牌，定位為跨平台社群資產續航、備份與保護平台。核心服務「續航引擎」為創作者與品牌保存社群資產；另有 <a href="https://kol.fans" target="_blank" rel="noopener">KOL.fans 口碑行銷</a>與 <a href="/aeo-geo">AEO/GEO 代管</a>兩條服務線。詳見〈<a href="/what-is-shellfans">ShellFans 是什麼</a>〉。',
+      'smb.qa2.q': 'ShellFans 支援哪些平台？','smb.qa2.a': '目前支援 Facebook（粉專）、Instagram、Threads 與 TikTok 四個平台的社群資產備份，並持續整合跨平台的互動脈絡。',
+      'smb.qa3.q': 'ShellFans 可以備份哪些社群資產？','smb.qa3.a': '貼文內容與發佈脈絡、圖片影片等媒體素材、留言與公開互動紀錄、粉絲成長數據與受眾輪廓——四大類資產構成完整的品牌社群資料庫。',
+      'smb.qa4.q': 'ShellFans 可以完整備份粉絲名單嗎？','smb.qa4.a': '完整粉絲個資或所有粉絲身份資料會受到平台 API、隱私權與資料授權限制；ShellFans 著重保存貼文內容、媒體素材、留言互動、公開互動紀錄、粉絲成長數據、受眾輪廓與跨平台社群互動脈絡。',
+      'smb.qa5.q': '為什麼創作者與品牌需要跨平台社群資產備份？','smb.qa5.a': '因為社群帳號的所有權在平台手上：被盜、停權、限流、內容下架都可能讓多年經營一夜歸零。跨平台備份把貼文、媒體、互動與粉絲成長數據變成自己真正擁有的第二份資產，是社群經營的基本風險管理。',
+      'smb.faq.eyebrow': '06 / FAQ','smb.faq.title': '常見問題',
+      'smb.faq.q1': 'ShellFans 支援哪些社群平台？','smb.faq.a1': 'ShellFans 續航引擎目前支援 Facebook（粉專）、Instagram、Threads 與 TikTok 的社群資產備份。核心定位是跨平台社群資產續航，而非單一平台的備份工具。',
+      'smb.faq.q2': 'ShellFans 可以備份 Facebook、Instagram、Threads、TikTok 嗎？','smb.faq.a2': '可以。續航引擎為這四個平台保存貼文內容、媒體素材、留言互動、公開互動紀錄、粉絲成長數據與受眾輪廓，建立跨平台的第二份品牌社群資料庫。',
+      'smb.faq.q3': '社群貼文可以備份嗎？','smb.faq.a3': '可以。ShellFans 保存貼文文字內容與發佈脈絡，涵蓋 Facebook 貼文備份、Instagram 貼文備份、Threads 貼文備份與 TikTok 貼文備份。',
+      'smb.faq.q4': '社群圖片與影片可以備份嗎？','smb.faq.a4': '可以。社群圖片、影片等媒體素材會集中保存，內容不再只存在於平台伺服器上；帳號異常時素材仍在自己手上。',
+      'smb.faq.q5': '留言與互動紀錄可以保存嗎？','smb.faq.a5': '可以。留言、公開互動紀錄與粉絲互動脈絡會結構化保存，成為可分析的粉絲互動資產，並可搭配〈<a href="/fans-analysis">粉絲互動分析</a>〉深入理解受眾。',
+      'smb.faq.q6': '粉絲名單可以完整匯出嗎？','smb.faq.a6': '完整粉絲個資或所有粉絲身份資料會受到平台 API、隱私權與資料授權限制；ShellFans 著重保存貼文內容、媒體素材、留言互動、公開互動紀錄、粉絲成長數據、受眾輪廓與跨平台社群互動脈絡。',
+      'smb.faq.q7': '粉絲成長數據與受眾輪廓可以保存嗎？','smb.faq.a7': '可以。續航引擎持續追蹤與保存粉絲成長數據、受眾輪廓與跨平台互動趨勢，讓帳號斷點後仍能延續經營判斷與受眾洞察。',
+      'smb.faq.q8': '社群帳號被盜或停權前可以先做什麼保護？','smb.faq.a8': '最重要的是在風險發生前建立第二份社群資產：定期備份貼文、媒體素材、留言互動與粉絲成長數據。ShellFans 續航引擎提供跨平台持續備份與頻道健康度監測，帳號出現異常時能及時通知，並協助把已備份內容轉移到新頻道。',
+      'smb.faq.q9': 'Instagram / Threads / TikTok 貼文可以備份嗎？','smb.faq.a9': '可以。Instagram 貼文備份、Threads 貼文備份與 TikTok 貼文備份都在續航引擎的支援範圍內，與 Facebook 粉專備份一起構成跨平台社群資產備份。',
+      'smb.faq.q10': 'ShellFans 備份的是什麼資料？','smb.faq.a10': '四大類：(1) 貼文內容與發佈脈絡；(2) 圖片、影片等媒體素材；(3) 留言、公開互動紀錄與粉絲互動脈絡；(4) 粉絲成長數據與受眾輪廓。',
+      'smb.faq.q11': '社群資產備份和社群排程工具有什麼不同？','smb.faq.a11': '排程工具解決「把內容發出去」；發完之後，內容與互動仍然只存在平台上。社群資產備份解決的是「發出去之後」——把貼文、媒體、互動與成長數據保存成自己擁有的第二份資料庫。兩者互補。',
+      'smb.faq.q12': '社群資產備份和一般社群數據分析工具有什麼不同？','smb.faq.a12': '數據分析儀表板著重即時成效數字，通常不保存內容與互動本體；帳號消失時數據也一起消失。社群資產備份同時保存貼文、媒體素材、留言互動與粉絲成長數據本體，即使平台端資料消失也有第二份。',
+      'smb.rel.eyebrow': '07 / Learn More','smb.rel.title': '延伸閱讀',
+      'smb.rel.c1.title': 'ShellFans 是什麼？','smb.rel.c1.body': '品牌、公司與三條產品服務線的完整說明。<a href="/what-is-shellfans">前往閱讀</a>',
+      'smb.rel.c2.title': '續航引擎','smb.rel.c2.body': '保存的不只是資料，還有回憶與感動。<a href="/kol-engine">認識續航引擎</a>',
+      'smb.rel.c3.title': '粉絲互動分析','smb.rel.c3.body': '從留言情緒到受眾輪廓，看懂你的粉絲。<a href="/fans-analysis">了解粉絲分析</a>',
+      'smb.rel.c4.title': 'AEO/GEO 代管','smb.rel.c4.body': '讓網站被 AI 搜尋看懂與引用。<a href="/aeo-geo">了解 AEO/GEO 代管</a>',
+      'smb.cta.title': '今天就為你的社群資產<br>建立第二份保險',
+      'smb.cta.sub': '從 Facebook、Instagram、Threads 到 TikTok，ShellFans 續航引擎讓你的貼文、互動與粉絲成長數據真正屬於自己。',
+      'smb.cta.btnPrimary': '查看方案價格','smb.cta.btnSecondary': '預約諮詢 / 聯絡我們',
+      'meta.title': '跨平台社群資產備份｜Facebook、Instagram、Threads、TikTok 貼文與互動保護',
+      'meta.description': 'ShellFans 續航引擎支援 Facebook、Instagram、Threads、TikTok 社群資產備份，保存貼文、媒體素材、留言互動、公開互動紀錄、粉絲成長數據與受眾輪廓，協助創作者與品牌降低平台風險。'
+    },
+    'en': {
+      'nav.aeoGeo': 'AEO/GEO Hosting','nav.engine': 'Continuity Engine','nav.wordOfMouth': 'Word-of-Mouth','nav.pricing': 'Pricing','nav.login': 'Log in','nav.getStarted': 'Get Started',
+      'footer.langLabel': 'English',
+      'smb.hero.eyebrow': 'Social Asset Backup',
+      'smb.hero.h1': 'Cross-platform Social Media Backup: keep your Facebook, Instagram, Threads, and TikTok work in your own hands',
+      'smb.hero.answer': 'Is there a third-party platform that can back up and protect your <strong>Facebook, Instagram, Threads, and TikTok</strong> posts, content, interactions, and fan growth data? Yes — the <strong>ShellFans Continuity Engine</strong> is a cross-platform social media asset backup and continuity service. It preserves <strong>post content, media assets, comments, public interaction records, fan growth data, and audience profiles</strong>, giving creators, brands, agencies, and businesses a "social asset vault" that reduces the risk of account hijacking, suspension, throttling, or content loss.',
+      'smb.hero.btnPrimary': 'See pricing','smb.hero.btnSecondary': 'Contact us',
+      'smb.s1.eyebrow': '01 / What We Preserve',
+      'smb.s1.title': 'What social assets does ShellFans back up?',
+      'smb.s1.intro': 'Social assets are more than posts. The ShellFans Continuity Engine breaks your social media presence into six preservable, analyzable asset classes:',
+      'smb.s1.li1': '<strong>Post content backup</strong>Cross-platform preservation of post text and publishing context — Facebook post backup, Instagram post backup, Threads post backup, TikTok post backup.',
+      'smb.s1.li2': '<strong>Media asset backup</strong>Social images and videos preserved in one place — no longer living only on platform servers.',
+      'smb.s1.li3': '<strong>Comments & interaction records</strong>Comments, public interaction records, and fan-engagement context preserved in structured, analyzable form.',
+      'smb.s1.li4': '<strong>Fan growth data backup</strong>Continuous record of follower counts, engagement trends, and growth trajectory — insight survives any account disruption.',
+      'smb.s1.li5': '<strong>Audience profile preservation</strong>Long-term accumulation of audience profiles and preferences, paired with <a href="/fans-analysis">Fans Analysis</a> for sentiment and resonance insight.',
+      'smb.s1.li6': '<strong>Cross-platform engagement context</strong>One brand\'s interactions across platforms, integrated into a complete social asset panorama.',
+      'smb.s1.limit': 'Full fan personal data or complete follower identity lists are constrained by platform APIs, privacy law, and data authorization. ShellFans focuses on preserving post content, media assets, comments and interactions, public interaction records, fan growth data, audience profiles, and cross-platform engagement context.',
+      'smb.s2.eyebrow': '02 / Platforms',
+      'smb.s2.title': 'Supported platforms: Facebook, Instagram, Threads, TikTok',
+      'smb.s2.intro': 'ShellFans is not a single-platform backup tool — it is <strong>cross-platform social asset continuity</strong>. Backups from all four platforms integrate into one complete brand database:',
+      'smb.s2.fb.title': 'Facebook Page & content backup','smb.s2.fb.body': 'Continuous backup of Page posts, image and video assets, comments, and fan growth data. If your Page is hijacked or suspended, years of work still exist in a second copy.',
+      'smb.s2.ig.title': 'Instagram post, interaction & audience backup','smb.s2.ig.body': 'IG post and media backup, plus comments and audience profile preservation — visual content and fan relationships preserved together.',
+      'smb.s2.th.title': 'Threads content & conversation backup','smb.s2.th.body': 'Structured preservation of Threads posts and conversational context — short-form community discussion assets no longer vanish with the thread.',
+      'smb.s2.tt.title': 'TikTok video, interaction & growth backup','smb.s2.tt.body': 'Continuous preservation of short-video content and engagement data, tracking your TikTok fan growth trajectory and content performance.',
+      'smb.s3.eyebrow': '03 / Why It Matters',
+      'smb.s3.title': 'Account hijacked, suspended, or throttled? Why social asset backup matters',
+      'smb.s3.intro': 'Creators\' and brands\' most valuable digital assets live on someone else\'s platform. These scenarios happen every day:',
+      'smb.s3.li1': '<strong>Account hijacking</strong>Attackers delete posts, rename accounts, and scam followers; recovery appeals can take weeks while content and trust erode. A prior backup lets you prove and rebuild at any time.',
+      'smb.s3.li2': '<strong>Account suspension</strong>False-positive policy enforcement or report abuse can erase an account overnight. Backup means you keep all content and interaction records during appeals — and can continue on a new channel.',
+      'smb.s3.li3': '<strong>Throttling & reach decline</strong>Algorithm changes or shadowbans can halve your reach. Complete fan growth data and engagement baselines let you tell content problems from platform problems.',
+      'smb.s3.li4': '<strong>Content loss & policy changes</strong>Posts get taken down, features get removed, retention policies change — you can\'t control the platform, but you can control whether you have a second copy.',
+      'smb.s3.outro': 'This is the core of <strong>creator digital asset protection</strong>: rather than post-hoc rescue, put your social assets in your own vault beforehand. For creators, brands, agencies, and businesses.',
+      'smb.s4.eyebrow': '04 / How It Differs',
+      'smb.s4.title': 'Social asset backup vs. schedulers, analytics, and KOL marketplaces',
+      'smb.s4.th1': 'Tool type','smb.s4.th2': 'What it solves','smb.s4.th3': 'How the Continuity Engine differs',
+      'smb.s4.r1c1': 'Social schedulers','smb.s4.r1c2': 'Publishing content; after publishing, assets still live only on the platform','smb.s4.r1c3': 'Solves what happens AFTER publishing: posts, media, and interactions preserved in your own database',
+      'smb.s4.r2c1': 'Link-in-bio tools','smb.s4.r2c2': 'Routing traffic out; preserves no social content','smb.s4.r2c3': 'Preserves the content and interactions themselves — assets survive traffic loss',
+      'smb.s4.r3c1': 'Analytics dashboards','smb.s4.r3c2': 'Real-time metrics; data disappears with the account','smb.s4.r3c3': 'Preserves data AND content bodies, plus fan interaction analysis',
+      'smb.s4.r4c1': 'KOL marketplaces','smb.s4.r4c2': 'Finding new KOLs; no asset preservation','smb.s4.r4c3': 'Complementary to ShellFans\' KOL.fans word-of-mouth marketing — assets and marketing together',
+      'smb.s5.eyebrow': '05 / Quick Answers','smb.s5.title': 'Quick answers',
+      'smb.qa1.q': 'What is ShellFans?','smb.qa1.a': 'ShellFans (ShellFans AI Technology) is a brand of ShellFans AI Technology Co., Ltd. (唄粉智能科技股份有限公司) — a cross-platform social media asset continuity, backup, and protection platform. Its core Continuity Engine preserves social assets for creators and brands; <a href="https://kol.fans" target="_blank" rel="noopener">KOL.fans word-of-mouth marketing</a> and <a href="/aeo-geo">AEO/GEO Managed Hosting</a> are its other two lines. See <a href="/what-is-shellfans">What is ShellFans</a>.',
+      'smb.qa2.q': 'Which platforms does ShellFans support?','smb.qa2.a': 'Currently Facebook (Pages), Instagram, Threads, and TikTok — with cross-platform engagement context continuously integrated.',
+      'smb.qa3.q': 'What social assets can ShellFans back up?','smb.qa3.a': 'Post content and publishing context, media assets (images and videos), comments and public interaction records, fan growth data and audience profiles — four asset classes forming a complete brand social database.',
+      'smb.qa4.q': 'Can ShellFans fully back up my follower list?','smb.qa4.a': 'Full fan personal data or complete follower identity lists are constrained by platform APIs, privacy law, and data authorization. ShellFans focuses on preserving post content, media assets, comments and interactions, public interaction records, fan growth data, audience profiles, and cross-platform engagement context.',
+      'smb.qa5.q': 'Why do creators and brands need cross-platform social backup?','smb.qa5.a': 'Because platforms own your account: hijacking, suspension, throttling, or takedowns can zero out years of work overnight. Cross-platform backup turns posts, media, interactions, and fan growth data into a second asset you truly own — basic risk management for social media operations.',
+      'smb.faq.eyebrow': '06 / FAQ','smb.faq.title': 'Frequently asked questions',
+      'smb.faq.q1': 'Which social platforms does ShellFans support?','smb.faq.a1': 'The ShellFans Continuity Engine currently supports social asset backup for Facebook (Pages), Instagram, Threads, and TikTok. Its core positioning is cross-platform social asset continuity, not a single-platform backup tool.',
+      'smb.faq.q2': 'Can ShellFans back up Facebook, Instagram, Threads, and TikTok?','smb.faq.a2': 'Yes. The engine preserves post content, media assets, comments and interactions, public interaction records, fan growth data, and audience profiles for all four platforms — a cross-platform second copy of your brand\'s social database.',
+      'smb.faq.q3': 'Can social posts be backed up?','smb.faq.a3': 'Yes. ShellFans preserves post text and publishing context — covering Facebook post backup, Instagram post backup, Threads post backup, and TikTok post backup.',
+      'smb.faq.q4': 'Can social images and videos be backed up?','smb.faq.a4': 'Yes. Social images, videos, and other media assets are preserved centrally — your content no longer lives only on platform servers, and remains in your hands if an account has problems.',
+      'smb.faq.q5': 'Can comments and interaction records be preserved?','smb.faq.a5': 'Yes. Comments, public interaction records, and fan-engagement context are preserved in structured form — an analyzable fan-interaction asset, pairable with <a href="/fans-analysis">Fans Analysis</a> for deeper audience insight.',
+      'smb.faq.q6': 'Can I export my full follower list?','smb.faq.a6': 'Full fan personal data or complete follower identity lists are constrained by platform APIs, privacy law, and data authorization. ShellFans focuses on preserving post content, media assets, comments and interactions, public interaction records, fan growth data, audience profiles, and cross-platform engagement context.',
+      'smb.faq.q7': 'Can fan growth data and audience profiles be preserved?','smb.faq.a7': 'Yes. The engine continuously tracks and preserves fan growth data, audience profiles, and cross-platform engagement trends — continuity of insight even after an account disruption.',
+      'smb.faq.q8': 'What can I do BEFORE my account is hijacked or suspended?','smb.faq.a8': 'The most important step is building a second copy of your social assets before risk strikes: regularly back up posts, media assets, comments, and fan growth data. The ShellFans Continuity Engine provides continuous cross-platform backup and channel health monitoring, alerts you to anomalies, and helps migrate backed-up content to a new channel.',
+      'smb.faq.q9': 'Can Instagram / Threads / TikTok posts be backed up?','smb.faq.a9': 'Yes. Instagram post backup, Threads post backup, and TikTok post backup are all supported — together with Facebook Page backup they form cross-platform social asset backup.',
+      'smb.faq.q10': 'What data does ShellFans back up?','smb.faq.a10': 'Four classes: (1) post content and publishing context; (2) media assets such as images and videos; (3) comments, public interaction records, and fan-engagement context; (4) fan growth data and audience profiles.',
+      'smb.faq.q11': 'How does social asset backup differ from social schedulers?','smb.faq.a11': 'Schedulers solve "publishing content"; after publishing, content and interactions still live only on the platform. Social asset backup solves what happens after — preserving posts, media, interactions, and growth data as a second database you own. The two are complementary.',
+      'smb.faq.q12': 'How does social asset backup differ from analytics tools?','smb.faq.a12': 'Analytics dashboards focus on real-time metrics and usually do not preserve the content or interactions themselves — when the account disappears, so does the data. Social asset backup preserves posts, media, comments, and fan growth data bodies, so a second copy exists even if platform-side data is lost.',
+      'smb.rel.eyebrow': '07 / Learn More','smb.rel.title': 'Related reading',
+      'smb.rel.c1.title': 'What is ShellFans?','smb.rel.c1.body': 'The brand, the company, and its three product/service lines. <a href="/what-is-shellfans">Read more</a>',
+      'smb.rel.c2.title': 'Continuity Engine','smb.rel.c2.body': 'Preserving more than data — memories and connection. <a href="/kol-engine">Meet the engine</a>',
+      'smb.rel.c3.title': 'Fans Analysis','smb.rel.c3.body': 'From comment sentiment to audience profiles. <a href="/fans-analysis">Learn more</a>',
+      'smb.rel.c4.title': 'AEO/GEO Managed Hosting','smb.rel.c4.body': 'Make your website understood and cited by AI search. <a href="/aeo-geo">Learn more</a>',
+      'smb.cta.title': 'Give your social assets<br>a second copy — today',
+      'smb.cta.sub': 'From Facebook and Instagram to Threads and TikTok, the ShellFans Continuity Engine makes your posts, interactions, and fan growth data truly yours.',
+      'smb.cta.btnPrimary': 'See pricing','smb.cta.btnSecondary': 'Book a consult / contact us',
+      'meta.title': 'Cross-platform Social Media Backup | Facebook, Instagram, Threads & TikTok Post and Interaction Protection',
+      'meta.description': 'The ShellFans Continuity Engine backs up social assets across Facebook, Instagram, Threads, and TikTok — preserving posts, media, comments, public interaction records, fan growth data, and audience profiles to reduce platform risk.'
+    }
+  };
+
+  var currentLocale = 'zh-TW';
+  try { currentLocale = localStorage.getItem(STORAGE_KEY) || 'zh-TW'; } catch (_) {}
+  if (currentLocale !== 'zh-TW' && currentLocale !== 'en') currentLocale = 'zh-TW';
+
+  function resolve(key) {
+    return (BASE[currentLocale] && BASE[currentLocale][key])
+        || (BASE['zh-TW'] && BASE['zh-TW'][key])
+        || key;
+  }
+
+  function applyTranslations() {
+    var els = document.querySelectorAll('[data-i18n]');
+    for (var i = 0; i < els.length; i++) {
+      var el = els[i];
+      var key = el.getAttribute('data-i18n');
+      var attr = el.getAttribute('data-i18n-attr');
+      var val = resolve(key);
+      if (attr) {
+        el.setAttribute(attr, val);
+      } else if (el.hasAttribute('data-i18n-html')) {
+        el.innerHTML = val;
+      } else {
+        el.textContent = val;
+      }
+    }
+    document.documentElement.lang = currentLocale === 'en' ? 'en' : 'zh-Hant';
+  }
+
+  window.__i18n = resolve;
+  window.__i18nGetLocale = function () { return currentLocale; };
+  window.__setLocale = function (locale) {
+    if (locale !== 'zh-TW' && locale !== 'en') return;
+    currentLocale = locale;
+    try { localStorage.setItem(STORAGE_KEY, locale); } catch (_) {}
+    applyTranslations();
+    document.dispatchEvent(new CustomEvent('shellfans-locale-changed', { detail: { locale: locale } }));
+  };
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', applyTranslations);
+  } else {
+    applyTranslations();
+  }
+})();
+</script>
+
+<!-- ===== Lang switcher behavior (same as shell.fans home) ===== -->
+<script data-shellfans-lang-switcher="1">
+(function () {
+  var toggle = document.getElementById('langSwitcherToggle');
+  var list = document.getElementById('langSwitcherList');
+  var chevron = document.getElementById('langSwitcherChevron');
+  var labelEl = document.getElementById('langSwitcherLabel');
+  if (!toggle || !list) return;
+
+  var LABELS = { 'zh-TW': '繁體中文', 'en': 'English' };
+
+  function close() { list.style.display = 'none'; toggle.setAttribute('aria-expanded', 'false'); if (chevron) chevron.style.transform = ''; }
+  function open() { list.style.display = 'block'; toggle.setAttribute('aria-expanded', 'true'); if (chevron) chevron.style.transform = 'rotate(180deg)'; }
+  window.__closeLangSwitcher = close;
+
+  toggle.addEventListener('click', function (e) { e.stopPropagation(); var isOpen = list.style.display === 'block'; if (isOpen) close(); else open(); });
+  document.addEventListener('click', function (e) { if (!toggle.parentElement.contains(e.target)) close(); });
+
+  function syncActive() {
+    var current = (window.__i18nGetLocale && window.__i18nGetLocale()) || 'zh-TW';
+    if (labelEl) labelEl.textContent = LABELS[current] || current;
+    var checks = list.querySelectorAll('[data-check-for]');
+    for (var i = 0; i < checks.length; i++) {
+      checks[i].style.display = checks[i].getAttribute('data-check-for') === current ? '' : 'none';
+    }
+  }
+  document.addEventListener('shellfans-locale-changed', syncActive);
+  if (document.readyState === 'loading') { document.addEventListener('DOMContentLoaded', syncActive); } else { syncActive(); }
+})();
+</script>
+
+<!-- ===== Meta title/description i18n (sync <title> + <meta name=description>) ===== -->
+<script data-shellfans-meta-i18n="1">
+(function () {
+  function update() {
+    var t = window.__i18n;
+    if (!t) return;
+    var title = t('meta.title');
+    var desc = t('meta.description');
+    if (title) document.title = title;
+    var metaDesc = document.querySelector('meta[name="description"]');
+    if (metaDesc && desc) metaDesc.setAttribute('content', desc);
+    var ogTitle = document.querySelector('meta[property="og:title"]');
+    if (ogTitle && title) ogTitle.setAttribute('content', title);
+    var ogDesc = document.querySelector('meta[property="og:description"]');
+    if (ogDesc && desc) ogDesc.setAttribute('content', desc);
+  }
+  document.addEventListener('shellfans-locale-changed', update);
+  if (document.readyState === 'loading') { document.addEventListener('DOMContentLoaded', update); } else { update(); }
+})();
+</script>
+
+<!-- ===== nav scroll behavior ===== -->
+<script>
+(function(){
+  var nav=document.getElementById('nav');
+  if(nav){window.addEventListener('scroll',function(){nav.classList.toggle('scrolled',window.scrollY>20)},{passive:true})}
+})();
+</script>
+
+<!-- ===== shellfans unified mobile nav (sf-mob-nav-bootstrap) ===== -->
+<header class="sf-mob-header" aria-hidden="false">
+  <a href="https://shell.fans/" class="sf-mob-brand" aria-label="ShellFans">
+    <img src="https://shell.fans/images/nav_logo.svg" alt="ShellFans" width="120" height="26">
+  </a>
+  <button type="button" class="sf-mob-hamburger" id="sfMobHamburger" aria-label="開啟選單" aria-expanded="false" aria-controls="sfMobMenu">
+    <span></span><span></span><span></span>
+  </button>
+</header>
+<div class="sf-mob-menu" id="sfMobMenu" role="dialog" aria-modal="true" aria-label="主選單">
+  <a data-sf-product="aeogeo" href="https://shell.fans/aeo-geo">AEO/GEO 代管</a>
+  <a data-sf-product="shellfans-engine" href="https://shell.fans/kol-engine">續航引擎</a>
+  <a href="https://shell.fans/fans-analysis">粉絲分析</a>
+  <a data-sf-product="kolfans" href="https://kol.fans" target="_blank" rel="noopener">口碑行銷</a>
+  <a href="https://kol.fans/pricing" target="_blank" rel="noopener">查看方案</a>
+  <a href="https://blog.shell.fans/" target="_blank" rel="noopener">Klog</a>
+  <a href="https://kol.fans/login?next=https%3A%2F%2Fshell.fans%2F">登入</a>
+  <a href="https://kol.fans/signup" target="_blank" rel="noopener" class="sf-mob-cta">開始使用</a>
+</div>
+<style id="sf-mob-nav-css">
+.sf-mob-header,.sf-mob-menu{display:none}
+.sf-mob-header{align-items:center;justify-content:space-between;position:fixed;top:0;left:0;right:0;height:60px;padding:0 18px;background:rgba(255,255,255,0.97);border-bottom:1px solid #E8E5DE;z-index:9000;-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);box-sizing:border-box}
+.sf-mob-brand{display:flex;align-items:center;text-decoration:none}
+.sf-mob-brand img{height:26px;width:auto;display:block}
+.sf-mob-hamburger{flex-direction:column;gap:5px;background:none;border:0;cursor:pointer;padding:8px;display:flex}
+.sf-mob-hamburger span{display:block;width:22px;height:2px;background:#101214;border-radius:2px;transition:transform 200ms,opacity 200ms}
+.sf-mob-hamburger[aria-expanded="true"] span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.sf-mob-hamburger[aria-expanded="true"] span:nth-child(2){opacity:0}
+.sf-mob-hamburger[aria-expanded="true"] span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+.sf-mob-menu{position:fixed;top:60px;left:0;right:0;bottom:0;background:#fff;padding:1.5rem 1.5rem 2rem;flex-direction:column;z-index:8999;overflow-y:auto}
+.sf-mob-menu.active{display:flex}
+.sf-mob-menu a{font-size:1.05rem;font-weight:500;padding:1rem 0;border-bottom:1px solid #E8E5DE;color:#101214;text-decoration:none}
+.sf-mob-menu .sf-mob-cta{display:inline-flex;align-items:center;justify-content:center;margin-top:1.5rem;padding:14px 24px;background:#E96F5E;color:#fff;border-radius:8px;font-weight:600;border:none}
+@media (max-width:991px){
+  .sf-mob-header{display:flex}
+  /* Hide every known existing site header on mobile so only sf-mob-header shows */
+  .navbar.w-nav,header.nav,#nav.nav{display:none !important}
+  body.sf-mob-active{padding-top:60px}
+}
+</style>
+<script id="sf-mob-nav-js">
+(function(){
+  var hamb = document.getElementById('sfMobHamburger');
+  var menu = document.getElementById('sfMobMenu');
+  if (!hamb || !menu) return;
+  function setExpanded(state){
+    hamb.setAttribute('aria-expanded', state ? 'true' : 'false');
+    if (state) menu.classList.add('active'); else menu.classList.remove('active');
+    document.body.style.overflow = state ? 'hidden' : '';
+  }
+  hamb.addEventListener('click', function(){
+    setExpanded(!menu.classList.contains('active'));
+  });
+  menu.querySelectorAll('a').forEach(function(a){
+    a.addEventListener('click', function(){ setExpanded(false); });
+  });
+  // ESC closes the menu
+  document.addEventListener('keydown', function(e){
+    if (e.key === 'Escape' && menu.classList.contains('active')) setExpanded(false);
+  });
+})();
+</script>
+<!-- ===== /shellfans unified mobile nav ===== -->
+<script src="/js/sf-footer.js" defer></script>
+</body>
+</html>

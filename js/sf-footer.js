@@ -44,7 +44,7 @@
       ] }
     ],
     company: { lines: [
-      { text: { 'zh-TW': '日商唄粉智能科技有限公司', en: 'ShellFans AI Technology Co., Ltd.' } },
+      { text: { 'zh-TW': '唄粉智能科技股份有限公司', en: 'ShellFans AI Technology Co., Ltd.' } },
       { text: { 'zh-TW': '地址：臺北市內湖區瑞光路335號4樓', en: 'Address: 4F, No. 335, Ruiguang Rd., Neihu Dist., Taipei' } },
       { text: { 'zh-TW': '信箱：hello@shell.fans', en: 'Email: hello@shell.fans' }, href: 'mailto:hello@shell.fans' },
       { text: { 'zh-TW': '電話：02-77143635', en: 'Phone: 02-77143635' }, href: 'tel:0277143635' },
@@ -58,7 +58,7 @@
     },
     copyright: {
       text: {
-        'zh-TW': '© 2026 ShellFans AI. 日商唄粉智能科技有限公司. All rights reserved.',
+        'zh-TW': '© 2026 ShellFans AI. 唄粉智能科技股份有限公司. All rights reserved.',
         en: '© 2026 ShellFans AI. ShellFans AI Technology Co., Ltd. All rights reserved.'
       },
       html: ''
