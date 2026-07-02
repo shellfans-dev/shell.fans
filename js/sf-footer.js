@@ -214,3 +214,73 @@
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
   else init();
 })();
+
+/*!
+ * ShellFans 產品服務開關 — 依 kol.fans 後台設定隱藏 nav / footer 的產品入口。
+ *
+ * 讀取 GET https://kol.fans/api/site/product-flags（CORS）。當某產品開關為
+ * false 時，實際從 DOM 移除對應的連結（桌機 nav、手機 nav、footer），而非
+ * 只用 CSS 隱藏。讀取失敗一律維持顯示（fallback = 啟用），不影響其他 nav。
+ *
+ *   kolfans_wom_enabled            → 口碑行銷      (data-i18n="nav.wordOfMouth")
+ *   shellfans_endurance_engine_...  → 續航引擎      (data-i18n="nav.engine")
+ *   aeo_geo_managed_hosting_enabled → AEO/GEO 代管  (data-i18n="nav.aeoGeo")
+ */
+(function () {
+  'use strict';
+  var FLAGS_API = 'https://kol.fans/api/site/product-flags';
+
+  // flag key → { i18n: nav data-i18n 值, text: 精確顯示文字 }
+  var PRODUCTS = [
+    { flag: 'kolfans_wom_enabled', i18n: 'nav.wordOfMouth', text: '口碑行銷' },
+    { flag: 'shellfans_endurance_engine_enabled', i18n: 'nav.engine', text: '續航引擎' },
+    { flag: 'aeo_geo_managed_hosting_enabled', i18n: 'nav.aeoGeo', text: 'AEO/GEO 代管' }
+  ];
+  // 僅在導覽/頁尾容器內以「文字」比對移除，避免誤刪頁面內文中的連結。
+  var CONTAINER_SEL = 'nav,header,footer,[role="banner"],[class*="nav"],[class*="footer"],#sf-footer-root';
+
+  function removeProduct(p) {
+    var seen = [];
+    // 1) 現代 nav：data-i18n 精確命中（桌機 + 手機）
+    var byI18n = document.querySelectorAll('a[data-i18n="' + p.i18n + '"]');
+    for (var i = 0; i < byI18n.length; i++) seen.push(byI18n[i]);
+    // 2) 舊版 nav / footer：文字精確等於且位於導覽/頁尾容器內
+    var anchors = document.getElementsByTagName('a');
+    for (var j = 0; j < anchors.length; j++) {
+      var a = anchors[j];
+      if ((a.textContent || '').trim() !== p.text) continue;
+      if (a.closest && a.closest(CONTAINER_SEL) && seen.indexOf(a) === -1) seen.push(a);
+    }
+    for (var k = 0; k < seen.length; k++) {
+      var el = seen[k];
+      if (el && el.parentNode) el.parentNode.removeChild(el);
+    }
+  }
+
+  function apply(flags) {
+    for (var i = 0; i < PRODUCTS.length; i++) {
+      if (flags[PRODUCTS[i].flag] === false) removeProduct(PRODUCTS[i]);
+    }
+  }
+
+  function run() {
+    fetch(FLAGS_API, { credentials: 'omit' })
+      .then(function (r) { return r.ok ? r.json() : null; })
+      .then(function (j) {
+        var d = j && j.data;
+        if (!d) return;
+        // 若三者皆啟用則不動作（常態）。
+        if (d.kolfans_wom_enabled !== false &&
+            d.shellfans_endurance_engine_enabled !== false &&
+            d.aeo_geo_managed_hosting_enabled !== false) return;
+        apply(d);
+        // footer 由 sf-footer.js 非同步注入，稍後再掃兩次確保涵蓋。
+        setTimeout(function () { apply(d); }, 400);
+        setTimeout(function () { apply(d); }, 1200);
+      })
+      .catch(function () { /* 讀取失敗：維持顯示，不影響其他 nav */ });
+  }
+
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', run);
+  else run();
+})();
