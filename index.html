@@ -2093,6 +2093,9 @@ html[data-embed="1"] .chatbot > .container > div:first-child { display: none !im
       var val = resolve(key);
       if (attr) {
         el.setAttribute(attr, val);
+      } else if (el.hasAttribute('data-i18n-html')) {
+        // 字典值含標記（<strong>/<a>…）的元素；值皆為站內靜態內容
+        el.innerHTML = val;
       } else {
         el.textContent = val;
       }
