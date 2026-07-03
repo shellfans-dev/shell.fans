@@ -27,7 +27,7 @@
     },
     linkGroups: [
       { title: { 'zh-TW': '產品', en: 'Product' }, links: [
-        { label: { 'zh-TW': '續航引擎', en: 'Engagement Engine' }, href: 'https://shell.fans/kol-engine' },
+        { label: { 'zh-TW': '續航引擎', en: 'Engagement Engine' }, href: 'https://shell.fans/endurance' },
         { label: { 'zh-TW': '粉絲分析', en: 'Fans Analysis' }, href: 'https://shell.fans/fans-analysis' },
         { label: { 'zh-TW': '口碑行銷', en: 'Word-of-Mouth' }, href: 'https://kol.fans', external: true },
         { label: { 'zh-TW': '查看方案', en: 'Pricing' }, href: 'https://kol.fans/pricing', external: true }
