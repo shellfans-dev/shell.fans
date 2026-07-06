@@ -2,9 +2,9 @@
  * shell.fans unified footer renderer.
  *
  * Renders the site footer into <div id="sf-footer-root"> from the live config
- * served by kol.fans (GET https://kol.fans/api/site/footer?site=shell, CORS),
+ * served by console.shell.fans (GET https://console.shell.fans/api/site/footer?site=shell, CORS),
  * falling back to the embedded SHELL_BASE defaults if the fetch fails. Edits
- * made in the kol.fans admin (UIUX Design → Footer 頁尾, site=shell.fans)
+ * made in the console.shell.fans admin (UIUX Design → Footer 頁尾, site=shell.fans)
  * therefore appear on shell.fans on the next page load — no redeploy.
  *
  * Locale: reuses localStorage key 'shellfans_locale' and the
@@ -16,7 +16,7 @@
   'use strict';
 
   var STORAGE_KEY = 'shellfans_locale';
-  var API = 'https://kol.fans/api/site/footer?site=shell';
+  var API = 'https://console.shell.fans/api/site/footer?site=shell';
 
   // Embedded defaults (mirror of saas_womm DEFAULT_FOOTER_SETTINGS.shell).
   var SHELL_BASE = {
@@ -29,8 +29,8 @@
       { title: { 'zh-TW': '產品', en: 'Product' }, links: [
         { label: { 'zh-TW': '續航引擎', en: 'Engagement Engine' }, href: 'https://shell.fans/endurance' },
         { label: { 'zh-TW': '粉絲分析', en: 'Fans Analysis' }, href: 'https://shell.fans/fans-analysis' },
-        { label: { 'zh-TW': '口碑行銷', en: 'Word-of-Mouth' }, href: 'https://kol.fans', external: true },
-        { label: { 'zh-TW': '查看方案', en: 'Pricing' }, href: 'https://kol.fans/pricing', external: true }
+        { label: { 'zh-TW': '口碑行銷', en: 'Word-of-Mouth' }, href: 'https://console.shell.fans', external: true },
+        { label: { 'zh-TW': '查看方案', en: 'Pricing' }, href: 'https://console.shell.fans/pricing', external: true }
       ] },
       { title: { 'zh-TW': '資源', en: 'Resources' }, links: [
         { label: { 'zh-TW': 'Klog 部落格', en: 'Klog Blog' }, href: 'https://blog.shell.fans/', external: true },
@@ -216,9 +216,9 @@
 })();
 
 /*!
- * ShellFans 產品服務開關 — 依 kol.fans 後台設定隱藏 nav / footer 的產品入口。
+ * ShellFans 產品服務開關 — 依 console.shell.fans 後台設定隱藏 nav / footer 的產品入口。
  *
- * 讀取 GET https://kol.fans/api/site/product-flags（CORS）。當某產品開關為
+ * 讀取 GET https://console.shell.fans/api/site/product-flags（CORS）。當某產品開關為
  * false 時，實際從 DOM 移除對應的連結（桌機 nav、手機 nav、footer），而非
  * 只用 CSS 隱藏。讀取失敗一律維持顯示（fallback = 啟用），不影響其他 nav。
  *
@@ -228,7 +228,7 @@
  */
 (function () {
   'use strict';
-  var FLAGS_API = 'https://kol.fans/api/site/product-flags';
+  var FLAGS_API = 'https://console.shell.fans/api/site/product-flags';
 
   // flag key → { i18n: nav data-i18n 值, text: 精確顯示文字 }
   var PRODUCTS = [
