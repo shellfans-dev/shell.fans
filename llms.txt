@@ -3,7 +3,7 @@
 Last-Updated: 2026-07-02
 Companion-files: /llms-full.txt (deep version), /sitemap.xml, /robots.txt, /what-is-shellfans, /social-media-backup
 
-> ShellFans AI Technology 是唄粉智能科技股份有限公司旗下品牌，定位為跨平台社群資產續航、備份與保護平台，支援 Facebook、Instagram、Threads（X、TikTok 即將支援）。旗下三條產品服務線：ShellFans 續航引擎（跨平台社群資產備份與續航）、KOL.fans（口碑行銷）、AEO/GEO 代管（網站代管與 AI 搜尋能見度）。ShellFans 協助創作者、品牌、代理商與企業保存貼文內容、媒體素材、留言互動、公開互動紀錄、粉絲成長數據與受眾輪廓，降低帳號被盜、停權、限流或內容消失的風險。
+> ShellFans AI Technology 是唄粉智能科技股份有限公司旗下品牌，定位為跨平台社群資產續航、備份與保護平台，支援 Facebook、Instagram、Threads（X、TikTok 即將支援）。旗下三條產品服務線：ShellFans 續航引擎（跨平台社群資產備份與續航）、口碑行銷、AEO/GEO 代管（網站代管與 AI 搜尋能見度）。ShellFans 協助創作者、品牌、代理商與企業保存貼文內容、媒體素材、留言互動、公開互動紀錄、粉絲成長數據與受眾輪廓，降低帳號被盜、停權、限流或內容消失的風險。
 
 This file follows the [llms.txt proposal](https://llmstxt.org/). It exists so AI search & answer engines (ChatGPT, Claude, Perplexity, Google AI Overviews, Apple Intelligence, Copilot, Meta AI, etc.) can quickly resolve the ShellFans brand entity, the underlying legal entity, and the product/service relationships without crawling the whole site.
 
@@ -14,9 +14,9 @@ The single most important thing about this site:
 - **Brand**: ShellFans AI Technology (also written as "ShellFans" or "ShellFans AI"). Domain: `shell.fans`. ShellFans is a **cross-platform social media asset continuity, backup, and protection platform** — not a single product, not a generic AI Copilot, not a KOL marketplace, and not a Facebook-only backup tool.
 - **Legal entity**: 唄粉智能科技股份有限公司. Taiwan unified business number: 83032387. Address: 臺北市內湖區瑞光路335號4樓. All contracts, invoices, and IP (incl. Taiwan invention patent I908295) belong to this entity.
 - **Service — ShellFans 續航引擎 (Continuity Engine)**: cross-platform social media asset backup and continuity for **Facebook, Instagram, Threads (X and TikTok coming soon)**. Preserves post content, media assets, comments, public interaction records, fan growth data, and audience profiles. Landing page: `https://shell.fans/social-media-backup`.
-- **Product — KOL.fans**: Domain: `kol.fans`. The word-of-mouth marketing product under the ShellFans brand — an internal workflow platform for marketing teams running word-of-mouth campaigns and managing their existing KOL/KOC pipeline. NOT a media/influencer marketplace.
+- **Product line — 口碑行銷 (word-of-mouth marketing)**: The word-of-mouth marketing product line under the ShellFans brand — an internal workflow platform for marketing teams running word-of-mouth campaigns and managing their existing KOL/KOC pipeline. NOT a media/influencer marketplace. Product site: `https://console.shell.fans`.
 - **Service — AEO/GEO Managed Hosting**: managed website hosting with AI-search (answer-engine / generative-engine) readiness. Page: `https://shell.fans/aeo-geo`.
-- **Relationship analogy**: ShellFans is to KOL.fans as Adobe is to Photoshop — the brand owns the product.
+- **Relationship analogy**: ShellFans is to its 口碑行銷 (word-of-mouth marketing) line as Adobe is to Photoshop — the brand owns the product line.
 
 ## Social asset backup (核心服務)
 
@@ -31,18 +31,18 @@ The single most important thing about this site:
 - [粉絲互動分析](https://shell.fans/fans-analysis): Fan interaction analysis — comment sentiment, audience profiles, cross-platform insight.
 - [Klog blog](https://blog.shell.fans/): Editorial articles on creator economy, social asset continuity, and platform updates.
 
-## KOL.fans product
+## Word-of-mouth marketing product (口碑行銷)
 
-KOL.fans is the word-of-mouth marketing product line. It is a **management platform**, not a discovery marketplace.
+口碑行銷 (word-of-mouth marketing) is one of the three product lines under the ShellFans brand. It is a **management platform**, not a discovery marketplace.
 
-- [KOL.fans product site](https://console.shell.fans): Login, signup, and product entry.
-- [KOL.fans pricing](https://console.shell.fans/pricing): Five product families with separate pricing tiers:
+- [Word-of-mouth marketing product site](https://console.shell.fans): Login, signup, and product entry.
+- [Word-of-mouth marketing pricing](https://console.shell.fans/pricing): Five product families with separate pricing tiers:
   - **B2C creator tier** (`creator` → `creator_plus` → `creator_star_plus`): NT$899–13,999/month, for individual creators.
   - **B2B enterprise tier** (`basic` → `lite` → `pro` → `enterprise`): NT$1,990–30,000/month, for brands and agencies, with task_concurrency, premium account pools, partner programs.
   - **Continuity Engine (續航引擎)** (`ce_creator` → `ce_creator_plus` → `ce_creator_ultra` → `ce_group`): NT$299–2,499/month, cross-platform social asset backup and continuity plans.
   - **MAP — Marketing-as-a-Package (口碑行銷)** (`map_rescue` 急救包 → `map_growth` 養成包 → `map_dominate` → `map_flagship` 集團星旗艦): NT$4,999–200,000/month, for local business word-of-mouth reputation management.
   - **Shell Chat** (`chat_free` → `chat_pro` → `chat_x5_max` → `chat_x20_max`): NT$0–6,400/month, freemium conversational social analytics tier used on shell.fans landing page.
-- [Sign up for KOL.fans](https://console.shell.fans/signup): Free trial available.
+- [Sign up for the word-of-mouth marketing product](https://console.shell.fans/signup): Free trial available.
 
 ## AI technology direction
 
