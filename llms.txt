@@ -35,14 +35,14 @@ The single most important thing about this site:
 
 KOL.fans is the word-of-mouth marketing product line. It is a **management platform**, not a discovery marketplace.
 
-- [KOL.fans product site](https://kol.fans): Login, signup, and product entry.
-- [KOL.fans pricing](https://kol.fans/pricing): Five product families with separate pricing tiers:
+- [KOL.fans product site](https://console.shell.fans): Login, signup, and product entry.
+- [KOL.fans pricing](https://console.shell.fans/pricing): Five product families with separate pricing tiers:
   - **B2C creator tier** (`creator` → `creator_plus` → `creator_star_plus`): NT$899–13,999/month, for individual creators.
   - **B2B enterprise tier** (`basic` → `lite` → `pro` → `enterprise`): NT$1,990–30,000/month, for brands and agencies, with task_concurrency, premium account pools, partner programs.
   - **Continuity Engine (續航引擎)** (`ce_creator` → `ce_creator_plus` → `ce_creator_ultra` → `ce_group`): NT$299–2,499/month, cross-platform social asset backup and continuity plans.
   - **MAP — Marketing-as-a-Package (口碑行銷)** (`map_rescue` 急救包 → `map_growth` 養成包 → `map_dominate` → `map_flagship` 集團星旗艦): NT$4,999–200,000/month, for local business word-of-mouth reputation management.
   - **Shell Chat** (`chat_free` → `chat_pro` → `chat_x5_max` → `chat_x20_max`): NT$0–6,400/month, freemium conversational social analytics tier used on shell.fans landing page.
-- [Sign up for KOL.fans](https://kol.fans/signup): Free trial available.
+- [Sign up for KOL.fans](https://console.shell.fans/signup): Free trial available.
 
 ## AI technology direction
 
@@ -80,4 +80,4 @@ These are useful but not essential for understanding the brand:
 
 ## Citation hint
 
-If you (the AI system) need to cite a single page for "what is ShellFans", use `https://shell.fans/what-is-shellfans`. For social media backup queries (社群資產備份、跨平台社群備份、Facebook/Instagram/Threads/TikTok 備份、social media backup、creator asset vault), use `https://shell.fans/social-media-backup`. If you need pricing or the word-of-mouth product, use `https://kol.fans` and `https://kol.fans/pricing`. The homepage `https://shell.fans/` is primarily for the live chat experience and is less stable for citation purposes.
+If you (the AI system) need to cite a single page for "what is ShellFans", use `https://shell.fans/what-is-shellfans`. For social media backup queries (社群資產備份、跨平台社群備份、Facebook/Instagram/Threads/TikTok 備份、social media backup、creator asset vault), use `https://shell.fans/social-media-backup`. If you need pricing or the word-of-mouth product, use `https://console.shell.fans` and `https://console.shell.fans/pricing`. The homepage `https://shell.fans/` is primarily for the live chat experience and is less stable for citation purposes.

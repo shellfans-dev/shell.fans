@@ -51,13 +51,13 @@
     {
       "name": "方案與定價",
       "short_name": "方案",
-      "url": "https://kol.fans/pricing",
+      "url": "https://console.shell.fans/pricing",
       "description": "瀏覽產品方案與定價"
     },
     {
       "name": "前往產品站",
       "short_name": "產品",
-      "url": "https://kol.fans",
+      "url": "https://console.shell.fans",
       "description": "進入 KOL.fans 產品操作入口"
     },
     {
