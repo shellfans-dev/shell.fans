@@ -3,7 +3,7 @@
  *                        + 爬蟲訪問記錄（crawler access logging）。
  *
  * 目的一：修正「口碑行銷等 nav 先顯示再消失」的 flicker。改由 Cloudflare 邊緣在
- * HTML 送達瀏覽器「之前」就依 kol.fans 後台的產品服務開關移除對應 nav 連結，
+ * HTML 送達瀏覽器「之前」就依 console.shell.fans 後台的產品服務開關移除對應 nav 連結，
  * 因此首屏 HTML 直接不含已停用產品的 nav item，非 CSS 隱藏、非 client useEffect。
  *
  * 對應標記（由 scripts/mark-product-nav.py 加在各頁 nav/footer 連結）：
@@ -11,7 +11,7 @@
  *   shellfans_endurance_engine_... → a[data-sf-product="shellfans-engine"] (續航引擎)
  *   aeo_geo_managed_hosting_...    → a[data-sf-product="aeogeo"]           (AEO/GEO 代管)
  *
- * 目的二：bot / crawler 流量以 event.waitUntil() fire-and-forget 上報到 kol.fans
+ * 目的二：bot / crawler 流量以 event.waitUntil() fire-and-forget 上報到 console.shell.fans
  * ingest API（token 保護），供後台 system-monitor「爬蟲監控」使用。上報完全在
  * response 送出之後執行，不增加訪客延遲；上報失敗不影響網站。
  * 需要 secret binding：CRAWLER_INGEST_TOKEN（無 binding 時自動停用上報）。
@@ -24,8 +24,8 @@ addEventListener('fetch', (event) => {
   event.respondWith(handle(event));
 });
 
-const FLAGS_API = 'https://kol.fans/api/site/product-flags';
-const CRAWLER_INGEST_API = 'https://kol.fans/api/site/crawler-ingest';
+const FLAGS_API = 'https://console.shell.fans/api/site/product-flags';
+const CRAWLER_INGEST_API = 'https://console.shell.fans/api/site/crawler-ingest';
 
 // 產品服務開關 flag → HTML 標記值
 const FLAG_TO_ATTR = {
