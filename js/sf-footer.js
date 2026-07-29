@@ -361,3 +361,195 @@
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', apply);
   else apply();
 })();
+
+/*!
+ * 訪客登入入口 — nav 上區分兩種身分的登入目的地：
+ *   網紅登入 → app.shell.fans/auth/login      (Creator，續航引擎)
+ *   企業登入 → business.shell.fans/auth/login (Business，商業主控台)
+ *
+ * 原本全站 nav 的登入入口一律指向 app.shell.fans，連結構 2 已有的
+ * 「口碑行銷登入」也指到 app，企業用戶沒有入口。
+ *
+ * 只在「未登入」(無 sf_user cookie)時作用；已登入時交由上方的續航登入
+ * 狀態區塊接管，兩者互斥，所以它看到的仍是原始 HTML。
+ *
+ * 三種 nav 結構(見上方 apply() 的註解)分別處理，另含各自的行動版選單。
+ * 文案不走頁面的 data-i18n 字典 —— 只有 4 頁有 i18n 引擎，其餘 15 頁
+ * 是純中文頁；改為自帶中英文並監聽 'shellfans-locale-changed'，在有
+ * i18n 的頁面跟著切換，沒有的頁面固定中文。
+ */
+(function () {
+  'use strict';
+
+  var CREATOR_LOGIN = 'https://app.shell.fans/auth/login';
+  var BUSINESS_LOGIN = 'https://business.shell.fans/auth/login';
+  var T = {
+    'zh-TW': { creator: '網紅登入', business: '企業登入', login: '登入' },
+    en: { creator: 'Creator Login', business: 'Business Login', login: 'Log in' }
+  };
+
+  function getCookie(n) {
+    var m = document.cookie.match('(?:^|; )' + n + '=([^;]*)');
+    return m ? decodeURIComponent(m[1]) : '';
+  }
+
+  // 只有具備 i18n 引擎的頁面才跟隨語系；其餘頁面整頁都是中文，
+  // 單獨把登入鈕切成英文反而不一致。
+  function texts() {
+    if (!document.querySelector('[data-i18n]')) return T['zh-TW'];
+    var v = '';
+    try { v = localStorage.getItem('shellfans_locale') || ''; } catch (e) { v = ''; }
+    return v === 'en' ? T.en : T['zh-TW'];
+  }
+
+  var DD_LINK_STYLE = 'padding:10px 18px;color:#292929;font-weight:500;';
+
+  // 結構 1：index / aeo-geo 的 #navLogin .nav-login-list
+  // 填入項目後，HTML 內既有的 toggle 判斷(list.children.length > 0)會自動
+  // 從「直接跳轉」切換成「展開下拉」，因此不需要改那兩頁的 inline script。
+  function struct1(t) {
+    var list = document.querySelector('#navLogin .nav-login-list');
+    if (!list) return;
+    list.innerHTML =
+      '<a href="' + CREATOR_LOGIN + '" role="menuitem" data-sf-guest-login="creator">' + t.creator + '</a>' +
+      '<a href="' + BUSINESS_LOGIN + '" role="menuitem" data-sf-guest-login="business">' + t.business + '</a>';
+  }
+
+  // 結構 1 的行動版選單：單一「登入」→ 拆成兩條
+  function struct1Mobile(t) {
+    var mm = document.querySelector('.mobile-menu');
+    if (!mm) return;
+    var done = mm.querySelectorAll('a[data-sf-guest-login]');
+    if (done.length === 2) {
+      done[0].textContent = t.creator;
+      done[1].textContent = t.business;
+      return;
+    }
+    var orig = mm.querySelector('a[href*="/auth/login"]');
+    if (!orig) return;
+    var creator = document.createElement('a');
+    creator.setAttribute('href', CREATOR_LOGIN);
+    creator.setAttribute('data-sf-guest-login', 'creator');
+    creator.textContent = t.creator;
+    var business = document.createElement('a');
+    business.setAttribute('href', BUSINESS_LOGIN);
+    business.setAttribute('data-sf-guest-login', 'business');
+    business.textContent = t.business;
+    orig.parentNode.replaceChild(business, orig);
+    business.parentNode.insertBefore(creator, business);
+  }
+
+  // 結構 2：14 頁 Webflow dropdown .login-dd-list
+  // 既有兩項「續航引擎 / 口碑行銷」都指向 app.shell.fans，改為身分別 + 正確目的地。
+  function struct2(t) {
+    var lists = document.querySelectorAll('.login-dd-list');
+    for (var i = 0; i < lists.length; i++) {
+      lists[i].innerHTML =
+        '<a href="' + CREATOR_LOGIN + '" class="w-dropdown-link" style="' + DD_LINK_STYLE +
+        '" data-sf-guest-login="creator">' + t.creator + '</a>' +
+        '<a href="' + BUSINESS_LOGIN + '" class="w-dropdown-link" style="' + DD_LINK_STYLE +
+        '" data-sf-guest-login="business">' + t.business + '</a>';
+    }
+  }
+
+  // 結構 2 的行動版抽屜：兩顆按鈕文案是「續航引擎登入 / 口碑行銷登入」，
+  // 但 href 兩條都是 app.shell.fans —— 企業那條修正為 business.shell.fans。
+  function struct2Mobile(t) {
+    var btns = document.querySelectorAll('.nav-button-wrapper.hide-desktop a[href*="/auth/login"]');
+    if (btns.length < 2) return;
+    setMobileBtn(btns[0], CREATOR_LOGIN, t.creator, 'creator');
+    setMobileBtn(btns[1], BUSINESS_LOGIN, t.business, 'business');
+  }
+
+  function setMobileBtn(a, href, label, kind) {
+    a.setAttribute('href', href);
+    a.setAttribute('data-sf-guest-login', kind);
+    a.removeAttribute('target');
+    var txt = a.querySelector('.button-text');
+    if (txt) txt.textContent = label; else a.textContent = label;
+  }
+
+  // 結構 3：co-founder / social-media-backup / what-is-shellfans 的
+  // .nav-actions 內是兩顆扁平按鈕(登入 / 開始使用)，沒有下拉容器 —— 就地把
+  // 「登入」換成一個自帶樣式的下拉。index / aeo-geo 也有 .nav-actions，
+  // 但裡面的登入是 button.nav-login-toggle 而非 a.btn-secondary，不會誤傷。
+  function struct3(t) {
+    var acts = document.querySelectorAll('.nav-actions');
+    for (var i = 0; i < acts.length; i++) {
+      var built = acts[i].querySelector('[data-sf-guest-dd]');
+      if (built) {
+        var links = built.querySelectorAll('a[data-sf-guest-login]');
+        if (links.length === 2) {
+          links[0].textContent = t.creator;
+          links[1].textContent = t.business;
+        }
+        var lbl = built.querySelector('.sf-guest-dd-label');
+        if (lbl) lbl.textContent = t.login;
+        continue;
+      }
+      var btn = acts[i].querySelector('a.btn-secondary');
+      if (!btn || !/登入|log ?in/i.test(btn.textContent)) continue;
+
+      var wrap = document.createElement('div');
+      wrap.className = 'sf-guest-dd';
+      wrap.setAttribute('data-sf-guest-dd', '');
+      wrap.innerHTML =
+        '<button type="button" class="btn-secondary sf-guest-dd-toggle" aria-haspopup="true" aria-expanded="false">' +
+        '<span class="sf-guest-dd-label">' + t.login + '</span><span class="sf-guest-dd-caret">▾</span></button>' +
+        '<div class="sf-guest-dd-list" role="menu">' +
+        '<a href="' + CREATOR_LOGIN + '" role="menuitem" data-sf-guest-login="creator">' + t.creator + '</a>' +
+        '<a href="' + BUSINESS_LOGIN + '" role="menuitem" data-sf-guest-login="business">' + t.business + '</a>' +
+        '</div>';
+      btn.parentNode.replaceChild(wrap, btn);
+
+      bindDropdown(wrap);
+    }
+  }
+
+  function bindDropdown(wrap) {
+    var toggle = wrap.querySelector('.sf-guest-dd-toggle');
+    toggle.addEventListener('click', function (e) {
+      e.stopPropagation();
+      var open = wrap.classList.toggle('open');
+      toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
+    document.addEventListener('click', function (e) {
+      if (wrap.contains(e.target)) return;
+      wrap.classList.remove('open');
+      toggle.setAttribute('aria-expanded', 'false');
+    });
+  }
+
+  // 結構 3 專用樣式(其餘結構沿用頁面既有的下拉樣式)
+  function injectStyle() {
+    if (document.getElementById('sf-guest-dd-style')) return;
+    var s = document.createElement('style');
+    s.id = 'sf-guest-dd-style';
+    s.textContent =
+      '.sf-guest-dd{position:relative;display:inline-block}' +
+      '.sf-guest-dd-toggle{display:inline-flex;align-items:center;gap:6px;font-family:inherit}' +
+      '.sf-guest-dd-caret{font-size:0.7rem;line-height:1}' +
+      '.sf-guest-dd-list{display:none;position:absolute;top:100%;right:0;min-width:180px;' +
+      'background:#fff;border-radius:10px;box-shadow:0 18px 42px -18px rgba(20,108,181,0.25);' +
+      'padding:8px 0;margin-top:6px;border:1px solid rgba(0,0,0,0.08);z-index:1000}' +
+      '.sf-guest-dd.open .sf-guest-dd-list{display:block}' +
+      '.sf-guest-dd-list a{display:block;padding:10px 18px;font-size:0.9rem;color:#292929;font-weight:500;white-space:nowrap}' +
+      '.sf-guest-dd-list a:hover{background:#f5f7fa}';
+    document.head.appendChild(s);
+  }
+
+  function apply() {
+    if (getCookie('sf_user')) return; // 已登入 → 由續航登入狀態區塊接管
+    var t = texts();
+    injectStyle();
+    struct1(t);
+    struct1Mobile(t);
+    struct2(t);
+    struct2Mobile(t);
+    struct3(t);
+  }
+
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', apply);
+  else apply();
+  window.addEventListener('shellfans-locale-changed', apply);
+})();
