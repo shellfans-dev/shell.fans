@@ -158,6 +158,86 @@ nav.nav-menu .link-block-4.ssp_01:hover {
 }
 </script>
   <link rel="stylesheet" href="/css/sf-footer.css">
+<style id="sf-price-ready-css">
+/* 方案字卡金額防「雙重渲染」閃爍：預設隱藏文字(保留版面高度,不位移)，
+   JS fetch 完成(成功/失敗皆算)或逾時安全網觸發後，在 <html> 加 sf-price-ready 才顯示。 */
+.pricing-content .heading-h1-size { visibility: hidden; }
+html.sf-price-ready .pricing-content .heading-h1-size { visibility: visible; }
+</style>
+<style id="sf-cmp-table-css">
+/* ===== 方案與功能比較表：Slack 定價頁「比較所有功能」風格重新設計 =====
+   細分隔線(非粗框 pill) + sticky 表頭 + 分類間距 + 空值顯示"—"；
+   手機用橫向捲動、特徵欄 sticky-left(仿 Slack 手機版)。 */
+.sf-cmp-wrap {
+  background: #fff;
+  border: 1px solid #eff0f6;
+  border-radius: 24px;
+  box-shadow: 0 2px 7px #14142b0f;
+  padding: 8px 28px 28px;
+  /* overflow-x:auto 建立新 scroll container 會讓 sticky header 失效(相對容器而非 viewport)，
+     桌機不設 overflow；只在手機媒體查詢內開啟橫向捲動(犧牲手機 sticky-top，換取可橫滑) */
+}
+.sf-cmp-table { min-width: 640px; }
+.sf-cmp-row-grid {
+  display: grid;
+  grid-template-columns: minmax(160px, 1.5fr) repeat(3, minmax(96px, 1fr));
+  align-items: center;
+}
+.sf-cmp-header {
+  position: sticky;
+  top: 83px;
+  z-index: 5;
+  background: #fff;
+  border-bottom: 1px solid #e3e5ee;
+  padding: 14px 0;
+}
+.sf-cmp-header .sf-cmp-cell { font-weight: 700; font-size: 15px; color: #292929; text-align: center; }
+.sf-cmp-header .sf-cmp-label-col { text-align: left; }
+.sf-cmp-section-title {
+  font-weight: 700;
+  font-size: 17px;
+  color: #292929;
+  padding: 28px 0 10px;
+  border-bottom: 1px solid #eef0f4;
+  margin-bottom: 2px;
+}
+.sf-cmp-section:first-child .sf-cmp-section-title { padding-top: 20px; }
+.sf-cmp-row { padding: 13px 0; border-bottom: 1px solid #f1f2f6; transition: background-color 120ms ease; }
+.sf-cmp-row:hover { background-color: #fafafb; }
+.sf-cmp-row:last-child { border-bottom: none; }
+.sf-cmp-cell { font-size: 14px; color: #536578; text-align: center; }
+.sf-cmp-cell.sf-cmp-label-col { text-align: left; color: #292929; font-weight: 500; }
+.sf-cmp-cell.sf-cmp-empty { color: #c2c5d1; }
+/* 特徵名稱欄手機橫向捲動時 sticky-left，方案欄位可捲動查看 */
+/* 站台既有規則(css/shellfans-v2.webflow.css ~991px)把整個 .section-price-table 在平板/手機隱藏；
+   重新設計後已支援手機橫向捲動可用，故在此覆寫讓其顯示 */
+@media (max-width: 991px) {
+  .section-price-table { display: block !important; }
+}
+@media (max-width: 767px) {
+  .sf-cmp-header { top: 60px; }
+  .sf-cmp-wrap { padding: 8px 16px 20px; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .sf-cmp-label-col { position: sticky; left: 0; background: #fff; z-index: 2; padding-right: 8px; }
+  .sf-cmp-row:hover .sf-cmp-label-col { background-color: #fafafb; }
+}
+</style>
+<style id="sf-pricing-spacing-fix">
+/* 主修：Webflow 捲動淡入互動(IX2)未觸發，導致下列區塊卡在 opacity:0 —— 佔滿高度卻永久隱形，
+   造成「字卡下方一大片空白」。強制顯示以還原實際內容（方案比較表 / 信任區 / FAQ）。 */
+.price-table-component,
+.trust-component,
+.faq-sticky-section-wrapper { opacity: 1 !important; transform: none !important; }
+/* 次要：收斂字卡與相鄰區塊間距（scoped，不動 css/shellfans-v2.webflow.css 全站 base） */
+.section-price .tabs-menu-2 { margin-bottom: 16px; }
+.section-price .padding-global { padding-bottom: 12px; }
+.section-price .padding-section-medium { padding-top: 4px; padding-bottom: 8px; }
+.section-price-table .container-large { padding-top: 8px; }
+.section-price-table .padding-section-medium { padding-top: 0; }
+.section-price .pricing-content { padding-top: 28px; }
+.section-price .pricing-content.pd-bottom-40px { padding-bottom: 28px; }
+/* 修正免費版欄 Threads 以下數字沒置中：部分 cell 用 _04 combo class 帶 padding-left:80px 把數字推右。只針對免費版欄(nth-child(2))歸零並置中，不動商業版/企業版。 */
+.price-table-list-item .price-compare-content:nth-child(2){padding-left:0 !important;text-align:center;}
+</style>
 </head>
 <body>
   <div class="page-wrapper">
@@ -279,7 +359,7 @@ nav.nav-menu .link-block-4.ssp_01:hover {
                               <p class="paragraph-17 w-variant-b61b8629-2f15-44a6-b40f-c192534d3da8">專業創作者量身打造</p>
                               <div class="flex-horizontal start w-variant-b61b8629-2f15-44a6-b40f-c192534d3da8">
                                 <div class="heading-h1-size mg-right-8px w-variant-b61b8629-2f15-44a6-b40f-c192534d3da8 color-neutral-100 prprpr_002">$</div>
-                                <div class="heading-h1-size mg-right-8px w-variant-b61b8629-2f15-44a6-b40f-c192534d3da8 color-neutral-100 prprpr_001">299</div>
+                                <div class="heading-h1-size mg-right-8px w-variant-b61b8629-2f15-44a6-b40f-c192534d3da8 color-neutral-100 prprpr_001">699</div>
                               </div>
                               <div class="divider-2 _40px w-variant-b61b8629-2f15-44a6-b40f-c192534d3da8 con_f_mm052"></div>
                             </div>
@@ -327,8 +407,8 @@ nav.nav-menu .link-block-4.ssp_01:hover {
                               </div>
                               <p class="paragraph-9 w-variant-b61b8629-2f15-44a6-b40f-c192534d3da8">適用輕度的有限社群管理</p>
                               <div class="flex-horizontal start w-variant-b61b8629-2f15-44a6-b40f-c192534d3da8 mid_0001">
-                                <div class="heading-h1-size mg-right-8px w-variant-b61b8629-2f15-44a6-b40f-c192534d3da8 color-neutral-100 prprpr_002">$</div>
-                                <div class="heading-h1-size mg-right-8px w-variant-b61b8629-2f15-44a6-b40f-c192534d3da8 color-neutral-100 prprpr_001"> 0  </div>
+                                <div class="heading-h1-size mg-right-8px w-variant-b61b8629-2f15-44a6-b40f-c192534d3da8 color-neutral-100 prprpr_002" style="display:none">$</div>
+                                <div class="heading-h1-size mg-right-8px w-variant-b61b8629-2f15-44a6-b40f-c192534d3da8 color-neutral-100 prprpr_001" style="margin-right:0">$0</div>
                               </div>
                               <div class="divider-2 _40px w-variant-b61b8629-2f15-44a6-b40f-c192534d3da8 con_f_mm052"></div>
                             </div>
@@ -377,7 +457,7 @@ nav.nav-menu .link-block-4.ssp_01:hover {
                               <p class="paragraph-16 w-variant-b61b8629-2f15-44a6-b40f-c192534d3da8">多平台社群經營適用</p>
                               <div class="flex-horizontal start w-variant-b61b8629-2f15-44a6-b40f-c192534d3da8">
                                 <div class="heading-h1-size mg-right-8px w-variant-b61b8629-2f15-44a6-b40f-c192534d3da8 color-neutral-100 prprpr_002">$</div>
-                                <div class="heading-h1-size mg-right-8px w-variant-b61b8629-2f15-44a6-b40f-c192534d3da8 color-neutral-100 prprpr_001">1,299</div>
+                                <div class="heading-h1-size mg-right-8px w-variant-b61b8629-2f15-44a6-b40f-c192534d3da8 color-neutral-100 prprpr_001">1,699</div>
                               </div>
                               <div class="divider-2 _40px w-variant-b61b8629-2f15-44a6-b40f-c192534d3da8 con_f_mm052"></div>
                             </div>
@@ -478,7 +558,7 @@ nav.nav-menu .link-block-4.ssp_01:hover {
                               <p class="paragraph-17 w-variant-b61b8629-2f15-44a6-b40f-c192534d3da8">專業創作者量身打造</p>
                               <div class="flex-horizontal start w-variant-b61b8629-2f15-44a6-b40f-c192534d3da8">
                                 <div class="heading-h1-size mg-right-8px w-variant-b61b8629-2f15-44a6-b40f-c192534d3da8 color-neutral-100 prprpr_002">$</div>
-                                <div class="heading-h1-size mg-right-8px w-variant-b61b8629-2f15-44a6-b40f-c192534d3da8 color-neutral-100 prprpr_001">825</div>
+                                <div class="heading-h1-size mg-right-8px w-variant-b61b8629-2f15-44a6-b40f-c192534d3da8 color-neutral-100 prprpr_001">1,990</div>
                               </div>
                               <div class="divider-2 _40px w-variant-b61b8629-2f15-44a6-b40f-c192534d3da8 con_f_mm052"></div>
                             </div>
@@ -526,8 +606,8 @@ nav.nav-menu .link-block-4.ssp_01:hover {
                               </div>
                               <p class="paragraph-9 w-variant-b61b8629-2f15-44a6-b40f-c192534d3da8">適用個人輕度社群管理</p>
                               <div class="flex-horizontal start w-variant-b61b8629-2f15-44a6-b40f-c192534d3da8 mid_0001">
-                                <div class="heading-h1-size mg-right-8px w-variant-b61b8629-2f15-44a6-b40f-c192534d3da8 color-neutral-100 prprpr_002">$</div>
-                                <div class="heading-h1-size mg-right-8px w-variant-b61b8629-2f15-44a6-b40f-c192534d3da8 color-neutral-100 prprpr_001"> 0  </div>
+                                <div class="heading-h1-size mg-right-8px w-variant-b61b8629-2f15-44a6-b40f-c192534d3da8 color-neutral-100 prprpr_002" style="display:none">$</div>
+                                <div class="heading-h1-size mg-right-8px w-variant-b61b8629-2f15-44a6-b40f-c192534d3da8 color-neutral-100 prprpr_001" style="margin-right:0">$0</div>
                               </div>
                               <div class="divider-2 _40px w-variant-b61b8629-2f15-44a6-b40f-c192534d3da8 con_f_mm052"></div>
                             </div>
@@ -576,7 +656,7 @@ nav.nav-menu .link-block-4.ssp_01:hover {
                               <p class="paragraph-16 w-variant-b61b8629-2f15-44a6-b40f-c192534d3da8">多平台社群經營適用</p>
                               <div class="flex-horizontal start w-variant-b61b8629-2f15-44a6-b40f-c192534d3da8">
                                 <div class="heading-h1-size mg-right-8px w-variant-b61b8629-2f15-44a6-b40f-c192534d3da8 color-neutral-100 prprpr_002">$</div>
-                                <div class="heading-h1-size mg-right-8px w-variant-b61b8629-2f15-44a6-b40f-c192534d3da8 color-neutral-100 prprpr_001">3,507</div>
+                                <div class="heading-h1-size mg-right-8px w-variant-b61b8629-2f15-44a6-b40f-c192534d3da8 color-neutral-100 prprpr_001">4,588</div>
                               </div>
                               <div class="divider-2 _40px w-variant-b61b8629-2f15-44a6-b40f-c192534d3da8 con_f_mm052"></div>
                             </div>
@@ -677,7 +757,7 @@ nav.nav-menu .link-block-4.ssp_01:hover {
                               <p class="paragraph-17 w-variant-b61b8629-2f15-44a6-b40f-c192534d3da8">專業創作者量身打造</p>
                               <div class="flex-horizontal start w-variant-b61b8629-2f15-44a6-b40f-c192534d3da8">
                                 <div class="heading-h1-size mg-right-8px w-variant-b61b8629-2f15-44a6-b40f-c192534d3da8 color-neutral-100 prprpr_002">$</div>
-                                <div class="heading-h1-size mg-right-8px w-variant-b61b8629-2f15-44a6-b40f-c192534d3da8 color-neutral-100 prprpr_001">3,086</div>
+                                <div class="heading-h1-size mg-right-8px w-variant-b61b8629-2f15-44a6-b40f-c192534d3da8 color-neutral-100 prprpr_001">6,990</div>
                               </div>
                               <div class="divider-2 _40px w-variant-b61b8629-2f15-44a6-b40f-c192534d3da8 con_f_mm052"></div>
                             </div>
@@ -725,8 +805,8 @@ nav.nav-menu .link-block-4.ssp_01:hover {
                               </div>
                               <p class="paragraph-9 w-variant-b61b8629-2f15-44a6-b40f-c192534d3da8">適用個人輕度社群管理</p>
                               <div class="flex-horizontal start w-variant-b61b8629-2f15-44a6-b40f-c192534d3da8 mid_0001">
-                                <div class="heading-h1-size mg-right-8px w-variant-b61b8629-2f15-44a6-b40f-c192534d3da8 color-neutral-100 prprpr_002">$</div>
-                                <div class="heading-h1-size mg-right-8px w-variant-b61b8629-2f15-44a6-b40f-c192534d3da8 color-neutral-100 prprpr_001"> 0  </div>
+                                <div class="heading-h1-size mg-right-8px w-variant-b61b8629-2f15-44a6-b40f-c192534d3da8 color-neutral-100 prprpr_002" style="display:none">$</div>
+                                <div class="heading-h1-size mg-right-8px w-variant-b61b8629-2f15-44a6-b40f-c192534d3da8 color-neutral-100 prprpr_001" style="margin-right:0">$0</div>
                               </div>
                               <div class="divider-2 _40px w-variant-b61b8629-2f15-44a6-b40f-c192534d3da8 con_f_mm052"></div>
                             </div>
@@ -775,7 +855,7 @@ nav.nav-menu .link-block-4.ssp_01:hover {
                               <p class="paragraph-16 w-variant-b61b8629-2f15-44a6-b40f-c192534d3da8">多平台社群經營適用</p>
                               <div class="flex-horizontal start w-variant-b61b8629-2f15-44a6-b40f-c192534d3da8">
                                 <div class="heading-h1-size mg-right-8px w-variant-b61b8629-2f15-44a6-b40f-c192534d3da8 color-neutral-100 prprpr_002">$</div>
-                                <div class="heading-h1-size mg-right-8px w-variant-b61b8629-2f15-44a6-b40f-c192534d3da8 color-neutral-100 prprpr_001">13,250</div>
+                                <div class="heading-h1-size mg-right-8px w-variant-b61b8629-2f15-44a6-b40f-c192534d3da8 color-neutral-100 prprpr_001">16,989</div>
                               </div>
                               <div class="divider-2 _40px w-variant-b61b8629-2f15-44a6-b40f-c192534d3da8 con_f_mm052"></div>
                             </div>
@@ -880,6 +960,7 @@ nav.nav-menu .link-block-4.ssp_01:hover {
                 <div class="price-table-list-wrapper">
                   <h2 class="heading-style-h2 price_t_001">方案與功能</h2>
                   <div class="container-default w-container"></div>
+                  <div id="sf-cmp-table-root" style="display:none"></div>
                   <div class="price-table-list price_t_003">
                     <div class="w-layout-grid price-table-list-item price_t_004">
                       <div class="price-compare-content">
@@ -1458,5 +1539,210 @@ nav.nav-menu .link-block-4.ssp_01:hover {
 </script>
 <!-- ===== /shellfans unified mobile nav ===== -->
 <script src="/js/sf-footer.js?v=20260720a" defer></script>
+<!-- ===== 動態方案資料：從後台(console.shell.fans/admin/plans kol-engine)拉方案卡+比較表 =====
+     資料來源 API = console.shell.fans/api/site/pricing。fill-in-place：不改版面、只依 DOM
+     位置把文字換成 API 值，故後台編輯名稱/價格/賣點/比較表即反映到本頁。API 失敗則保留靜態內容。 -->
+<script>
+(function () {
+  var API = 'https://console.shell.fans/api/site/pricing';
+  var BILLING = ['monthly', 'quarterly', 'annual']; // 月/季/年 三個 tab-pane 的順序
+
+  function setText(el, txt) { if (el && txt != null) el.textContent = txt; }
+
+  function fillPrice(card, label) {
+    if (label == null) return;
+    var p1 = card.querySelector('.prprpr_001');
+    var p2 = card.querySelector('.prprpr_002');
+    if (p1) {
+      // 一層渲染：完整金額(含$)放同一元素，隱藏獨立的 $ 元素，
+      // 並移除尾端 margin，讓 justify-content:center 的卡片精準置中。
+      p1.textContent = label;
+      p1.style.marginRight = '0';
+      if (p2) p2.style.display = 'none';
+    } else {
+      // 諮詢型卡片(企業版)：單一 .heading-h1-size
+      var single = card.querySelector('.heading-h1-size');
+      if (single) single.textContent = label;
+    }
+  }
+
+  function fillCards(cards) {
+    var panes = document.querySelectorAll('.tabs-content-2 .w-tab-pane');
+    for (var pi = 0; pi < panes.length; pi++) {
+      var billing = BILLING[pi];
+      var domCards = panes[pi].querySelectorAll('.pricing-content');
+      for (var ci = 0; ci < domCards.length; ci++) {
+        var c = cards[ci];
+        if (!c) continue;
+        var card = domCards[ci];
+        setText(card.querySelector('.text-200.medium'), c.eyebrow);
+        setText(card.querySelector('.display-4'), c.name);
+        setText(card.querySelector('.paragraph-17'), c.tagline);
+        var price = c.prices && c.prices[billing];
+        if (price) fillPrice(card, price.label);
+        // 賣點 bullets — 支援兩種格式：字串 或 {label, supported}。
+        // supported=false 的項目變淡(該方案不支援)。
+        var featRows = card.querySelectorAll('.price_all');
+        for (var fi = 0; fi < featRows.length; fi++) {
+          var f = c.features[fi];
+          if (f == null) continue;
+          var label = typeof f === 'string' ? f : f.label;
+          var ok = typeof f === 'string' ? true : f.supported !== false;
+          var textEl = featRows[fi].querySelector('.list') || featRows[fi].querySelector('div');
+          if (textEl && label != null) textEl.textContent = label;
+          featRows[fi].style.opacity = ok ? '' : '0.38';
+        }
+      }
+    }
+  }
+
+  // Slack「比較所有功能」風格：完整動態建構 DOM(取代原本定位填空)，因項目數量
+  // 現在由後台自由增減，位置對應會對不上。失敗時完全不動舊有靜態表格(fallback)。
+  function el(tag, cls, text) {
+    var e = document.createElement(tag);
+    if (cls) e.className = cls;
+    if (text != null) e.textContent = text;
+    return e;
+  }
+  function buildCmpTable(t) {
+    var wrap = el('div', 'sf-cmp-wrap');
+    var table = el('div', 'sf-cmp-table');
+    wrap.appendChild(table);
+    // 欄數依 API 回傳動態決定(目前 4 欄:創作者/免費/商業/企業)，避免硬編欄數以後又對不上。
+    var gridTemplate = 'minmax(160px,1.5fr) repeat(' + t.columns.length + ', minmax(88px,1fr))';
+
+    var header = el('div', 'sf-cmp-row-grid sf-cmp-header');
+    header.style.gridTemplateColumns = gridTemplate;
+    header.appendChild(el('div', 'sf-cmp-cell sf-cmp-label-col'));
+    for (var ci = 0; ci < t.columns.length; ci++) {
+      header.appendChild(el('div', 'sf-cmp-cell', t.columns[ci]));
+    }
+    table.appendChild(header);
+
+    t.sections.forEach(function (sec) {
+      var secWrap = el('div', 'sf-cmp-section');
+      secWrap.appendChild(el('div', 'sf-cmp-section-title', sec.title));
+      sec.rows.forEach(function (r) {
+        var row = el('div', 'sf-cmp-row-grid sf-cmp-row');
+        row.style.gridTemplateColumns = gridTemplate;
+        row.appendChild(el('div', 'sf-cmp-cell sf-cmp-label-col', r.label));
+        for (var vi = 0; vi < t.columns.length; vi++) {
+          var v = r.values[vi];
+          var empty = v == null || v === '';
+          row.appendChild(el('div', 'sf-cmp-cell' + (empty ? ' sf-cmp-empty' : ''), empty ? '—' : v));
+        }
+        secWrap.appendChild(row);
+      });
+      table.appendChild(secWrap);
+    });
+    return wrap;
+  }
+  function fillTable(t) {
+    var comp = document.querySelector('.price-table-component');
+    if (!comp || !t || !t.sections || !t.sections.length) return;
+    setText(comp.querySelector('.price-table-top-content-wrapper h2'), t.subtitle);
+    setText(comp.querySelector('h2.price_t_001'), t.title);
+
+    var root = comp.querySelector('#sf-cmp-table-root');
+    if (!root) return;
+    var built = buildCmpTable(t);
+    root.innerHTML = '';
+    root.appendChild(built);
+    root.style.display = '';
+    // 原始 Webflow 結構把每個 section 拆成獨立的 .price-table-list(共 7 個，只有
+    // 第一個帶 price_t_003)，用 querySelector(單數)只會找到第一個、其餘 6 個
+    // (資產保險箱以下)會漏隱藏而露出無創作者欄位的舊內容 — 改用 querySelectorAll 全隱藏。
+    var oldStatics = comp.querySelectorAll('.price-table-list');
+    for (var oi = 0; oi < oldStatics.length; oi++) oldStatics[oi].style.display = 'none';
+  }
+
+  function apply(d) {
+    try { if (d.cards) fillCards(d.cards); } catch (e) { /* keep static */ }
+    try { if (d.table) fillTable(d.table); } catch (e) { /* keep static */ }
+  }
+
+  // 避免「先閃一下靜態舊價格、fetch 完再跳成新價格」的雙重渲染感：價格數字預設
+  // visibility:hidden(見 sf-price-ready-css)，fetch 完成(成功或失敗)才顯示。
+  // 安全網逾時強制顯示，確保絕不會卡在隱藏狀態(例如 API 異常慢或掛掉)。
+  var revealed = false;
+  function revealPrices() {
+    if (revealed) return;
+    revealed = true;
+    document.documentElement.classList.add('sf-price-ready');
+  }
+  setTimeout(revealPrices, 900);
+
+  function load() {
+    fetch(API, { cache: 'no-store' })
+      .then(function (r) { return r.ok ? r.json() : null; })
+      .then(function (d) { if (d) apply(d); })
+      .catch(function () { /* 靜態內容為 fallback */ })
+      .then(revealPrices, revealPrices);
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', load);
+  else load();
+})();
+</script>
+
+<!-- ===== 方案字卡點選切換 ===== 點任一卡把「選中(白底+teal 文字/圖示/按鈕)」樣式移到該卡，三個計費 pane 同步 -->
+<style id="sf-card-select-css">
+.section-price .grid-3-columns > .card { cursor: pointer; transition: background-color 160ms ease, box-shadow 160ms ease, transform 180ms ease; }
+/* 卡片有 hover 動畫(GSAP)會寫 inline background-color 蓋過 class，選中底色用 !important 鎖住 */
+.section-price .grid-3-columns > .card.pricing-popular {
+  background-color: #fff !important;
+  color: inherit;
+  /* 選中卡持續保持 hover 的變大特效(與 GSAP hover-in 同值)；!important 讓 hover-out 的 inline transform 蓋不掉 */
+  transform: translate3d(0, -10px, 0) scale(1.03, 1.03) !important;
+}
+/* —— 文字/按鈕顏色連動(雙向) ——
+   選中: 標題群 teal、賣點文字深灰藍、CTA teal；未選中: 還原灰階(免費版被取消選中時也會變灰) */
+.section-price .grid-3-columns > .card.pricing-popular .text-200.medium,
+.section-price .grid-3-columns > .card.pricing-popular .display-4,
+.section-price .grid-3-columns > .card.pricing-popular .pricing-content p { color: rgb(120,210,200) !important; }
+.section-price .grid-3-columns > .card.pricing-popular .price_all div { color: rgb(83,101,120) !important; }
+.section-price .grid-3-columns > .card.pricing-popular a.w-button { background-color: rgb(120,210,200) !important; }
+.section-price .grid-3-columns > .card:not(.pricing-popular) .text-200.medium,
+.section-price .grid-3-columns > .card:not(.pricing-popular) .display-4,
+.section-price .grid-3-columns > .card:not(.pricing-popular) .pricing-content p { color: rgb(83,101,120) !important; }
+.section-price .grid-3-columns > .card:not(.pricing-popular) .price_all div { color: rgb(121,129,146) !important; }
+.section-price .grid-3-columns > .card:not(.pricing-popular) a.w-button { background-color: rgb(187,187,187) !important; }
+</style>
+<script>
+(function () {
+  var ICON_ON = 'images/wwtemplates.svg';   /* teal 勾 */
+  var ICON_OFF = 'images/templates.svg';    /* 灰勾 */
+  function cardsOf(g) {
+    return Array.prototype.filter.call(g.children, function (el) {
+      return el.classList && el.classList.contains('card');
+    });
+  }
+  function bind() {
+    var grids = Array.prototype.slice.call(
+      document.querySelectorAll('.section-price .w-tab-pane .grid-3-columns')
+    );
+    if (!grids.length) return;
+    function select(idx) {
+      grids.forEach(function (g2) {
+        cardsOf(g2).forEach(function (c, i) {
+          var on = i === idx;
+          c.classList.toggle('pricing-popular', on);
+          /* 方案內容 icon 顏色連動(img src 切換) */
+          var imgs = c.querySelectorAll('.price_all img');
+          Array.prototype.forEach.call(imgs, function (im) {
+            im.src = on ? ICON_ON : ICON_OFF;
+          });
+        });
+      });
+    }
+    grids.forEach(function (g) {
+      cardsOf(g).forEach(function (card, idx) {
+        card.addEventListener('click', function () { select(idx); });
+      });
+    });
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', bind);
+  else bind();
+})();
+</script>
 </body>
 </html>

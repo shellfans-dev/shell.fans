@@ -205,7 +205,7 @@ p{line-height:1.8}
 .btn-secondary:hover{background:var(--deep-blue);color:#fff}
 
 /* ===== HERO ===== */
-.hero{padding:24px 0 80px;background:linear-gradient(180deg,#FAFAF8 0%,#F7F3EA 100%);position:relative;overflow:hidden}
+.hero{padding:104px 0 80px;background:linear-gradient(180deg,#FAFAF8 0%,#F7F3EA 100%);position:relative;overflow:hidden}
 .hero-grid{
   display:grid;
   grid-template-columns:1.05fr 1fr;
@@ -326,7 +326,7 @@ p{line-height:1.8}
 .hero-card-row .meta{font-size:0.7rem;color:var(--text-tertiary);font-weight:500;flex-shrink:0}
 
 @media (max-width:900px){
-  .hero{padding:20px 0 60px}
+  .hero{padding:96px 0 60px}
   .hero-grid{grid-template-columns:1fr;gap:2.5rem}
   .hero-visual{min-height:auto}
 }
@@ -681,7 +681,7 @@ html[data-embed="1"] .chatbot > .container > div:first-child { display: none !im
         <a data-sf-product="shellfans-engine" href="https://shell.fans/endurance" class="nav-link" data-i18n="nav.engine">續航引擎</a>
         <a href="https://shell.fans/fans-analysis" class="nav-link" data-i18n="nav.fansAnalysis">粉絲分析</a>
         <a data-sf-product="kolfans" href="https://console.shell.fans" target="_blank" rel="noopener" class="nav-link" data-i18n="nav.wordOfMouth">口碑行銷</a>
-        <a href="https://console.shell.fans/pricing" target="_blank" rel="noopener" class="nav-link" data-i18n="nav.pricing">查看方案</a>
+        <a href="https://shell.fans/pricing" target="_blank" rel="noopener" class="nav-link" data-i18n="nav.pricing">查看方案</a>
         <a href="https://blog.shell.fans/" target="_blank" rel="noopener" class="nav-link">Klog</a>
       </nav>
       <div class="nav-actions">
@@ -708,7 +708,7 @@ html[data-embed="1"] .chatbot > .container > div:first-child { display: none !im
           </button>
           <div class="nav-login-list" role="menu"></div>
         </div>
-        <a href="https://console.shell.fans/signup" target="_blank" rel="noopener" class="nav-cta" data-i18n="nav.getStarted">開始使用</a>
+        <a href="https://app.shell.fans/auth/register" target="_blank" rel="noopener" class="nav-cta" data-i18n="nav.getStarted">開始使用</a>
       </div>
       <button type="button" class="nav-hamburger" id="navHamburger" aria-label="開啟選單" data-i18n="aria.openMenu" data-i18n-attr="aria-label" aria-expanded="false">
         <span></span><span></span><span></span>
@@ -722,14 +722,14 @@ html[data-embed="1"] .chatbot > .container > div:first-child { display: none !im
   <a data-sf-product="shellfans-engine" href="https://shell.fans/endurance" data-i18n="nav.engine">續航引擎</a>
   <a href="https://shell.fans/fans-analysis" data-i18n="nav.fansAnalysis">粉絲分析</a>
   <a data-sf-product="kolfans" href="https://console.shell.fans" target="_blank" rel="noopener" data-i18n="nav.wordOfMouth">口碑行銷</a>
-  <a href="https://console.shell.fans/pricing" target="_blank" rel="noopener" data-i18n="nav.pricing">查看方案</a>
+  <a href="https://shell.fans/pricing" target="_blank" rel="noopener" data-i18n="nav.pricing">查看方案</a>
   <a href="https://blog.shell.fans/" target="_blank" rel="noopener">Klog</a>
-  <a href="https://console.shell.fans/login?next=https%3A%2F%2Fshell.fans%2F" data-i18n="nav.login">登入</a>
-  <a href="https://console.shell.fans/signup" target="_blank" rel="noopener" class="mobile-cta" data-i18n="nav.getStarted">開始使用</a>
+  <a href="https://app.shell.fans/auth/login" data-i18n="nav.login">登入</a>
+  <a href="https://app.shell.fans/auth/register" target="_blank" rel="noopener" class="mobile-cta" data-i18n="nav.getStarted">開始使用</a>
 </div>
 
 <!-- ===== DIFY CHATBOT ===== -->
-<section class="chatbot" id="chatbot" style="padding:104px 0 80px">
+<section class="chatbot" id="chatbot" style="padding:104px 0 80px;display:none">
   <div class="container">
     <div style="text-align:center;padding:0 16px 28px;max-width:780px;margin:0 auto">
       <h1 style="font-size:clamp(30px,4.5vw,44px);font-weight:700;line-height:1.2;margin:0 0 14px;color:#0f172a;letter-spacing:-0.015em">
@@ -935,6 +935,7 @@ html[data-embed="1"] .chatbot > .container > div:first-child { display: none !im
       // user's name/email + swap dropdown items to profile/logout when
       // console.shell.fans reports a logged-in session.
       function applyKolFansLoginUI(user) {
+        return; // console(口碑行銷)登入顯示已停用；shell.fans 登入狀態一律由 sf-footer.js 依 .shell.fans 的 sf_user cookie 顯示，避免登出後又冒出 console 的 System Admin
         try {
           var toggle = document.getElementById('navLoginToggle');
           if (toggle && user) {
@@ -1719,8 +1720,8 @@ html[data-embed="1"] .chatbot > .container > div:first-child { display: none !im
         <h2 class="hero-h"><span data-i18n="hero.h2.line1">把社群經營，</span><br><span data-i18n="hero.h2.line2">變成</span><span class="accent" data-i18n="hero.h2.accent">可管理的長期資產</span></h2>
         <p class="hero-sub" data-i18n="hero.sub">ShellFans AI 幫助創作者、經紀人與品牌主整合 IG、Facebook、Threads 等平台資料，保存內容與互動紀錄，並用 AI 分析粉絲與口碑成長。</p>
         <div class="hero-ctas">
-          <a href="https://console.shell.fans/signup" target="_blank" rel="noopener" class="btn-primary" data-i18n="nav.getStarted">開始使用</a>
-          <a href="https://console.shell.fans/pricing" target="_blank" rel="noopener" class="btn-secondary" data-i18n="nav.pricing">查看方案</a>
+          <a href="https://app.shell.fans/auth/register" target="_blank" rel="noopener" class="btn-primary" data-i18n="nav.getStarted">開始使用</a>
+          <a href="https://shell.fans/pricing" target="_blank" rel="noopener" class="btn-secondary" data-i18n="nav.pricing">查看方案</a>
         </div>
       </div>
       <div class="hero-visual" aria-hidden="true">
@@ -1921,8 +1922,8 @@ html[data-embed="1"] .chatbot > .container > div:first-child { display: none !im
       <h2><span data-i18n="finalCta.h2.line1">讓每一次發文、留言與互動，</span><br><span data-i18n="finalCta.h2.line2">都成為可以累積的資產</span></h2>
       <p data-i18n="finalCta.sub">從今天開始，把分散在 IG、Facebook、Threads 的社群成果，整理成你真正握住的長期資產。</p>
       <div class="final-cta-buttons">
-        <a href="https://console.shell.fans/signup" target="_blank" rel="noopener" class="btn-primary" data-i18n="finalCta.btnPrimary">免費開始使用</a>
-        <a href="https://console.shell.fans/login?next=https%3A%2F%2Fshell.fans%2F" class="btn-secondary" data-i18n="nav.login">登入</a>
+        <a href="https://app.shell.fans/auth/register" target="_blank" rel="noopener" class="btn-primary" data-i18n="finalCta.btnPrimary">免費開始使用</a>
+        <a href="https://app.shell.fans/auth/login" class="btn-secondary" data-i18n="nav.login">登入</a>
       </div>
     </div>
   </div>
@@ -1931,7 +1932,7 @@ html[data-embed="1"] .chatbot > .container > div:first-child { display: none !im
 <!-- ===== FOOTER ===== -->
 
 </main>
-<footer class="sf-footer" role="contentinfo" data-sf-footer><div id="sf-footer-root"><div class="sf-container"><div class="sf-footer-top"><div><div class="sf-footer-brand"><img decoding="async" loading="lazy" src="https://shell.fans/images/nav_logo.svg" alt="ShellFans AI" width="162" height="32"></div><p class="sf-footer-desc">跨平台社群 AI 指揮中心。保存社群資產，看懂粉絲，同步經營與口碑成長。</p></div><div class="sf-footer-col"><h3>產品</h3><a data-sf-product="shellfans-engine" href="https://shell.fans/endurance">續航引擎</a><a href="https://shell.fans/fans-analysis">粉絲分析</a><a data-sf-product="kolfans" href="https://console.shell.fans" target="_blank" rel="noopener noreferrer">口碑行銷</a><a href="https://console.shell.fans/pricing" target="_blank" rel="noopener noreferrer">查看方案</a></div><div class="sf-footer-col"><h3>資源</h3><a href="https://blog.shell.fans/" target="_blank" rel="noopener noreferrer">Klog 部落格</a><a href="https://shell.fans/helpcenter">幫助中心</a><a href="https://shell.fans/support">客服支援</a></div><div class="sf-footer-col"><h3>聯繫</h3><a href="https://shell.fans/contact">關於我們</a><a href="https://shell.fans/contact">歡迎聯繫</a><a href="https://shell.fans/co-founder">創辦人</a></div></div><div class="sf-footer-company" aria-label="公司資訊"><span class="sf-footer-company-row">唄粉智能科技股份有限公司</span><span class="sf-footer-company-row">地址：臺北市內湖區瑞光路335號4樓</span><span class="sf-footer-company-row"><a href="mailto:hello@shell.fans">信箱：hello@shell.fans</a></span><span class="sf-footer-company-row"><a href="tel:0277143635">電話：02-77143635</a></span><span class="sf-footer-company-row">統編：83032387</span></div><div class="sf-footer-patent"><span>唄粉智能科技及其產品受商標、</span><a href="https://tiponet.tipo.gov.tw/gpss2/gpsskmc/gpssbkm?!!FRURLTWI908295B" target="_blank" rel="noopener noreferrer">發明專利 I908295(臺灣)</a><span>及其他申請中美國、日本之專利保護。</span></div><div class="sf-footer-bottom"><span class="sf-footer-copy">© 2026 ShellFans AI. 唄粉智能科技股份有限公司. All rights reserved.</span><button type="button" class="sf-footer-lang" data-sf-lang aria-label="切換語言"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><path d="M2 12h20"></path><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg><span>English</span></button><div class="sf-footer-social" aria-label="社群連結"><a href="https://www.facebook.com/profile.php?id=61581243232686" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><img decoding="async" loading="lazy" src="https://shell.fans/images/facebook.svg" alt="Facebook" width="14" height="14"></a><a href="https://www.instagram.com/shell_fansai/" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><img decoding="async" loading="lazy" src="https://shell.fans/images/instagram.svg" alt="Instagram" width="14" height="14"></a></div><div class="sf-footer-legal"><a href="https://shell.fans/privacy-policy">隱私權政策</a><a href="https://shell.fans/terms-and-conditions">服務條款</a></div></div></div></div></footer>
+<footer class="sf-footer" role="contentinfo" data-sf-footer><div id="sf-footer-root"><div class="sf-container"><div class="sf-footer-top"><div><div class="sf-footer-brand"><img decoding="async" loading="lazy" src="https://shell.fans/images/nav_logo.svg" alt="ShellFans AI" width="162" height="32"></div><p class="sf-footer-desc">跨平台社群 AI 指揮中心。保存社群資產，看懂粉絲，同步經營與口碑成長。</p></div><div class="sf-footer-col"><h3>產品</h3><a data-sf-product="shellfans-engine" href="https://shell.fans/endurance">續航引擎</a><a href="https://shell.fans/fans-analysis">粉絲分析</a><a data-sf-product="kolfans" href="https://console.shell.fans" target="_blank" rel="noopener noreferrer">口碑行銷</a><a href="https://shell.fans/pricing" target="_blank" rel="noopener noreferrer">查看方案</a></div><div class="sf-footer-col"><h3>資源</h3><a href="https://blog.shell.fans/" target="_blank" rel="noopener noreferrer">Klog 部落格</a><a href="https://shell.fans/helpcenter">幫助中心</a><a href="https://shell.fans/support">客服支援</a></div><div class="sf-footer-col"><h3>聯繫</h3><a href="https://shell.fans/contact">關於我們</a><a href="https://shell.fans/contact">歡迎聯繫</a><a href="https://shell.fans/co-founder">創辦人</a></div></div><div class="sf-footer-company" aria-label="公司資訊"><span class="sf-footer-company-row">唄粉智能科技股份有限公司</span><span class="sf-footer-company-row">地址：臺北市內湖區瑞光路335號4樓</span><span class="sf-footer-company-row"><a href="mailto:hello@shell.fans">信箱：hello@shell.fans</a></span><span class="sf-footer-company-row"><a href="tel:0277143635">電話：02-77143635</a></span><span class="sf-footer-company-row">統編：83032387</span></div><div class="sf-footer-patent"><span>唄粉智能科技及其產品受商標、</span><a href="https://tiponet.tipo.gov.tw/gpss2/gpsskmc/gpssbkm?!!FRURLTWI908295B" target="_blank" rel="noopener noreferrer">發明專利 I908295(臺灣)</a><span>及其他申請中美國、日本之專利保護。</span></div><div class="sf-footer-bottom"><span class="sf-footer-copy">© 2026 ShellFans AI. 唄粉智能科技股份有限公司. All rights reserved.</span><button type="button" class="sf-footer-lang" data-sf-lang aria-label="切換語言"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><path d="M2 12h20"></path><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg><span>English</span></button><div class="sf-footer-social" aria-label="社群連結"><a href="https://www.facebook.com/profile.php?id=61581243232686" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><img decoding="async" loading="lazy" src="https://shell.fans/images/facebook.svg" alt="Facebook" width="14" height="14"></a><a href="https://www.instagram.com/shell_fansai/" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><img decoding="async" loading="lazy" src="https://shell.fans/images/instagram.svg" alt="Instagram" width="14" height="14"></a></div><div class="sf-footer-legal"><a href="https://shell.fans/privacy-policy">隱私權政策</a><a href="https://shell.fans/terms-and-conditions">服務條款</a></div></div></div></div></footer>
 
 <script>
 (function(){
@@ -1944,12 +1945,12 @@ html[data-embed="1"] .chatbot > .container > div:first-child { display: none !im
     loginToggle.addEventListener('click',function(e){
       e.stopPropagation();
       // Pre-login: nav-login-list is empty (no user menu yet) → unified
-      // single login redirect to console.shell.fans/login. Post-login: applyKolFansLoginUI
+      // single login redirect to app.shell.fans/auth/login. Post-login: applyKolFansLoginUI
       // has populated the list, so click toggles the user dropdown.
       var list=loginWrap.querySelector('.nav-login-list');
       var hasUserMenu=list&&list.children.length>0;
       if(!hasUserMenu){
-        window.location.href='https://console.shell.fans/login?next=' + encodeURIComponent(window.location.href);
+        window.location.href='https://app.shell.fans/auth/login';
         return;
       }
       var open=loginWrap.classList.toggle('open');
@@ -2218,6 +2219,6 @@ html[data-embed="1"] .chatbot > .container > div:first-child { display: none !im
   }
 })();
 </script>
-<script src="/js/sf-footer.js" defer></script>
+<script src="/js/sf-footer.js?v=20260720a" defer></script>
 </body>
 </html>

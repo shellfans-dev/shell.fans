@@ -30,7 +30,7 @@
         { label: { 'zh-TW': '續航引擎', en: 'Engagement Engine' }, href: 'https://shell.fans/endurance' },
         { label: { 'zh-TW': '粉絲分析', en: 'Fans Analysis' }, href: 'https://shell.fans/fans-analysis' },
         { label: { 'zh-TW': '口碑行銷', en: 'Word-of-Mouth' }, href: 'https://console.shell.fans', external: true },
-        { label: { 'zh-TW': '查看方案', en: 'Pricing' }, href: 'https://console.shell.fans/pricing', external: true }
+        { label: { 'zh-TW': '查看方案', en: 'Pricing' }, href: 'https://shell.fans/pricing', external: true }
       ] },
       { title: { 'zh-TW': '資源', en: 'Resources' }, links: [
         { label: { 'zh-TW': 'Klog 部落格', en: 'Klog Blog' }, href: 'https://blog.shell.fans/', external: true },
@@ -200,11 +200,9 @@
   }
 
   function init() {
+    // console.shell.fans 依賴已切斷（口碑行銷封存）— footer 僅由內建 SHELL_BASE 渲染，
+    // 不再 runtime fetch console.shell.fans/api/site/footer。查看方案 = shell.fans/pricing。
     render(SHELL_BASE, getLocale());
-    fetch(API, { credentials: 'omit' })
-      .then(function (r) { return r.ok ? r.json() : null; })
-      .then(function (j) { if (j && j.data) { lastCfg = j.data; render(lastCfg, getLocale()); } })
-      .catch(function () { /* keep embedded defaults */ });
     document.addEventListener('shellfans-locale-changed', function (e) {
       var nl = e && e.detail && e.detail.locale === 'en' ? 'en' : (e && e.detail && e.detail.locale ? 'zh-TW' : getLocale());
       render(lastCfg, nl);
@@ -264,23 +262,102 @@
   }
 
   function run() {
-    fetch(FLAGS_API, { credentials: 'omit' })
-      .then(function (r) { return r.ok ? r.json() : null; })
-      .then(function (j) {
-        var d = j && j.data;
-        if (!d) return;
-        // 若三者皆啟用則不動作（常態）。
-        if (d.kolfans_wom_enabled !== false &&
-            d.shellfans_endurance_engine_enabled !== false &&
-            d.aeo_geo_managed_hosting_enabled !== false) return;
-        apply(d);
-        // footer 由 sf-footer.js 非同步注入，稍後再掃兩次確保涵蓋。
-        setTimeout(function () { apply(d); }, 400);
-        setTimeout(function () { apply(d); }, 1200);
-      })
-      .catch(function () { /* 讀取失敗：維持顯示，不影響其他 nav */ });
+    // console.shell.fans 依賴已切斷（口碑行銷封存）— flags 就地烘焙，不再 runtime fetch
+    // console.shell.fans/api/site/product-flags。口碑行銷封存 → kolfans 關（移除口碑行銷入口）。
+    var d = {
+      shellfans_endurance_engine_enabled: true,
+      kolfans_wom_enabled: false,
+      aeo_geo_managed_hosting_enabled: true
+    };
+    apply(d);
+    // footer 由上方 sf-footer 非同步注入，稍後再掃兩次確保涵蓋。
+    setTimeout(function () { apply(d); }, 400);
+    setTimeout(function () { apply(d); }, 1200);
   }
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', run);
   else run();
+})();
+
+/*!
+ * 續航(app.shell.fans)登入狀態 — 讀 .shell.fans 共用 cookie `sf_user`(由續航登入時
+ * 寫入,只含顯示名)，在 nav 右上角顯示續航登入者、選單導向 app.shell.fans。
+ * 取代對 console.shell.fans/api/auth/me 的依賴(封存中)。HTML 內 applyKolFansLoginUI
+ * 已加守衛:有 sf_user 時 console 不覆蓋此顯示。
+ */
+(function () {
+  'use strict';
+  function getCookie(n) {
+    var m = document.cookie.match('(?:^|; )' + n + '=([^;]*)');
+    return m ? decodeURIComponent(m[1]) : '';
+  }
+  // 續航統一登出：清掉續航 session + sf_user cookie 後導回本站，
+  // 讓 shell.fans 與 app.shell.fans 的登入狀態一致。
+  function goLogout(e) {
+    if (e) e.preventDefault();
+    window.location.href =
+      'https://app.shell.fans/auth/logout?next=' +
+      encodeURIComponent(window.location.origin + '/');
+  }
+  function apply() {
+    var name = getCookie('sf_user');
+    if (!name) return;
+    var d = name.length > 18 ? name.slice(0, 16) + '…' : name;
+    var VAULT = 'https://app.shell.fans/console/vault';
+
+    // 結構 1：index / aeo-geo 的 #navLoginToggle + #navLogin .nav-login-list
+    var toggle = document.getElementById('navLoginToggle');
+    if (toggle) {
+      toggle.innerHTML = '<span>' + d + '</span><span class="caret">▾</span>';
+      toggle.setAttribute('title', name);
+    }
+    var list = document.querySelector('#navLogin .nav-login-list');
+    if (list) {
+      list.innerHTML =
+        '<a href="' + VAULT + '" target="_blank" rel="noopener" role="menuitem">會員中心</a>' +
+        '<a href="#" id="sfEngineLogout" role="menuitem">登出</a>';
+      var lo = document.getElementById('sfEngineLogout');
+      if (lo) lo.addEventListener('click', goLogout);
+    }
+
+    // 結構 2：內容頁(pricing 等 14 頁)的 Webflow dropdown .login-dd-toggle / .login-dd-list
+    var ddToggles = document.querySelectorAll('.login-dd-toggle');
+    for (var i = 0; i < ddToggles.length; i++) {
+      var sp = ddToggles[i].querySelector('span');
+      if (sp) sp.textContent = d; else ddToggles[i].insertAdjacentHTML('afterbegin', '<span>' + d + '</span>');
+      ddToggles[i].setAttribute('title', name);
+    }
+    var ddLists = document.querySelectorAll('.login-dd-list');
+    for (var j = 0; j < ddLists.length; j++) {
+      ddLists[j].innerHTML =
+        '<a href="' + VAULT + '" target="_blank" rel="noopener" class="w-dropdown-link" style="padding:10px 18px;color:#292929;font-weight:500;">會員中心</a>' +
+        '<a href="#" class="w-dropdown-link sf-engine-logout" style="padding:10px 18px;color:#292929;font-weight:500;cursor:pointer;">登出</a>';
+    }
+
+    // 結構 3：簡單 nav(co-founder / social-media-backup / what-is-shellfans)的 .nav-actions
+    // 靜態「登入」「開始使用」按鈕 → 登入者姓名(→會員中心) + 登出
+    var acts = document.querySelectorAll('.nav-actions');
+    for (var k = 0; k < acts.length; k++) {
+      var loginBtn = acts[k].querySelector('a.btn-secondary');
+      if (loginBtn && /登入|login/i.test(loginBtn.textContent)) {
+        loginBtn.textContent = d;
+        loginBtn.setAttribute('href', VAULT);
+        loginBtn.setAttribute('target', '_blank');
+        loginBtn.setAttribute('title', name);
+      }
+      var cta = acts[k].querySelector('a.btn-primary');
+      if (cta && /開始使用|start|sign ?up|register/i.test(cta.textContent)) {
+        cta.textContent = '登出';
+        cta.setAttribute('href', '#');
+        cta.removeAttribute('target');
+        cta.classList.add('sf-engine-logout');
+      }
+    }
+
+    // 綁定所有登出鈕(結構 2/3 共用 class)
+    var outs = document.querySelectorAll('.sf-engine-logout');
+    for (var m = 0; m < outs.length; m++) outs[m].addEventListener('click', goLogout);
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', apply);
+  else apply();
 })();
