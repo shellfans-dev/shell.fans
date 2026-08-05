@@ -85,6 +85,10 @@ async function reportCrawler(env, request, url, status, responseTimeMs) {
       headers: {
         'content-type': 'application/json',
         'x-crawler-ingest-token': token,
+        // 必須帶明確 UA：shell.fans zone 有一條「空 UA → managed_challenge」的
+        // WAF 規則，沒帶 UA 的話上報會被我們自己的 WAF 擋成 403 挑戰頁，
+        // 而且因為這裡靜默吞例外，症狀會是「Worker 有跑但完全沒資料」。
+        'user-agent': 'ShellFansCrawlerMonitor/1.0 (+https://shell.fans/aeo-geo)',
       },
       body,
     });
