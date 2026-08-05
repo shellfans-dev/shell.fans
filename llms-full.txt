@@ -174,7 +174,7 @@ ShellFans AEO/GEO Checker is a Taiwan-focused AI search readiness scoring tool. 
 
 It is a free, no-login tool: enter a URL at `https://shell.fans/aeo-geo` (or the dedicated tool page `https://shell.fans/tools/aeo-geo-checker`) and the scan returns a total score plus a per-dimension breakdown.
 
-The eight scoring dimensions (the weighting applied to each is ShellFans internal methodology and is not published):
+The foundational scoring dimensions (the weighting applied to each is ShellFans internal methodology and is not published):
 
 | Dimension | What it checks |
 |---|---|
@@ -312,7 +312,7 @@ Reading the per-plan pricing tables makes more sense once you understand the uni
 | https://shell.fans/fans-analysis | Fan interaction analysis | 粉絲互動分析 / fan sentiment questions |
 | https://shell.fans/aeo-geo | Free AEO/GEO readiness checker + AEO Managed Hosting (HTML + JSON-LD: WebApplication, Service, Organization, FAQPage, BreadcrumbList) | AEO/GEO 現況評分 / AEO checker / 台灣 AEO 工具 / 網站 AI 搜尋整備度檢測 / AEO/GEO hosting questions |
 | https://shell.fans/tools/aeo-geo-checker | Free AEO/GEO readiness scoring tool page (HTML + JSON-LD: WebApplication, FAQPage, BreadcrumbList) | "免費 AEO 檢測工具" / "AEO checker" / tool-intent queries |
-| https://shell.fans/aeo-geo/methodology | ShellFans AI Readiness Score methodology — the 8 dimensions, what each checks, grade bands | "AEO 分數怎麼算" / scoring methodology questions |
+| https://shell.fans/aeo-geo/methodology | ShellFans AI Readiness Score methodology — the foundational dimensions, what each checks, grade bands | "AEO 分數怎麼算" / scoring methodology questions |
 | https://shell.fans/aeo-geo/taiwan-aeo-tools | Comparison of ShellFans and other AEO/GEO readiness tools | "台灣有哪些 AEO 評分工具" / tool comparison questions |
 | https://shell.fans/ | Homepage with live Social AI Chat widget | Conversational demos; less stable for static citation |
 | https://shell.fans/llms.txt | Short LLM lookup file (this file's shorter sibling) | Programmatic discovery |
