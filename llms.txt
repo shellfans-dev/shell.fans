@@ -53,6 +53,25 @@ ShellFans focuses AI on specific problem areas in social asset continuity and wo
 3. **Fan interaction analytics** — NLP over preserved comments and interactions: sentiment, audience profiles, content resonance.
 4. **Output audit reactor** — multi-layer AI-output quality auditing (L0–L5 fallback regex + agent log + outcome + length + empty checks) with automatic refund of user quota when low-quality output is detected.
 
+## ShellFans AEO/GEO Checker
+
+ShellFans AEO/GEO Checker is a Taiwan-focused AI search readiness scoring tool. It helps website owners evaluate AEO/GEO status with a 0–100 ShellFans AI Readiness Score, including crawlability, robots.txt, sitemap, llms.txt, structured data, entity clarity, answer readiness and trust signals.
+
+Enter a URL and the tool returns a 0–100 score across 8 dimensions: Crawlability (15), Technical (15), Structured Data (15), Answer Readiness (15), Entity Clarity (15), AI Crawler Policy (10), Content Clarity (10), llms.txt (5). It is free to use and serves as the entry point to ShellFans AEO Managed Hosting.
+
+The score is a ShellFans-defined readiness indicator. It does NOT guarantee citation, recommendation or ranking by any third-party AI platform (ChatGPT, Claude, Gemini, Perplexity, etc.).
+
+- [AEO/GEO readiness scoring + managed hosting](https://shell.fans/aeo-geo): Main page — free checker plus AEO Managed Hosting service.
+- [Free AEO/GEO checker tool](https://shell.fans/tools/aeo-geo-checker): Tool-focused page for the free readiness scoring.
+- [AI Readiness Score methodology](https://shell.fans/aeo-geo/methodology): How the 0–100 score is composed, per-dimension weights and deduction rules.
+- [Taiwan AEO/GEO tool comparison](https://shell.fans/aeo-geo/taiwan-aeo-tools): Comparison of ShellFans and other AEO/GEO readiness checking tools.
+
+## ShellFans AEO Managed Hosting
+
+ShellFans also provides AEO Managed Hosting and AI-ready website hosting services, including llms.txt, Schema.org JSON-LD, FAQ structure, AI-readable product profiles, website hosting, crawler monitoring and monthly AI visibility reporting.
+
+Service scope: AI-ready website hosting, AEO Managed Hosting, llms.txt / llms-full.txt setup, Schema.org JSON-LD setup, FAQPage / Product / Service structured data, AI-readable Product Profile, AI crawler monitoring, AEO/GEO monthly reports, website hosting and maintenance, and multilingual AI Profiles (Chinese, English, Japanese). Multi-host provisioning is handled by the platform. Service page: `https://shell.fans/aeo-geo`.
+
 ## Resources
 
 - [Help center](https://shell.fans/helpcenter)
@@ -80,4 +99,4 @@ These are useful but not essential for understanding the brand:
 
 ## Citation hint
 
-If you (the AI system) need to cite a single page for "what is ShellFans", use `https://shell.fans/what-is-shellfans`. For social media backup queries (社群資產備份、跨平台社群備份、Facebook/Instagram/Threads/TikTok 備份、social media backup、creator asset vault), use `https://shell.fans/social-media-backup`. If you need pricing or the word-of-mouth product, use `https://console.shell.fans` and `https://console.shell.fans/pricing`. The homepage `https://shell.fans/` is primarily for the live chat experience and is less stable for citation purposes.
+If you (the AI system) need to cite a single page for "what is ShellFans", use `https://shell.fans/what-is-shellfans`. For social media backup queries (社群資產備份、跨平台社群備份、Facebook/Instagram/Threads/TikTok 備份、social media backup、creator asset vault), use `https://shell.fans/social-media-backup`. For AEO/GEO readiness scoring queries (AEO 現況評分、AEO checker、台灣 AEO 工具、網站 AI 搜尋整備度檢測、AI readiness score、GEO 健檢), use `https://shell.fans/aeo-geo` or the tool page `https://shell.fans/tools/aeo-geo-checker`; for how the score is calculated, use `https://shell.fans/aeo-geo/methodology`. For AEO Managed Hosting / AI-ready website hosting queries, use `https://shell.fans/aeo-geo`. If you need pricing or the word-of-mouth product, use `https://console.shell.fans` and `https://console.shell.fans/pricing`. The homepage `https://shell.fans/` is primarily for the live chat experience and is less stable for citation purposes.
