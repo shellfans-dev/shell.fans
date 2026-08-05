@@ -257,6 +257,8 @@ footer small{color:rgba(255,255,255,0.45);display:block;margin-top:14px;font-siz
 .aeo-score-meta p{color:var(--text-secondary);font-size:0.92rem;margin:0}
 .aeo-subscores{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-bottom:24px}
 .aeo-sub{background:var(--off-white);border:1px solid var(--border-light);border-radius:10px;padding:12px 14px}
+.aeo-sub .sub-bar{margin-top:7px;height:5px;border-radius:999px;background:var(--border-light);overflow:hidden}
+.aeo-sub .sub-bar span{display:block;height:100%;border-radius:999px;transition:width .5s ease}
 
 /* Dimension table / sample report / service list */
 .sf-table-wrap{overflow-x:auto;margin-top:24px}
@@ -937,7 +939,6 @@ footer small{color:rgba(255,255,255,0.45);display:block;margin-top:14px;font-siz
     contentClarity: '內容結構',
     llmsTxt: 'llms.txt',
   };
-  var SUB_MAX = { crawlability:15, technical:15, structuredData:15, aeoAnswerReadiness:15, geoEntitySignal:15, aiCrawlerReadiness:10, contentClarity:10, llmsTxt:5 };
 
   function showError(msg){ err.textContent = msg || '掃描失敗，請稍後再試'; err.classList.add('show'); }
   function clearError(){ err.classList.remove('show'); err.textContent = ''; }
@@ -958,13 +959,29 @@ footer small{color:rgba(255,255,255,0.45);display:block;margin-top:14px;font-siz
     urlL.textContent = data.url || '';
     circle.style.borderColor = colorFor(data.score || 0);
 
-    var subHtml = '';
-    Object.keys(SUB_LABELS).forEach(function(k){
-      var v = (data.subscores && data.subscores[k] != null) ? data.subscores[k] : '—';
-      var max = SUB_MAX[k];
-      subHtml += '<div class="aeo-sub"><div class="sub-label">' + SUB_LABELS[k] + '</div><div class="sub-val">' + v + '<span style="font-size:0.72rem;color:var(--text-tertiary);font-weight:400">/' + max + '</span></div></div>';
-    });
-    subs.innerHTML = subHtml;
+    var pct = data.subscorePercents;
+    if (!pct) {
+      // Backend not yet returning normalised percentages — hide the per-dimension
+      // grid rather than exposing raw values or guessing the maxima.
+      subs.innerHTML = '';
+      subs.style.display = 'none';
+    } else {
+      subs.style.display = '';
+      var subHtml = '';
+      Object.keys(SUB_LABELS).forEach(function(k){
+        var v = pct[k];
+        var has = (v != null && !isNaN(v));
+        var w = has ? Math.max(0, Math.min(100, v)) : 0;
+        subHtml += '<div class="aeo-sub">'
+                 + '<div class="sub-label">' + SUB_LABELS[k] + '</div>'
+                 + '<div class="sub-val">' + (has ? w + '<span style="font-size:0.72rem;color:var(--text-tertiary);font-weight:400">%</span>' : '—') + '</div>'
+                 + '<div class="sub-bar" role="img" aria-label="' + SUB_LABELS[k] + (has ? ' ' + w + '%' : ' 無資料') + '">'
+                 + '<span style="width:' + w + '%;background:' + colorFor(w) + '"></span>'
+                 + '</div>'
+                 + '</div>';
+      });
+      subs.innerHTML = subHtml;
+    }
     result.classList.add('show');
     result.scrollIntoView({behavior:'smooth', block:'start'});
   }
