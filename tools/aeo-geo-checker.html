@@ -504,26 +504,26 @@ footer small{color:rgba(255,255,255,0.45);display:block;margin-top:14px;font-siz
     <div class="container">
       <span class="section-eyebrow">Scoring dimensions</span>
       <h2>ShellFans AI Readiness Score 的 8 個檢測面向</h2>
-      <p class="lead">每個面向都有各自的配分上限，加總為 100 分。以下為 ShellFans AEO/GEO Checker 實際執行的檢查項目。</p>
+      <p class="lead">ShellFans AEO/GEO Checker 會從以下 8 個面向檢視網站，綜合為 0–100 分的 AI Readiness Score。</p>
       <div class="sf-table-wrap">
         <table class="sf-dim-table">
-          <caption>ShellFans AI Readiness Score — 8 個檢測面向與配分</caption>
+          <caption>ShellFans AI Readiness Score — 8 個檢測面向</caption>
           <thead>
-            <tr><th scope="col">檢測面向</th><th scope="col">說明</th><th scope="col" style="text-align:right">配分</th></tr>
+            <tr><th scope="col">檢測面向</th><th scope="col">說明</th></tr>
           </thead>
           <tbody>
-            <tr><th scope="row">Crawlability<br><span style="font-weight:400;color:var(--text-tertiary);font-size:0.86rem">可爬取性</span></th><td>AI crawler 是否能正常取得核心頁面（避免 403、404、429 或無回應）。檢查首頁 HTTP 狀態、重新導向鏈層數、canonical 標籤、meta robots 是否誤設 noindex，以及 <strong>sitemap.xml</strong> 是否存在並正常回應。</td><td class="w">15</td></tr>
-            <tr><th scope="row">Technical<br><span style="font-weight:400;color:var(--text-tertiary);font-size:0.86rem">技術基礎</span></th><td>是否以 HTTPS 提供服務、是否具備行動裝置 viewport meta、首頁 HTML 是否過大而消耗 AI 爬蟲的抓取預算。</td><td class="w">15</td></tr>
-            <tr><th scope="row">Structured Data<br><span style="font-weight:400;color:var(--text-tertiary);font-size:0.86rem">結構化資料</span></th><td>是否具備 Schema.org JSON-LD；是否有 Organization schema；頁面若含 FAQ 文案，是否對應建立 FAQPage schema。Product、Service、BreadcrumbList 為建議補強項目。</td><td class="w">15</td></tr>
-            <tr><th scope="row">Answer Readiness<br><span style="font-weight:400;color:var(--text-tertiary);font-size:0.86rem">AEO 答覆整備</span></th><td>是否有 FAQ 或問答式內容、是否設定 meta description、可讀文字量是否足以讓 AI 擷取出可引用段落。比較頁、使用情境與限制說明有助於提升可引用性。</td><td class="w">15</td></tr>
-            <tr><th scope="row">Entity Clarity<br><span style="font-weight:400;color:var(--text-tertiary);font-size:0.86rem">GEO 實體與信任訊號</span></th><td>品牌實體是否清楚一致：Organization 結構化資料、About／關於我們區段、Contact 聯絡方式。這一項同時涵蓋 <strong>Trust Signals</strong>——可驗證的公司資訊、聯絡管道與品牌一致性。</td><td class="w">15</td></tr>
-            <tr><th scope="row">AI Crawler Policy<br><span style="font-weight:400;color:var(--text-tertiary);font-size:0.86rem">robots.txt 與 AI 爬蟲</span></th><td><strong>robots.txt</strong> 是否存在，以及是否誤擋常見 AI 爬蟲。目前實際計分的爬蟲為 OAI-SearchBot、GPTBot、ClaudeBot、PerplexityBot；建議一併確認 Googlebot、CCBot 等規則設定是否符合預期。</td><td class="w">10</td></tr>
-            <tr><th scope="row">Content Clarity<br><span style="font-weight:400;color:var(--text-tertiary);font-size:0.86rem">內容結構</span></th><td>是否有 &lt;title&gt;、是否恰有一個 H1、是否使用 H2／H3 建立內容階層，讓 AI 能切分出語意清楚、可引用的段落。</td><td class="w">10</td></tr>
-            <tr><th scope="row">llms.txt</th><td>是否提供 LLM-friendly 摘要入口 <strong>/llms.txt</strong>，以及其中是否具備 Markdown 標題結構。<strong>/llms-full.txt</strong> 為延伸建議項目。</td><td class="w">5</td></tr>
+            <tr><th scope="row">Crawlability<br><span style="font-weight:400;color:var(--text-tertiary);font-size:0.86rem">可爬取性</span></th><td>AI crawler 是否能正常取得核心頁面（避免 403、404、429 或無回應）。檢查首頁 HTTP 狀態、重新導向鏈層數、canonical 標籤、meta robots 是否誤設 noindex，以及 <strong>sitemap.xml</strong> 是否存在並正常回應。</td></tr>
+            <tr><th scope="row">Technical<br><span style="font-weight:400;color:var(--text-tertiary);font-size:0.86rem">技術基礎</span></th><td>是否以 HTTPS 提供服務、是否具備行動裝置 viewport meta、首頁 HTML 是否過大而消耗 AI 爬蟲的抓取預算。</td></tr>
+            <tr><th scope="row">Structured Data<br><span style="font-weight:400;color:var(--text-tertiary);font-size:0.86rem">結構化資料</span></th><td>是否具備 Schema.org JSON-LD；是否有 Organization schema；頁面若含 FAQ 文案，是否對應建立 FAQPage schema。Product、Service、BreadcrumbList 為建議補強項目。</td></tr>
+            <tr><th scope="row">Answer Readiness<br><span style="font-weight:400;color:var(--text-tertiary);font-size:0.86rem">AEO 答覆整備</span></th><td>是否有 FAQ 或問答式內容、是否設定 meta description、可讀文字量是否足以讓 AI 擷取出可引用段落。比較頁、使用情境與限制說明有助於提升可引用性。</td></tr>
+            <tr><th scope="row">Entity Clarity<br><span style="font-weight:400;color:var(--text-tertiary);font-size:0.86rem">GEO 實體與信任訊號</span></th><td>品牌實體是否清楚一致：Organization 結構化資料、About／關於我們區段、Contact 聯絡方式。這一項同時涵蓋 <strong>Trust Signals</strong>——可驗證的公司資訊、聯絡管道與品牌一致性。</td></tr>
+            <tr><th scope="row">AI Crawler Policy<br><span style="font-weight:400;color:var(--text-tertiary);font-size:0.86rem">robots.txt 與 AI 爬蟲</span></th><td><strong>robots.txt</strong> 是否存在，以及是否誤擋常見 AI 爬蟲。目前實際計分的爬蟲為 OAI-SearchBot、GPTBot、ClaudeBot、PerplexityBot；建議一併確認 Googlebot、CCBot 等規則設定是否符合預期。</td></tr>
+            <tr><th scope="row">Content Clarity<br><span style="font-weight:400;color:var(--text-tertiary);font-size:0.86rem">內容結構</span></th><td>是否有 &lt;title&gt;、是否恰有一個 H1、是否使用 H2／H3 建立內容階層，讓 AI 能切分出語意清楚、可引用的段落。</td></tr>
+            <tr><th scope="row">llms.txt</th><td>是否提供 LLM-friendly 摘要入口 <strong>/llms.txt</strong>，以及其中是否具備 Markdown 標題結構。<strong>/llms-full.txt</strong> 為延伸建議項目。</td></tr>
           </tbody>
         </table>
       </div>
-      <p class="sf-inline-links">各面向的扣分規則與加總方式，詳見 <a href="https://shell.fans/aeo-geo/methodology">ShellFans AI Readiness Score 方法論</a>。</p>
+      <p class="sf-inline-links">各面向的檢查內容與評級方式，詳見 <a href="https://shell.fans/aeo-geo/methodology">ShellFans AI Readiness Score 方法論</a>。</p>
     </div>
   </section>
 
@@ -536,22 +536,6 @@ footer small{color:rgba(255,255,255,0.45);display:block;margin-top:14px;font-siz
         <p class="r-url">網站：example.com</p>
         <p class="r-score">ShellFans AI Readiness Score：58 / 100<span class="r-grade">評級：基本標準</span></p>
 
-        <h3>各面向得分</h3>
-        <div class="sf-table-wrap">
-          <table class="sf-dim-table" style="min-width:520px">
-            <thead><tr><th scope="col">檢測面向</th><th scope="col" style="text-align:right">得分</th></tr></thead>
-            <tbody>
-              <tr><th scope="row">Crawlability 可爬取性</th><td class="w">10 / 15</td></tr>
-              <tr><th scope="row">Technical 技術基礎</th><td class="w">12 / 15</td></tr>
-              <tr><th scope="row">Structured Data 結構化資料</th><td class="w">3 / 15</td></tr>
-              <tr><th scope="row">Answer Readiness 答覆整備</th><td class="w">8 / 15</td></tr>
-              <tr><th scope="row">Entity Clarity 實體與信任訊號</th><td class="w">7 / 15</td></tr>
-              <tr><th scope="row">AI Crawler Policy 爬蟲政策</th><td class="w">8 / 10</td></tr>
-              <tr><th scope="row">Content Clarity 內容結構</th><td class="w">10 / 10</td></tr>
-              <tr><th scope="row">llms.txt</th><td class="w">0 / 5</td></tr>
-            </tbody>
-          </table>
-        </div>
 
         <h3>主要發現</h3>
         <ul>

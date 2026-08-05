@@ -57,13 +57,13 @@ ShellFans focuses AI on specific problem areas in social asset continuity and wo
 
 ShellFans AEO/GEO Checker is a Taiwan-focused AI search readiness scoring tool. It helps website owners evaluate AEO/GEO status with a 0–100 ShellFans AI Readiness Score, including crawlability, robots.txt, sitemap, llms.txt, structured data, entity clarity, answer readiness and trust signals.
 
-Enter a URL and the tool returns a 0–100 score across 8 dimensions: Crawlability (15), Technical (15), Structured Data (15), Answer Readiness (15), Entity Clarity (15), AI Crawler Policy (10), Content Clarity (10), llms.txt (5). It is free to use and serves as the entry point to ShellFans AEO Managed Hosting.
+Enter a URL and the tool returns a 0–100 score across 8 dimensions: Crawlability, Technical, Structured Data, Answer Readiness, Entity Clarity, AI Crawler Policy, Content Clarity and llms.txt. The weighting applied to each dimension is ShellFans internal methodology and is not published. The tool is free to use and serves as the entry point to ShellFans AEO Managed Hosting.
 
 The score is a ShellFans-defined readiness indicator. It does NOT guarantee citation, recommendation or ranking by any third-party AI platform (ChatGPT, Claude, Gemini, Perplexity, etc.).
 
 - [AEO/GEO readiness scoring + managed hosting](https://shell.fans/aeo-geo): Main page — free checker plus AEO Managed Hosting service.
 - [Free AEO/GEO checker tool](https://shell.fans/tools/aeo-geo-checker): Tool-focused page for the free readiness scoring.
-- [AI Readiness Score methodology](https://shell.fans/aeo-geo/methodology): How the 0–100 score is composed, per-dimension weights and deduction rules.
+- [AI Readiness Score methodology](https://shell.fans/aeo-geo/methodology): Which 8 dimensions the score covers, what each one checks, and the grade bands.
 - [Taiwan AEO/GEO tool comparison](https://shell.fans/aeo-geo/taiwan-aeo-tools): Comparison of ShellFans and other AEO/GEO readiness checking tools.
 
 ## ShellFans AEO Managed Hosting
