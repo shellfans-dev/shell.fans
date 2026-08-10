@@ -312,8 +312,10 @@ footer small{color:rgba(255,255,255,0.45);display:block;margin-top:14px;font-siz
 .aeo-checker-card h2{font-family:var(--font-serif);font-size:clamp(1.6rem,3vw,2.1rem);line-height:1.3;margin-bottom:8px}
 .aeo-checker-card .lead{color:var(--text-secondary);font-size:0.98rem;margin-bottom:20px;line-height:1.7}
 .aeo-form{display:flex;gap:10px;flex-wrap:wrap}
-.aeo-form input[type="url"]{flex:1;min-width:240px;padding:14px 18px;border:1px solid var(--border-medium);border-radius:12px;font-size:1rem;font-family:inherit;background:#fff}
-.aeo-form input[type="url"]:focus{outline:none;border-color:var(--signal-coral);box-shadow:0 0 0 3px rgba(233,111,94,0.15)}
+/* 用 .aeo-form input 而非 input[type="url"] —— 輸入框改成 type="text" 才能
+   接受不含 https:// 的裸網域，綁在 type 上的選擇器會整條失效導致欄位縮短 */
+.aeo-form input{flex:1;min-width:240px;padding:14px 18px;border:1px solid var(--border-medium);border-radius:12px;font-size:1rem;font-family:inherit;background:#fff}
+.aeo-form input:focus{outline:none;border-color:var(--signal-coral);box-shadow:0 0 0 3px rgba(233,111,94,0.15)}
 .aeo-form button{padding:14px 26px;border:0;border-radius:12px;background:var(--signal-coral);color:#fff;font-size:1rem;font-weight:600;font-family:inherit;cursor:pointer;transition:all .2s}
 .aeo-form button:hover:not(:disabled){background:#d35d4c;transform:translateY(-1px)}
 .aeo-form button:disabled{opacity:0.5;cursor:wait}
@@ -1300,7 +1302,7 @@ footer small{color:rgba(255,255,255,0.45);display:block;margin-top:14px;font-siz
     quotaEl.textContent = base + left;
   }
   function loadQuota(){
-    fetch('https://console.shell.fans/api/site/aeo-geo/scan', { credentials: 'omit' })
+    fetch('https://console.shell.fans/api/site/aeo-geo/scan', { credentials: 'include' })
       .then(function(r){ return r.json(); })
       .then(function(j){ if (j && j.data) renderQuota(j.data); })
       .catch(function(){ /* 查不到就不顯示，不影響主功能 */ });
@@ -1317,7 +1319,11 @@ footer small{color:rgba(255,255,255,0.45);display:block;margin-top:14px;font-siz
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({ url: url }),
-      credentials: 'omit',
+      // 必須帶 cookie：後端靠 session 判斷是註冊會員（每日 10 次）還是匿名（5 次），
+      // 公司測試帳號也是靠這個才認得出來。omit 的話一律被當成匿名。
+      // console.shell.fans 的 session cookie 是 SameSite=None + Secure，
+      // 且 CORS 已回 Access-Control-Allow-Credentials: true，跨網域可送達。
+      credentials: 'include',
     })
       .then(function(r){ return r.json().then(function(j){ return {ok: r.ok, body: j}; }); })
       .then(function(o){
