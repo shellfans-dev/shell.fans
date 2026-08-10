@@ -550,7 +550,7 @@ footer small{color:rgba(255,255,255,0.45);display:block;margin-top:14px;font-siz
       <div class="hero-checker" id="checker" style="margin-top:36px;max-width:760px">
         <p style="font-size:1rem;color:var(--text-secondary);line-height:1.75;margin:0 0 16px" data-i18n="aeo.checker.intro">立刻輸入網址，30 秒內取得 ShellFans AI Readiness Score（0–100），查看網站 AEO / GEO 現況評分，包含各基礎面向的分數與可優化建議。</p>
         <form class="aeo-form" id="aeoCheckerForm" onsubmit="return false">
-          <input type="url" id="aeoUrlInput" inputmode="url" placeholder="https://example.com" autocomplete="url" required />
+          <input type="text" id="aeoUrlInput" inputmode="url" placeholder="example.com" autocomplete="url" required />
           <button type="submit" id="aeoSubmitBtn" data-i18n="aeo.checker.btn">開始檢測</button>
         </form>
         <p class="aeo-disclaimer" style="margin-top:14px" data-i18n="aeo.checker.disclaimer" data-i18n-html>分數為 ShellFans 內部定義的整備度指標，<strong>不代表第三方 AI 系統（ChatGPT、Perplexity、Gemini 等）的引用或排名保證</strong>。</p>
@@ -1274,10 +1274,22 @@ footer small{color:rgba(255,255,255,0.45);display:block;margin-top:14px;font-siz
     result.scrollIntoView({behavior:'smooth', block:'start'});
   }
 
+  // 使用者輸入 example.com 就該能用 —— 不該逼他們打 https://。
+  // 原本 input 是 type="url" + required，瀏覽器會在送出前就擋下沒有 scheme 的值。
+  function normalizeUrl(raw){
+    var v = String(raw || '').trim();
+    if (!v) return '';
+    // 已有 scheme 就原樣送出（http:// 也保留，後端會處理）
+    if (/^[a-zA-Z][a-zA-Z0-9+.-]*:\/\//.test(v)) return v;
+    // 誤打成 //example.com 也接受
+    v = v.replace(/^\/+/, '');
+    return 'https://' + v;
+  }
+
   form.addEventListener('submit', function(e){
     e.preventDefault();
     clearError();
-    var url = input.value.trim();
+    var url = normalizeUrl(input.value);
     if (!url) return;
     setBtn(true);
     fetch('https://console.shell.fans/api/site/aeo-geo/scan', {
