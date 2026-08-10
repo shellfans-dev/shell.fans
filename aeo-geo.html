@@ -553,6 +553,7 @@ footer small{color:rgba(255,255,255,0.45);display:block;margin-top:14px;font-siz
           <input type="text" id="aeoUrlInput" inputmode="url" placeholder="example.com" autocomplete="url" required />
           <button type="submit" id="aeoSubmitBtn" data-i18n="aeo.checker.btn">開始檢測</button>
         </form>
+        <p class="aeo-quota" id="aeoQuota" style="margin-top:12px;font-size:.86rem;color:var(--text-secondary)"></p>
         <p class="aeo-disclaimer" style="margin-top:14px" data-i18n="aeo.checker.disclaimer" data-i18n-html>分數為 ShellFans 內部定義的整備度指標，<strong>不代表第三方 AI 系統（ChatGPT、Perplexity、Gemini 等）的引用或排名保證</strong>。</p>
         <p class="aeo-disclaimer" style="margin-top:10px">想了解分數怎麼算？請看 <a href="https://shell.fans/aeo-geo/methodology" style="color:var(--data-teal);text-decoration:underline">ShellFans AI Readiness Score 方法論</a>，或比較 <a href="https://shell.fans/aeo-geo/taiwan-aeo-tools" style="color:var(--data-teal);text-decoration:underline">台灣 AEO/GEO 現況評分工具</a>。</p>
         <div class="aeo-error" id="aeoError"></div>
@@ -1286,6 +1287,26 @@ footer small{color:rgba(255,255,255,0.45);display:block;margin-top:14px;font-siz
     return 'https://' + v;
   }
 
+  // 額度說明直接向後端查，不把數字寫死在頁面上 ——
+  // 寫死會和伺服器設定脫節，改了上限卻忘了改頁面就會騙到使用者。
+  var quotaEl = document.getElementById('aeoQuota');
+  function renderQuota(q){
+    if (!quotaEl || !q) return;
+    if (q.kind === 'unlimited') { quotaEl.textContent = ''; return; }
+    var base = '每日檢測次數：匿名 ' + q.anon_per_day + ' 次、註冊會員 ' + q.member_per_day + ' 次';
+    var left = (typeof q.remaining === 'number')
+      ? '（今日尚可檢測 ' + q.remaining + ' 次，台灣時間隔日 00:00 重置）'
+      : '';
+    quotaEl.textContent = base + left;
+  }
+  function loadQuota(){
+    fetch('https://console.shell.fans/api/site/aeo-geo/scan', { credentials: 'omit' })
+      .then(function(r){ return r.json(); })
+      .then(function(j){ if (j && j.data) renderQuota(j.data); })
+      .catch(function(){ /* 查不到就不顯示，不影響主功能 */ });
+  }
+  loadQuota();
+
   form.addEventListener('submit', function(e){
     e.preventDefault();
     clearError();
@@ -1301,10 +1322,15 @@ footer small{color:rgba(255,255,255,0.45);display:block;margin-top:14px;font-siz
       .then(function(r){ return r.json().then(function(j){ return {ok: r.ok, body: j}; }); })
       .then(function(o){
         if (!o.ok || !o.body || !o.body.data) {
-          showError((o.body && o.body.error && o.body.error.message) || '掃描失敗，請稍後再試');
+          var err = (o.body && o.body.error) || {};
+          var msg = err.message || '掃描失敗，請稍後再試';
+          if (err.upgrade_hint) msg += ' ' + err.upgrade_hint;
+          showError(msg);
+          loadQuota();
           return;
         }
         render(o.body.data);
+        loadQuota();
       })
       .catch(function(){ showError('連線異常，請稍後再試'); })
       .finally(function(){ setBtn(false); });
