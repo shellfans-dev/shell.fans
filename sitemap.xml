@@ -25,6 +25,11 @@
     <priority>0.90</priority>
   </url>
   <url>
+    <loc>https://shell.fans/pricing</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://shell.fans/tools/aeo-geo-checker</loc>
     <lastmod>2026-08-05</lastmod>
     <changefreq>monthly</changefreq>
