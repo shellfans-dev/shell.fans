@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<title>信任訊號是什麼？AI 如何判斷網站可不可信 - ShellFans</title>
+<meta name="description" content="信任訊號是可對外驗證的事實，用來讓 AI 系統判斷網站與品牌的可信度。本頁說明哪些訊號真的有作用、哪些只是自我宣稱。">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#101214">
+<link rel="canonical" href="https://shell.fans/aeo/trust-signals">
+
+<link rel="alternate" hreflang="zh-Hant" href="https://shell.fans/aeo/trust-signals">
+<link rel="alternate" hreflang="x-default" href="https://shell.fans/aeo/trust-signals">
+
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://shell.fans/aeo/trust-signals">
+<meta property="og:title" content="信任訊號是什麼？AI 如何判斷網站可不可信 - ShellFans">
+<meta property="og:description" content="信任訊號是可對外驗證的事實，用來讓 AI 系統判斷網站與品牌的可信度。本頁說明哪些訊號真的有作用、哪些只是自我宣稱。">
+<meta property="og:site_name" content="ShellFans AI Technology">
+<meta property="og:image" content="https://shell.fans/images/nav_logo.svg">
+<meta property="og:locale" content="zh_TW">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="信任訊號是什麼？AI 如何判斷網站可不可信 - ShellFans">
+<meta name="twitter:description" content="信任訊號是可對外驗證的事實，用來讓 AI 系統判斷網站與品牌的可信度。本頁說明哪些訊號真的有作用、哪些只是自我宣稱。">
+<meta name="twitter:image" content="https://shell.fans/images/nav_logo.svg">
+
+<link rel="icon" href="https://shell.fans/images/favicon.png">
+<link rel="apple-touch-icon" href="https://shell.fans/images/webclip.png">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;600;700&family=Noto+Serif+TC:wght@600;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://shell.fans/#organization",
+      "name": "唄粉智能科技股份有限公司",
+      "alternateName": [
+        "ShellFans AI Technology",
+        "ShellFans",
+        "ShellFans AI",
+        "唄粉智能科技"
+      ],
+      "legalName": "唄粉智能科技股份有限公司",
+      "url": "https://shell.fans",
+      "logo": "https://shell.fans/images/nav_logo.svg",
+      "sameAs": [
+        "https://www.facebook.com/profile.php?id=61581243232686",
+        "https://www.instagram.com/shell_fansai/",
+        "https://console.shell.fans",
+        "https://blog.shell.fans"
+      ],
+      "taxID": "83032387"
+    },
+    {
+      "@type": "TechArticle",
+      "@id": "https://shell.fans/aeo/trust-signals#main",
+      "headline": "信任訊號：AI 如何判斷你可不可信",
+      "name": "信任訊號：AI 如何判斷你可不可信",
+      "description": "信任訊號是可對外驗證的事實，用來讓 AI 系統判斷網站與品牌的可信度。本頁說明哪些訊號真的有作用、哪些只是自我宣稱。",
+      "url": "https://shell.fans/aeo/trust-signals",
+      "inLanguage": "zh-Hant",
+      "isPartOf": {
+        "@type": "WebSite",
+        "name": "ShellFans AI Technology",
+        "url": "https://shell.fans"
+      },
+      "author": {
+        "@id": "https://shell.fans/#organization"
+      },
+      "publisher": {
+        "@id": "https://shell.fans/#organization"
+      },
+      "disclaimer": "技術整備可提升網站被 AI 系統理解與引用的基礎條件，但不構成任何第三方 AI 平台的引用、推薦或排名保證。"
+    },
+    {
+      "@type": "BreadcrumbList",
+      "@id": "https://shell.fans/aeo/trust-signals#breadcrumb",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "首頁",
+          "item": "https://shell.fans/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "AEO/GEO 知識中心",
+          "item": "https://shell.fans/aeo"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "信任訊號：AI 如何判斷你可不可信",
+          "item": "https://shell.fans/aeo/trust-signals"
+        }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "@id": "https://shell.fans/aeo/trust-signals#faq",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "小公司沒有專利也沒有獎項，怎麼建立信任訊號？",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "專利與獎項不是必要條件。完整且可查證的法人資訊（公司全名、統一編號、地址、有效聯絡方式）、清楚的服務說明、誠實標註的限制，這些對任何規模的公司都做得到，而且是最基本也最有效的訊號。"
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "可以寫「服務超過一千家企業」嗎？",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "如果數字真實且必要時可提出佐證，可以。若無法佐證，建議改為可驗證的描述方式。無來源的數字對 AI 判斷沒有幫助，且一旦被質疑會反過來損害可信度。"
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "客戶 logo 牆有幫助嗎？",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "前提是取得授權。未經授權使用客戶商標有法律風險，且圖片本身對機器可讀性的幫助有限。若有授權，搭配可查證的文字說明會比純圖片有效。"
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "隱私權政策和服務條款真的會影響嗎？",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "會，但方式是間接的。它們的存在代表這是一個正常運作的商業實體，屬於基礎的可信度指標。缺少這些文件在多數評估框架中都會被視為警訊。"
+          }
+        }
+      ]
+    }
+  ]
+}
+</script>
+
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%;text-size-adjust:100%}
+body{font-family:"Noto Sans TC","PingFang TC","Microsoft JhengHei","Heiti TC",system-ui,-apple-system,sans-serif;font-size:16px;line-height:1.75;font-weight:400;color:#101214;background:#FAFAF8;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;overflow-x:hidden;font-feature-settings:"palt"}
+img{max-width:100%;display:block}
+a{color:inherit;text-decoration:none}
+ul,ol{list-style:none}
+button{font-family:inherit}
+:root{--ink:#101214;--charcoal:#1A1D21;--warm-paper:#F7F3EA;--off-white:#FAFAF8;--shell-sand:#D8C3A5;--signal-coral:#E96F5E;--data-teal:#2C9A8A;--deep-blue:#1E3A5F;--muted-gold:#C59B57;--text-secondary:#536578;--text-tertiary:#8A8D93;--border-light:#E8E5DE;--border-medium:#D4D0C8;--font-sans:"Noto Sans TC","PingFang TC","Microsoft JhengHei","Heiti TC",system-ui,-apple-system,sans-serif;--font-serif:"Noto Serif TC","PingFang TC","Microsoft JhengHei",serif;--font-mono:"Space Grotesk",ui-monospace,SFMono-Regular,monospace;--container:1100px;--gutter:clamp(1.25rem,4vw,3rem)}
+.container{max-width:var(--container);margin:0 auto;padding:0 var(--gutter)}
+h1,h2,h3,h4{font-family:var(--font-sans);line-height:1.4;color:var(--ink);font-weight:700;letter-spacing:-0.01em}
+p{line-height:1.85}
+
+/* NAV — same shape as shell.fans home */
+.nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(255,255,255,0.94);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid var(--border-light)}
+.nav-inner{display:flex;align-items:center;height:72px;gap:24px}
+.nav-brand img{height:34px;width:auto;display:block}
+.nav-menu{display:flex;align-items:center;gap:24px;flex:1;margin-left:24px}
+.nav-link{font-size:0.95rem;font-weight:500;color:var(--text-secondary);transition:color .2s;white-space:nowrap}
+.nav-link:hover{color:var(--ink)}
+.nav-actions{display:flex;align-items:center;gap:10px;flex-shrink:0}
+.btn-primary,.btn-secondary{display:inline-flex;align-items:center;justify-content:center;padding:10px 22px;border-radius:999px;font-size:0.95rem;font-weight:600;transition:all .2s;font-family:var(--font-sans);cursor:pointer;border:1px solid transparent}
+.btn-primary{background:var(--signal-coral);color:#fff}
+.btn-primary:hover{background:#d35d4c;transform:translateY(-1px);box-shadow:0 6px 18px rgba(233,111,94,0.32)}
+.btn-secondary{background:transparent;color:var(--ink);border-color:var(--border-medium)}
+.btn-secondary:hover{background:var(--ink);color:#fff;border-color:var(--ink)}
+@media (max-width:991px){.nav-menu,.nav-login,.nav-cta{display:none}.nav-hamburger{display:flex}.nav-inner{justify-content:space-between}}
+
+/* Hero */
+.hero{padding:56px 0 72px;background:linear-gradient(180deg,#FFFFFF 0%,var(--warm-paper) 100%);border-bottom:1px solid var(--border-light)}
+.hero-eyebrow{display:inline-block;font-family:var(--font-mono);font-size:0.8rem;font-weight:500;letter-spacing:0.18em;text-transform:uppercase;color:var(--data-teal);margin-bottom:18px}
+.hero h1{font-family:var(--font-serif);font-size:clamp(2.25rem,5vw,3.4rem);font-weight:700;line-height:1.25;margin-bottom:28px;letter-spacing:-0.02em}
+.hero-lead{font-size:clamp(1.05rem,1.8vw,1.2rem);line-height:1.85;max-width:780px;color:var(--text-secondary);margin-bottom:32px}
+.hero-cta{display:flex;flex-wrap:wrap;gap:14px}
+
+/* generic section */
+section{padding:80px 0;border-bottom:1px solid var(--border-light)}
+section h2{font-family:var(--font-serif);font-size:clamp(1.8rem,3.2vw,2.4rem);margin-bottom:18px}
+.section-eyebrow{display:inline-block;font-family:var(--font-mono);font-size:0.78rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--data-teal);margin-bottom:14px;font-weight:500}
+.lead{max-width:780px;color:var(--text-secondary);font-size:1.05rem;margin-bottom:36px}
+
+/* 3-pillar grid */
+.pillars{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.pillar{background:#fff;border:1px solid var(--border-light);border-radius:12px;padding:32px 28px}
+.pillar h3{font-size:1.2rem;margin-bottom:14px}
+.pillar p{color:var(--text-secondary);font-size:0.97rem}
+@media (max-width:820px){.pillars{grid-template-columns:1fr}}
+
+/* Plan tiles */
+.plans{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.plan{background:#fff;border:1px solid var(--border-light);border-radius:14px;padding:30px 26px;display:flex;flex-direction:column}
+.plan.recommended{border-color:var(--signal-coral);box-shadow:0 8px 28px -16px rgba(233,111,94,0.4)}
+.plan-tier{font-family:var(--font-mono);font-size:0.78rem;letter-spacing:0.16em;text-transform:uppercase;color:var(--data-teal);margin-bottom:8px}
+.plan h3{font-family:var(--font-serif);font-size:1.5rem;margin-bottom:6px}
+.plan-desc{color:var(--text-secondary);font-size:0.93rem;margin-bottom:20px;min-height:50px}
+.plan-features{list-style:disc;padding-left:18px;color:var(--text-secondary);font-size:0.93rem;line-height:1.85;margin-bottom:24px}
+.plan-features li{margin-bottom:4px}
+.plan-cta{margin-top:auto}
+@media (max-width:820px){.plans{grid-template-columns:1fr}}
+
+/* Addons */
+.addons{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px;margin-top:24px}
+.addon{background:#fff;border:1px dashed var(--border-medium);border-radius:10px;padding:18px 20px}
+.addon strong{display:block;color:var(--ink);font-size:0.95rem;margin-bottom:4px}
+.addon span{color:var(--text-secondary);font-size:0.86rem;line-height:1.7}
+
+/* FAQ */
+.faq{display:flex;flex-direction:column;gap:14px}
+.faq details{background:#fff;border:1px solid var(--border-light);border-radius:10px;padding:16px 22px}
+.faq summary{font-weight:600;font-size:1rem;cursor:pointer;list-style:none;position:relative;padding-right:24px}
+.faq summary::after{content:"+";position:absolute;right:0;top:0;font-size:1.3rem;color:var(--text-secondary);transition:transform .2s}
+.faq details[open] summary::after{content:"−"}
+.faq p{margin-top:12px;color:var(--text-secondary);font-size:0.96rem}
+
+/* Disclaimer */
+.disclaimer{background:#fff;border-left:4px solid var(--muted-gold);padding:24px 28px;border-radius:6px;color:var(--text-secondary);font-size:0.95rem;line-height:1.85}
+.disclaimer strong{color:var(--ink)}
+
+/* Final CTA */
+.final-cta{background:var(--charcoal);color:#fff;border-bottom:none}
+.final-cta h2{color:#fff}
+.final-cta p{color:rgba(255,255,255,0.7);max-width:680px;margin-bottom:28px}
+.final-cta .btn-secondary{color:#fff;border-color:rgba(255,255,255,0.4)}
+.final-cta .btn-secondary:hover{background:#fff;color:var(--ink);border-color:#fff}
+
+/* Footer */
+footer{background:var(--ink);color:rgba(255,255,255,0.6);padding:48px 0 32px;font-size:0.88rem;line-height:1.85}
+footer .footer-row{display:flex;flex-wrap:wrap;gap:20px;align-items:center;justify-content:space-between}
+footer a{color:rgba(255,255,255,0.8);text-decoration:none;margin-right:18px}
+footer a:hover{color:#fff}
+footer small{color:rgba(255,255,255,0.45);display:block;margin-top:14px;font-size:0.82rem}
+
+/* ===== AEO/GEO Checker ===== */
+.aeo-checker-wrap{padding:36px 0;background:linear-gradient(180deg,#fff 0%,var(--warm-paper) 100%);border-bottom:1px solid var(--border-light)}
+.aeo-checker-card{max-width:760px;margin:0 auto;background:#fff;border:1px solid var(--border-light);border-radius:16px;padding:32px;box-shadow:0 20px 50px -28px rgba(16,18,20,0.18)}
+.aeo-checker-eyebrow{display:inline-block;font-family:var(--font-mono);font-size:0.78rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--data-teal);margin-bottom:10px;font-weight:500}
+.aeo-checker-card h2{font-family:var(--font-serif);font-size:clamp(1.6rem,3vw,2.1rem);line-height:1.3;margin-bottom:8px}
+.aeo-checker-card .lead{color:var(--text-secondary);font-size:0.98rem;margin-bottom:20px;line-height:1.7}
+.aeo-form{display:flex;gap:10px;flex-wrap:wrap}
+.aeo-form input[type="url"]{flex:1;min-width:240px;padding:14px 18px;border:1px solid var(--border-medium);border-radius:12px;font-size:1rem;font-family:inherit;background:#fff}
+.aeo-form input[type="url"]:focus{outline:none;border-color:var(--signal-coral);box-shadow:0 0 0 3px rgba(233,111,94,0.15)}
+.aeo-form button{padding:14px 26px;border:0;border-radius:12px;background:var(--signal-coral);color:#fff;font-size:1rem;font-weight:600;font-family:inherit;cursor:pointer;transition:all .2s}
+.aeo-form button:hover:not(:disabled){background:#d35d4c;transform:translateY(-1px)}
+.aeo-form button:disabled{opacity:0.5;cursor:wait}
+.aeo-disclaimer{margin-top:14px;font-size:0.82rem;color:var(--text-tertiary);line-height:1.6}
+.aeo-error{margin-top:14px;padding:12px 16px;border-radius:10px;background:#fef2f2;border:1px solid #fecaca;color:#991b1b;font-size:0.9rem;display:none}
+.aeo-error.show{display:block}
+
+/* Result panel */
+.aeo-result{display:none;margin-top:28px;padding-top:28px;border-top:1px solid var(--border-light)}
+.aeo-result.show{display:block}
+.aeo-score-row{display:flex;align-items:center;gap:22px;margin-bottom:24px;flex-wrap:wrap}
+.aeo-score-circle{width:120px;height:120px;border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;flex-shrink:0;border:6px solid var(--signal-coral);background:#fff}
+.aeo-score-circle .score-n{font-family:var(--font-serif);font-size:2.6rem;font-weight:700;line-height:1;color:var(--ink)}
+.aeo-score-circle .score-d{font-size:0.7rem;color:var(--text-tertiary);margin-top:2px;letter-spacing:0.1em}
+.aeo-score-meta h3{font-family:var(--font-serif);font-size:1.4rem;margin-bottom:4px}
+.aeo-score-meta p{color:var(--text-secondary);font-size:0.92rem;margin:0}
+.aeo-subscores{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-bottom:24px}
+.aeo-sub{background:var(--off-white);border:1px solid var(--border-light);border-radius:10px;padding:12px 14px}
+.aeo-sub .sub-bar{margin-top:7px;height:5px;border-radius:999px;background:var(--border-light);overflow:hidden}
+.aeo-sub .sub-bar span{display:block;height:100%;border-radius:999px;transition:width .5s ease}
+
+/* Dimension table / sample report / service list */
+.sf-table-wrap{overflow-x:auto;margin-top:24px}
+.sf-dim-table{width:100%;border-collapse:collapse;font-size:0.94rem;min-width:640px}
+.sf-dim-table caption{text-align:left;color:var(--text-tertiary);font-size:0.86rem;padding-bottom:10px}
+.sf-dim-table th,.sf-dim-table td{text-align:left;padding:14px 16px;border-bottom:1px solid var(--border-light);vertical-align:top;line-height:1.75}
+.sf-dim-table thead th{background:var(--warm-paper);font-weight:600;color:var(--ink);white-space:nowrap}
+.sf-dim-table tbody th{font-weight:600;color:var(--ink);white-space:nowrap}
+.sf-dim-table td.w{text-align:right;font-family:var(--font-mono);color:var(--data-teal);white-space:nowrap;font-weight:500}
+.sf-dim-table td{color:var(--text-secondary)}
+.sf-report{background:#fff;border:1px solid var(--border-light);border-radius:14px;padding:28px 30px;margin-top:24px}
+.sf-report .r-url{font-family:var(--font-mono);font-size:0.9rem;color:var(--text-secondary);margin-bottom:6px}
+.sf-report .r-score{font-family:var(--font-serif);font-size:2rem;font-weight:700;color:var(--ink);line-height:1.2}
+.sf-report .r-grade{display:inline-block;margin-left:10px;font-family:var(--font-sans);font-size:0.85rem;font-weight:600;color:var(--muted-gold);vertical-align:middle}
+.sf-report h3{font-size:1.02rem;margin:24px 0 10px}
+.sf-report ul{list-style:disc;padding-left:20px;color:var(--text-secondary);font-size:0.94rem;line-height:1.85}
+.sf-report ul li{margin-bottom:5px}
+.sf-svc-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:10px;margin-top:24px;list-style:none;padding:0}
+.sf-svc-list li{background:#fff;border:1px solid var(--border-light);border-radius:10px;padding:13px 16px;font-size:0.93rem;color:var(--text-secondary)}
+.sf-svc-list li strong{color:var(--ink);font-weight:600;display:block;margin-bottom:2px}
+.sf-cta-row{display:flex;flex-wrap:wrap;gap:12px;margin-top:30px}
+.sf-inline-links{margin-top:22px;font-size:0.94rem;color:var(--text-secondary);line-height:2}
+.sf-inline-links a{color:var(--data-teal);text-decoration:underline}
+.aeo-sub .sub-label{font-size:0.78rem;color:var(--text-tertiary);margin-bottom:4px;letter-spacing:0.04em}
+.aeo-sub .sub-val{font-family:var(--font-mono);font-size:1.1rem;font-weight:700;color:var(--ink)}
+.aeo-findings h4{font-size:0.92rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-secondary);margin-bottom:12px}
+
+
+
+
+
+
+
+
+
+.aeo-cta-row{margin-top:24px;display:flex;flex-wrap:wrap;gap:10px}
+.aeo-cta-row a{display:inline-flex;align-items:center;padding:12px 22px;border-radius:999px;font-size:0.92rem;font-weight:600}
+.aeo-cta-row a.primary{background:var(--signal-coral);color:#fff}
+.aeo-cta-row a.primary:hover{background:#d35d4c}
+.aeo-cta-row a.secondary{background:transparent;color:var(--ink);border:1px solid var(--border-medium)}
+.aeo-cta-row a.secondary:hover{background:var(--ink);color:#fff}
+
+@media (max-width:520px){
+  .aeo-checker-card{padding:22px}
+  .aeo-form{flex-direction:column}
+  .aeo-form button{width:100%}
+}
+
+
+.nav-cta{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:10px 20px;
+  background:var(--signal-coral);color:#fff;
+  border-radius:8px;
+  font-size:0.95rem;font-weight:600;
+  transition:transform .15s,box-shadow .15s;
+  font-family:var(--font-sans);
+}
+.nav-cta:hover{transform:translateY(-1px);box-shadow:0 6px 18px rgba(233,111,94,0.3)}
+
+/* ===== nav-login + nav-cta CSS (synced from shell.fans/index.html) ===== */
+.nav-login{
+  position:relative;
+}
+.nav-login-toggle{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:8px 14px;
+  font-size:0.95rem;font-weight:500;color:var(--text-secondary);
+  background:none;border:none;cursor:pointer;
+  font-family:var(--font-sans);
+}
+.nav-login-toggle:hover{color:var(--ink)}
+.nav-login-toggle .caret{font-size:0.7rem;line-height:1}
+.nav-login-list{
+  display:none;
+  position:absolute;top:100%;right:0;min-width:180px;
+  background:#fff;border-radius:10px;
+  box-shadow:0 18px 42px -18px rgba(20,108,181,0.25);
+  padding:8px 0;margin-top:6px;
+  border:1px solid var(--border-light);
+}
+.nav-login.open .nav-login-list{display:block}
+.nav-login-list a{
+  display:block;padding:10px 18px;
+  font-size:0.9rem;color:#292929;font-weight:500;
+}
+.nav-login-list a:hover{background:var(--off-white)}
+.nav-cta{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:10px 20px;
+  background:var(--signal-coral);color:#fff;
+  border-radius:8px;
+  font-size:0.95rem;font-weight:600;
+  transition:transform .15s,box-shadow .15s;
+  font-family:var(--font-sans);
+}
+.nav-cta:hover{transform:translateY(-1px);box-shadow:0 6px 18px rgba(233,111,94,0.3)}
+.nav-hamburger{display:none;flex-direction:column;gap:5px;background:none;border:none;cursor:pointer;padding:8px}
+.nav-hamburger span{display:block;width:22px;height:2px;background:var(--ink);border-radius:2px}
+.mobile-menu{display:none;position:fixed;top:72px;left:0;right:0;bottom:0;background:#fff;padding:1.5rem var(--gutter) 2rem;flex-direction:column;z-index:99;overflow-y:auto}
+.mobile-menu.active{display:flex}
+.mobile-menu a{font-size:1.05rem;font-weight:500;padding:1rem 0;border-bottom:1px solid var(--border-light);color:var(--ink)}
+.mobile-menu .mobile-cta{display:inline-flex;align-items:center;justify-content:center;margin-top:1.5rem;padding:14px 24px;background:var(--signal-coral);color:#fff;border-radius:8px;font-weight:600;border:none}
+
+/* ===== Findings grid (2-col cards with impact ring) ===== */
+.aeo-findings-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.aeo-finding{padding:18px 20px;border:1px solid var(--border-light);border-radius:14px;background:#fff;box-shadow:0 4px 14px -8px rgba(16,18,20,0.18);display:flex;flex-direction:column;gap:12px;min-height:0}
+.aeo-finding.sev-critical{border-top:3px solid #dc2626}
+.aeo-finding.sev-high{border-top:3px solid var(--signal-coral)}
+.aeo-finding.sev-medium{border-top:3px solid var(--muted-gold)}
+.aeo-finding.sev-low{border-top:3px solid var(--data-teal)}
+.aeo-finding-header{display:flex;align-items:center;gap:18px}
+.aeo-finding-ring{width:120px;height:120px;flex-shrink:0;display:block}
+.aeo-finding-ring text{font-family:var(--font-serif);font-size:16px;font-weight:700;fill:var(--ink)}
+.aeo-finding-meta{flex:1;min-width:0}
+.aeo-finding-meta .ft{font-weight:700;font-size:0.97rem;line-height:1.4;color:var(--ink)}
+.aeo-finding-meta .fimpact{display:block;font-family:var(--font-mono);font-size:0.74rem;color:var(--text-tertiary);margin-top:4px;letter-spacing:0.02em}
+.aeo-finding .fd{font-size:0.87rem;color:var(--text-secondary);line-height:1.65;margin:0}
+.aeo-finding .fr{font-size:0.87rem;color:var(--ink);line-height:1.65;margin:0}
+.aeo-finding .fr strong{color:var(--ink);font-weight:600}
+@media (max-width:768px){.aeo-finding-ring{width:80px;height:80px}.aeo-finding-ring text{font-size:18px}.aeo-finding{padding:12px 14px}}
+
+
+.footer-company-row a[href^="mailto:"],
+.footer-company-row a[href^="tel:"]{display:inline-block;min-height:24px;padding:6px 4px;line-height:1.6;text-decoration:underline}
+
+/* ===== Mobile nav override — last-word rule (must come AFTER the duplicate
+       .nav-cta + .nav-hamburger declarations above, otherwise the unconditional
+       display:inline-flex / display:none would win the cascade). Mirrors
+       the homepage's @media (max-width:991px) navigation collapse. ===== */
+@media (max-width:991px){
+  .nav-menu,.nav-login,.nav-cta{display:none}
+  .nav-hamburger{display:flex}
+  .nav-inner{justify-content:space-between}
+}
+</style>
+  <link rel="stylesheet" href="/css/sf-footer.css">
+</head>
+<body>
+
+<!-- ===== NAV ===== -->
+<header class="nav" id="nav">
+  <div class="container">
+    <div class="nav-inner">
+      <a href="https://shell.fans/" class="nav-brand" aria-label="ShellFans">
+        <img src="https://shell.fans/images/nav_logo.svg" alt="ShellFans" width="162" height="34">
+      </a>
+      <nav class="nav-menu" aria-label="主選單">        <a data-sf-product="aeogeo" href="https://shell.fans/aeo-geo" class="nav-link">AEO/GEO 代管</a>
+        <a data-sf-product="shellfans-engine" href="https://shell.fans/endurance" class="nav-link">續航引擎</a>
+        <a href="https://shell.fans/fans-analysis" class="nav-link">粉絲分析</a>
+        <a data-sf-product="kolfans" href="https://console.shell.fans" target="_blank" rel="noopener" class="nav-link">口碑行銷</a>
+        <a href="https://shell.fans/pricing" target="_blank" rel="noopener" class="nav-link">查看方案</a>
+        <a href="https://blog.shell.fans/" target="_blank" rel="noopener" class="nav-link">Klog</a>
+      </nav>
+      <div class="nav-actions">
+        
+        <div class="nav-login" id="navLogin">
+          <button type="button" class="nav-login-toggle" aria-haspopup="true" aria-expanded="false" id="navLoginToggle">
+            <span>登入</span><span class="caret">▾</span>
+          </button>
+          <div class="nav-login-list" role="menu"></div>
+        </div>
+        <a href="https://app.shell.fans/auth/register" target="_blank" rel="noopener" class="nav-cta">開始使用</a>
+      </div>
+      <button type="button" class="nav-hamburger" id="navHamburger" aria-label="開啟選單" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</header>
+<div class="mobile-menu" id="mobileMenu">  <a data-sf-product="aeogeo" href="https://shell.fans/aeo-geo">AEO/GEO 代管</a>
+  <a data-sf-product="shellfans-engine" href="https://shell.fans/endurance">續航引擎</a>
+  <a href="https://shell.fans/fans-analysis">粉絲分析</a>
+  <a data-sf-product="kolfans" href="https://console.shell.fans" target="_blank" rel="noopener">口碑行銷</a>
+  <a href="https://shell.fans/pricing" target="_blank" rel="noopener">查看方案</a>
+  <a href="https://blog.shell.fans/" target="_blank" rel="noopener">Klog</a>
+  <a href="https://app.shell.fans/auth/login">登入</a>
+  <a href="https://app.shell.fans/auth/register" target="_blank" rel="noopener" class="mobile-cta">開始使用</a>
+</div>
+
+<main style="padding-top:72px">
+
+  <section class="hero">
+    <div class="container">
+      <span class="hero-eyebrow">Technical</span>
+      <h1>信任訊號：AI 如何判斷你可不可信</h1>
+      <p class="hero-lead">信任訊號指的是<strong>可以對外驗證的事實</strong>——統一編號、註冊地址、專利號、可查證的聯絡方式。它們的共同點是「不能自己說了算」。相對地，「業界領先」「專業團隊」這類自我描述無法驗證，對 AI 判斷可信度幾乎沒有作用。</p>
+      <div class="hero-cta">
+        <a href="https://shell.fans/tools/aeo-geo-checker" class="btn-primary">免費檢測我的網站</a>
+        <a href="https://shell.fans/aeo-geo" class="btn-secondary">了解 AEO Managed Hosting</a>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="container">
+      <span class="section-eyebrow">Types</span>
+      <h2>哪些算是信任訊號</h2>
+      <div class="sf-table-wrap"><table class="sf-dim-table"><caption>可驗證與不可驗證的資訊</caption><thead><tr><th scope="col">類型</th><th scope="col">例子</th><th scope="col">是否可驗證</th></tr></thead><tbody><tr><th scope="row">法人資訊</th><td>公司全名、統一編號、註冊地址</td><td>✅ 可對政府登記查證</td></tr><tr><th scope="row">聯絡管道</th><td>市話、實體地址、公司網域的信箱</td><td>✅ 可測試是否有效</td></tr><tr><th scope="row">智慧財產</th><td>專利號、商標註冊號</td><td>✅ 可對專利／商標資料庫查證</td></tr><tr><th scope="row">法遵文件</th><td>隱私權政策、服務條款</td><td>✅ 存在與否可直接確認</td></tr><tr><th scope="row">明確的方法說明</th><td>評分怎麼算、資料怎麼來</td><td>✅ 可對照實際行為</td></tr><tr><th scope="row">自我形容</th><td>「業界領先」「最專業」</td><td>❌ 無法驗證</td></tr><tr><th scope="row">無來源的數字</th><td>「服務超過千家企業」（無佐證）</td><td>❌ 無法驗證</td></tr><tr><th scope="row">未經授權的客戶名稱</th><td>列出品牌 logo 但無合作證明</td><td>❌ 且有法律風險</td></tr></tbody></table></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="container">
+      <span class="section-eyebrow">Why</span>
+      <h2>為什麼「可驗證」是關鍵</h2>
+      <p>答案引擎在選擇引用來源時，需要降低給出錯誤資訊的風險。一個能對外交叉比對的事實，比一句無法查證的形容詞有用得多。</p>
+      <p>這也解釋了一個常見的困惑：為什麼把首頁寫得很有氣勢，AEO 分數卻沒有提升。因為那些文字對機器而言不含任何可驗證的資訊。</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="container">
+      <span class="section-eyebrow">Do</span>
+      <h2>具體該做什麼</h2>
+      <ol><li><strong>在頁尾放完整法人資訊</strong>：公司全名、統一編號、地址、電話。這是成本最低、效益最直接的一步。</li><li><strong>用 Organization 結構化資料把它機器可讀化</strong>，欄位與頁面上顯示的完全一致。見 <a href="https://shell.fans/aeo/schema">Schema 指南</a>。</li><li><strong>提供真實可用的聯絡方式</strong>，不要只有表單。</li><li><strong>把方法說清楚</strong>。如果你提供評分、報告或分析，說明它怎麼算、資料哪裡來、限制是什麼。</li><li><strong>誠實標註限制</strong>。主動寫出「我們不能保證什麼」，比全是承諾更可信。</li></ol>
+      <div class="disclaimer"><p><strong>反過來說，這些會扣分：</strong>沒有授權就列出客戶 logo、引用無來源的統計數字、宣稱與知名品牌合作但無法佐證。除了可信度問題，這些做法本身也有法律風險。</p></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="container">
+      <span class="section-eyebrow">Score</span>
+      <h2>在評分中的位置</h2>
+      <p>在 <a href="https://shell.fans/aeo-geo/methodology">AI Readiness Score</a> 中，信任訊號<strong>沒有獨立的面向</strong>，而是併入 Entity Clarity（15 分）計算，與 Organization 結構化資料、About、Contact 一起評估。這個設計反映的是：信任訊號與實體辨識本來就是同一件事的兩面——模型要先確定你是誰，才談得上你可不可信。</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="container">
+      <span class="section-eyebrow">FAQ</span>
+      <h2>常見問題</h2>
+      <div class="faq" style="margin-top:32px">
+        <details><summary>小公司沒有專利也沒有獎項，怎麼建立信任訊號？</summary><p>專利與獎項不是必要條件。完整且可查證的法人資訊（公司全名、統一編號、地址、有效聯絡方式）、清楚的服務說明、誠實標註的限制，這些對任何規模的公司都做得到，而且是最基本也最有效的訊號。</p></details>
+        <details><summary>可以寫「服務超過一千家企業」嗎？</summary><p>如果數字真實且必要時可提出佐證，可以。若無法佐證，建議改為可驗證的描述方式。無來源的數字對 AI 判斷沒有幫助，且一旦被質疑會反過來損害可信度。</p></details>
+        <details><summary>客戶 logo 牆有幫助嗎？</summary><p>前提是取得授權。未經授權使用客戶商標有法律風險，且圖片本身對機器可讀性的幫助有限。若有授權，搭配可查證的文字說明會比純圖片有效。</p></details>
+        <details><summary>隱私權政策和服務條款真的會影響嗎？</summary><p>會，但方式是間接的。它們的存在代表這是一個正常運作的商業實體，屬於基礎的可信度指標。缺少這些文件在多數評估框架中都會被視為警訊。</p></details>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="container">
+      <div class="disclaimer"><p><strong>說明：</strong>本頁內容為 ShellFans 依公開技術文件與實務經驗整理，用於協助網站主理解 AI 搜尋的運作方式。各 AI 平台的實際演算法、資料來源策略與引用邏輯由該平台自行決定且可能隨時調整；任何技術整備都無法保證特定 AI 平台的引用、推薦或排名。</p></div>
+      <p class="sf-inline-links">相關頁面：<a href="https://shell.fans/aeo/entity-clarity">實體清晰度</a>　·　<a href="https://shell.fans/aeo/what-is-geo">GEO 是什麼</a>　·　<a href="https://shell.fans/aeo-geo/methodology">AI Readiness Score 方法論</a>　·　<a href="https://shell.fans/tools/aeo-geo-checker">免費檢測工具</a></p>
+    </div>
+  </section>
+
+</main>
+
+<!-- ===== FOOTER ===== -->
+<footer class="sf-footer" role="contentinfo" data-sf-footer><div id="sf-footer-root"><div class="sf-container"><div class="sf-footer-top"><div><div class="sf-footer-brand"><img decoding="async" loading="lazy" src="https://shell.fans/images/nav_logo.svg" alt="ShellFans AI" width="162" height="32"></div><p class="sf-footer-desc">跨平台社群 AI 指揮中心。保存社群資產，看懂粉絲，同步經營與口碑成長。</p></div><div class="sf-footer-col"><h3>產品</h3><a data-sf-product="shellfans-engine" href="https://shell.fans/endurance">續航引擎</a><a href="https://shell.fans/fans-analysis">粉絲分析</a><a data-sf-product="kolfans" href="https://console.shell.fans" target="_blank" rel="noopener noreferrer">口碑行銷</a><a href="https://shell.fans/pricing" target="_blank" rel="noopener noreferrer">查看方案</a></div><div class="sf-footer-col"><h3>資源</h3><a href="https://blog.shell.fans/" target="_blank" rel="noopener noreferrer">Klog 部落格</a><a href="https://shell.fans/helpcenter">幫助中心</a><a href="https://shell.fans/support">客服支援</a></div><div class="sf-footer-col"><h3>聯繫</h3><a href="https://shell.fans/contact">關於我們</a><a href="https://shell.fans/contact">歡迎聯繫</a><a href="https://shell.fans/co-founder">創辦人</a></div></div><div class="sf-footer-company" aria-label="公司資訊"><span class="sf-footer-company-row">唄粉智能科技股份有限公司</span><span class="sf-footer-company-row">地址：臺北市內湖區瑞光路335號4樓</span><span class="sf-footer-company-row"><a href="mailto:hello@shell.fans">信箱：hello@shell.fans</a></span><span class="sf-footer-company-row"><a href="tel:0277143635">電話：02-77143635</a></span><span class="sf-footer-company-row">統編：83032387</span></div><div class="sf-footer-patent"><span>唄粉智能科技及其產品受商標、</span><a href="https://tiponet.tipo.gov.tw/gpss2/gpsskmc/gpssbkm?!!FRURLTWI908295B" target="_blank" rel="noopener noreferrer">發明專利 I908295(臺灣)</a><span>及其他申請中美國、日本之專利保護。</span></div><div class="sf-footer-bottom"><span class="sf-footer-copy">© 2026 ShellFans AI. 唄粉智能科技股份有限公司. All rights reserved.</span><button type="button" class="sf-footer-lang" data-sf-lang aria-label="切換語言"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><path d="M2 12h20"></path><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg><span>English</span></button><div class="sf-footer-social" aria-label="社群連結"><a href="https://www.facebook.com/profile.php?id=61581243232686" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><img decoding="async" loading="lazy" src="https://shell.fans/images/facebook.svg" alt="Facebook" width="14" height="14"></a><a href="https://www.instagram.com/shell_fansai/" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><img decoding="async" loading="lazy" src="https://shell.fans/images/instagram.svg" alt="Instagram" width="14" height="14"></a></div><div class="sf-footer-legal"><a href="https://shell.fans/privacy-policy">隱私權政策</a><a href="https://shell.fans/terms-and-conditions">服務條款</a></div></div></div></div></footer>
+
+<script>
+
+(function(){
+  var nav=document.getElementById('nav');
+  if(nav){window.addEventListener('scroll',function(){nav.classList.toggle('scrolled',window.scrollY>20)},{passive:true})}
+
+  var loginWrap=document.getElementById('navLogin');
+  var loginToggle=document.getElementById('navLoginToggle');
+  if(loginWrap&&loginToggle){
+    loginToggle.addEventListener('click',function(e){
+      e.stopPropagation();
+      // Pre-login: nav-login-list is empty (no user menu yet) → unified
+      // single login redirect to app.shell.fans/auth/login. Post-login: applyKolFansLoginUI
+      // has populated the list, so click toggles the user dropdown.
+      var list=loginWrap.querySelector('.nav-login-list');
+      var hasUserMenu=list&&list.children.length>0;
+      if(!hasUserMenu){
+        window.location.href='https://app.shell.fans/auth/login';
+        return;
+      }
+      var open=loginWrap.classList.toggle('open');
+      loginToggle.setAttribute('aria-expanded',open?'true':'false');
+    });
+    document.addEventListener('click',function(e){
+      if(!loginWrap.contains(e.target)){
+        loginWrap.classList.remove('open');
+        loginToggle.setAttribute('aria-expanded','false');
+      }
+    });
+  }
+
+  var hamb=document.getElementById('navHamburger');
+  var menu=document.getElementById('mobileMenu');
+  if(hamb&&menu){
+    hamb.addEventListener('click',function(){
+      var open=menu.classList.toggle('active');
+      hamb.setAttribute('aria-expanded',open?'true':'false');
+      document.body.style.overflow=open?'hidden':'';
+    });
+    menu.querySelectorAll('a').forEach(function(a){
+      a.addEventListener('click',function(){
+        menu.classList.remove('active');
+        hamb.setAttribute('aria-expanded','false');
+        document.body.style.overflow='';
+      });
+    });
+  }
+})();
+
+</script>
+<script src="/js/sf-footer.js?v=20260729a" defer></script>
+<script src="https://shell.fans/js/aeo-chat.js" defer></script>
+</body>
+</html>
