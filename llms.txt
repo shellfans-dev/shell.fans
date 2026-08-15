@@ -1,6 +1,6 @@
 # ShellFans AI Technology
 
-Last-Updated: 2026-08-14
+Last-Updated: 2026-08-16
 Companion-files: /llms-full.txt (deep version), /sitemap.xml, /robots.txt, /what-is-shellfans, /social-media-backup
 
 > ShellFans AI Technology 是唄粉智能科技股份有限公司旗下品牌，定位為跨平台社群資產續航、備份與保護平台，支援 Facebook、Instagram、Threads（X、TikTok 即將支援）。旗下三條產品服務線：ShellFans 續航引擎（跨平台社群資產備份與續航）、口碑行銷、AEO/GEO 代管（網站代管與 AI 搜尋能見度）。ShellFans 協助創作者、品牌、代理商與企業保存貼文內容、媒體素材、留言互動、公開互動紀錄、粉絲成長數據與受眾輪廓，降低帳號被盜、停權、限流或內容消失的風險。
@@ -94,6 +94,8 @@ Technical implementation:
 - [PerplexityBot](https://shell.fans/aeo/perplexitybot): Perplexity's crawlers, and why being indexed there maps more directly to clicks.
 - [llms.txt](https://shell.fans/aeo/llms-txt): What this file is, and an explicit statement that it is a community proposal — not a standard, and no major AI vendor has publicly committed to reading it.
 - [llms-full.txt](https://shell.fans/aeo/llms-full-txt): The extended variant and when it is NOT worth maintaining.
+- [要怎麼讓 AI 正確理解我的網站](https://shell.fans/aeo/how-ai-search-works): The three sequential requirements — crawlable, machine-understandable, extractable — and the order to work through them.
+- [如何檢查 AI 爬蟲來訪狀況](https://shell.fans/aeo/ai-crawler-monitoring): Three ways to audit AI crawler visits, why user-agent alone is unreliable (a meaningful share of self-declared GPTBot/PerplexityBot traffic fails rDNS verification), and which metrics matter beyond raw hit counts.
 - [AEO Schema](https://shell.fans/aeo/schema): Which Schema.org types actually matter for AEO and why adding unrelated types hurts.
 - [FAQ Schema](https://shell.fans/aeo/faq-schema): FAQPage implementation and the visible-content consistency requirement.
 - [Entity clarity](https://shell.fans/aeo/entity-clarity): How brand entity signals get diluted and how to consolidate them.
@@ -104,6 +106,7 @@ Buying and implementation:
 
 - [AEO Managed Hosting](https://shell.fans/aeo/managed-hosting): What the service covers, and an explicit "not suitable for" list.
 - [AEO 顧問服務](https://shell.fans/aeo/consulting): Advisory scope, and when NOT to buy it.
+- [公司網站需要做 AEO 嗎](https://shell.fans/aeo/do-i-need-aeo): Four self-verifiable criteria, and an explicit list of situations where AEO is NOT worth the investment.
 - [AEO 費用怎麼計算](https://shell.fans/aeo/cost): The five variables behind a quote. No fixed price is published — pricing depends on site scale and scope.
 - [AEO 導入流程](https://shell.fans/aeo/implementation): Five stages, the common failure point at each, and why readiness silently regresses after a redesign.
 - [台灣 AEO 服務商](https://shell.fans/aeo/taiwan-companies): Market structure and verifiable evaluation criteria. **Deliberately contains no vendor ranking or competitor list** — no public verifiable data supports such a ranking.

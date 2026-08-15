@@ -2,26 +2,26 @@
 <html lang="zh-Hant">
 <head>
 <meta charset="utf-8">
-<title>AEO/GEO 知識中心｜答案引擎最佳化完整指南 - ShellFans</title>
-<meta name="description" content="AEO（答案引擎最佳化）與 GEO（生成式引擎最佳化）的完整知識庫：定義、與 SEO 的差異、llms.txt、AI 爬蟲、Schema、實體清晰度，以及導入流程與費用結構。">
+<title>如何檢查網站的 AI 爬蟲來訪狀況？完整做法 - ShellFans</title>
+<meta name="description" content="要知道 GPTBot、ClaudeBot、PerplexityBot 有沒有來抓你的網站，可以查 access log、比對 user-agent、驗證 rDNS。本頁說明三種做法與各自的限制。">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#101214">
-<link rel="canonical" href="https://shell.fans/aeo">
+<link rel="canonical" href="https://shell.fans/aeo/ai-crawler-monitoring">
 
-<link rel="alternate" hreflang="zh-Hant" href="https://shell.fans/aeo">
-<link rel="alternate" hreflang="x-default" href="https://shell.fans/aeo">
+<link rel="alternate" hreflang="zh-Hant" href="https://shell.fans/aeo/ai-crawler-monitoring">
+<link rel="alternate" hreflang="x-default" href="https://shell.fans/aeo/ai-crawler-monitoring">
 
 <meta property="og:type" content="article">
-<meta property="og:url" content="https://shell.fans/aeo">
-<meta property="og:title" content="AEO/GEO 知識中心｜答案引擎最佳化完整指南 - ShellFans">
-<meta property="og:description" content="AEO（答案引擎最佳化）與 GEO（生成式引擎最佳化）的完整知識庫：定義、與 SEO 的差異、llms.txt、AI 爬蟲、Schema、實體清晰度，以及導入流程與費用結構。">
+<meta property="og:url" content="https://shell.fans/aeo/ai-crawler-monitoring">
+<meta property="og:title" content="如何檢查網站的 AI 爬蟲來訪狀況？完整做法 - ShellFans">
+<meta property="og:description" content="要知道 GPTBot、ClaudeBot、PerplexityBot 有沒有來抓你的網站，可以查 access log、比對 user-agent、驗證 rDNS。本頁說明三種做法與各自的限制。">
 <meta property="og:site_name" content="ShellFans AI Technology">
 <meta property="og:image" content="https://shell.fans/images/nav_logo.svg">
 <meta property="og:locale" content="zh_TW">
 
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="AEO/GEO 知識中心｜答案引擎最佳化完整指南 - ShellFans">
-<meta name="twitter:description" content="AEO（答案引擎最佳化）與 GEO（生成式引擎最佳化）的完整知識庫：定義、與 SEO 的差異、llms.txt、AI 爬蟲、Schema、實體清晰度，以及導入流程與費用結構。">
+<meta name="twitter:title" content="如何檢查網站的 AI 爬蟲來訪狀況？完整做法 - ShellFans">
+<meta name="twitter:description" content="要知道 GPTBot、ClaudeBot、PerplexityBot 有沒有來抓你的網站，可以查 access log、比對 user-agent、驗證 rDNS。本頁說明三種做法與各自的限制。">
 <meta name="twitter:image" content="https://shell.fans/images/nav_logo.svg">
 
 <link rel="icon" href="https://shell.fans/images/favicon.png">
@@ -57,11 +57,12 @@
       "taxID": "83032387"
     },
     {
-      "@type": "CollectionPage",
-      "@id": "https://shell.fans/aeo#main",
-      "name": "AEO/GEO 知識中心",
-      "description": "AEO（答案引擎最佳化）與 GEO（生成式引擎最佳化）的完整知識庫：定義、與 SEO 的差異、llms.txt、AI 爬蟲、Schema、實體清晰度，以及導入流程與費用結構。",
-      "url": "https://shell.fans/aeo",
+      "@type": "TechArticle",
+      "@id": "https://shell.fans/aeo/ai-crawler-monitoring#main",
+      "headline": "如何檢查網站的 AI 爬蟲來訪狀況？",
+      "name": "如何檢查網站的 AI 爬蟲來訪狀況？",
+      "description": "要知道 GPTBot、ClaudeBot、PerplexityBot 有沒有來抓你的網站，可以查 access log、比對 user-agent、驗證 rDNS。本頁說明三種做法與各自的限制。",
+      "url": "https://shell.fans/aeo/ai-crawler-monitoring",
       "inLanguage": "zh-Hant",
       "isPartOf": {
         "@type": "WebSite",
@@ -78,7 +79,7 @@
     },
     {
       "@type": "BreadcrumbList",
-      "@id": "https://shell.fans/aeo#breadcrumb",
+      "@id": "https://shell.fans/aeo/ai-crawler-monitoring#breadcrumb",
       "itemListElement": [
         {
           "@type": "ListItem",
@@ -91,35 +92,49 @@
           "position": 2,
           "name": "AEO/GEO 知識中心",
           "item": "https://shell.fans/aeo"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "如何檢查網站的 AI 爬蟲來訪狀況？",
+          "item": "https://shell.fans/aeo/ai-crawler-monitoring"
         }
       ]
     },
     {
       "@type": "FAQPage",
-      "@id": "https://shell.fans/aeo#faq",
+      "@id": "https://shell.fans/aeo/ai-crawler-monitoring#faq",
       "mainEntity": [
         {
           "@type": "Question",
-          "name": "AEO 和 SEO 需要二選一嗎？",
+          "name": "看不到任何 AI 爬蟲來訪，是被擋住了嗎？",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "不需要，而且不應該。AEO 的技術基礎（可爬取性、結構化資料、內容階層）與 SEO 高度重疊，多數項目做一次兩邊都受益。差別在於 AEO 額外要求內容具備「可直接被擷取成答案」的形狀，以及品牌實體的可辨識度。詳見 AEO 與 SEO 的差異。"
+            "text": "先確認三件事：robots.txt 是否誤擋（特定 user-agent 群組不會繼承 User-agent: * 的規則）、CDN 或 WAF 是否在 robots.txt 之外另行攔截、以及網站是否夠新或內容太少而尚未被發現。前兩者可以用該 user-agent 實際送出請求測試，看回應是 200 還是 403。"
           }
         },
         {
           "@type": "Question",
-          "name": "做了這些，ChatGPT 就會推薦我嗎？",
+          "name": "access log 裡的 IP 是 CDN 的，還能驗證嗎？",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "不保證。技術整備決定的是「AI 能不能正確理解與引用你的網站」，屬於必要條件；是否實際被引用，取決於各 AI 平台自身的演算法、資料來源策略與當下的查詢情境。任何宣稱能保證 AI 引用的說法都不可信。"
+            "text": "不能。反向 DNS 驗證需要真實的 client IP，而 CDN 之後的 log 記錄的是邊緣節點位址。要驗證身分必須在 CDN 邊緣層收集，或使用 CDN 提供的真實 IP 標頭。"
           }
         },
         {
           "@type": "Question",
-          "name": "我的網站很小，值得做 AEO 嗎？",
+          "name": "爬蟲來訪次數下降代表 AEO 變差嗎？",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "取決於你的客戶會不會用 AI 問到你的產品類別。頁數少不是問題——AEO 看重的是內容的清晰度與實體可辨識度，不是數量。可以先用免費檢測看基礎分數，再決定投入程度。"
+            "text": "不一定，多數情況下不是。新內容上線後會有一波密集抓取，抓完之後回到正常頻率，次數自然下降——那是正常化不是衰退。判斷應該看成功抓取率、不重複 URL 數與涵蓋的爬蟲家數，並以 7 日移動平均觀察，而非單日次數。"
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "多久檢查一次比較合理？",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "若只是確認設定有沒有生效，改動後查一次即可。若要觀察趨勢，需要持續收集——爬蟲行為的變化以週為單位才看得出來，臨時查一次的資料無法區分趨勢與雜訊。"
           }
         }
       ]
@@ -433,46 +448,56 @@ footer small{color:rgba(255,255,255,0.45);display:block;margin-top:14px;font-siz
 
   <section class="hero">
     <div class="container">
-      <span class="hero-eyebrow">Knowledge Hub</span>
-      <h1>AEO/GEO 知識中心</h1>
-      <p class="hero-lead">AEO（Answer Engine Optimization，答案引擎最佳化）是讓網站內容能被 ChatGPT、Perplexity、Claude、Google AI Overviews 等答案引擎正確理解並引用的做法。本知識中心收錄定義、技術實作、採購決策三類主題，每一頁都可獨立閱讀。</p>
+      <span class="hero-eyebrow">Technical</span>
+      <h1>如何檢查網站的 AI 爬蟲來訪狀況？</h1>
+      <p class="hero-lead">最直接的方法是查伺服器的 access log，比對 user-agent 中的爬蟲名稱。但只看 user-agent 會被冒名的請求誤導——實測顯示相當比例自稱 GPTBot、PerplexityBot 的流量無法通過反向 DNS 驗證。因此可靠的做法需要兩層：先辨識自稱身分，再驗證它是否屬實。</p>
       <div class="hero-cta">
         <a href="https://shell.fans/tools/aeo-geo-checker" class="btn-primary">免費檢測我的網站</a>
-        <a href="https://shell.fans/aeo/what-is-aeo" class="btn-secondary">從「AEO 是什麼」開始讀</a>
+        <a href="https://shell.fans/aeo-geo" class="btn-secondary">了解 AEO Managed Hosting</a>
       </div>
     </div>
   </section>
 
   <section>
     <div class="container">
-      <span class="section-eyebrow">Start Here</span>
-      <h2>從哪裡開始</h2>
-      <p>如果你是第一次接觸這個題目，建議依下列順序閱讀。三條路徑對應三種不同的問題。</p>
-      <h3>一、我想先搞懂名詞</h3>
-      <ul><li><a href="https://shell.fans/aeo/what-is-aeo">AEO 是什麼</a> — 答案引擎最佳化的定義與適用範圍</li><li><a href="https://shell.fans/aeo/what-is-geo">GEO 是什麼</a> — 生成式引擎最佳化與 AEO 的關係</li><li><a href="https://shell.fans/aeo/aeo-vs-seo">AEO 與 SEO 的差異</a> — 兩者的目標、指標與工作內容如何不同</li><li><a href="https://shell.fans/aeo/aeo-vs-geo">AEO 與 GEO 的差異</a> — 為什麼這兩個詞經常被混用</li></ul>
-      <h3>二、我要動手做技術整備</h3>
-      <ul><li><a href="https://shell.fans/aeo/how-ai-search-works">要怎麼讓 AI 正確理解我的網站</a> — 三個環節與執行順序</li><li><a href="https://shell.fans/aeo/ai-crawler">AI 爬蟲總覽</a> — 有哪些爬蟲、各自的用途與 robots.txt 寫法</li><li><a href="https://shell.fans/aeo/ai-crawler-monitoring">如何檢查 AI 爬蟲來訪狀況</a> — 三種做法與判讀陷阱</li><li><a href="https://shell.fans/aeo/llms-txt">llms.txt</a> — 這份檔案是什麼、值不值得做</li><li><a href="https://shell.fans/aeo/schema">AEO 需要的 Schema</a> — 哪些結構化資料真的有用</li><li><a href="https://shell.fans/aeo/entity-clarity">實體清晰度</a> — 讓 AI 確定「你是誰」</li><li><a href="https://shell.fans/aeo/answer-readiness">答覆整備度</a> — 讓內容具備可被擷取的形狀</li></ul>
-      <h3>三、我在評估要不要委外</h3>
-      <ul><li><a href="https://shell.fans/aeo/do-i-need-aeo">公司網站需要做 AEO 嗎</a> — 四個判斷準則與不適用情況</li><li><a href="https://shell.fans/aeo/cost">AEO 費用怎麼計算</a> — 影響報價的變數</li><li><a href="https://shell.fans/aeo/implementation">AEO 導入流程</a> — 實際會經歷哪些階段</li><li><a href="https://shell.fans/aeo/taiwan-companies">台灣 AEO 服務商</a> — 市場現況與評估準則</li><li><a href="https://shell.fans/aeo/how-to-choose-agency">如何挑選 AEO 廠商</a> — 該問哪些問題</li></ul>
+      <span class="section-eyebrow">Methods</span>
+      <h2>三種做法</h2>
+      <h3>一、直接查 access log（成本最低）</h3>
+      <p>nginx、Apache 的 access log 已經記錄了每一次請求的 user-agent。用 grep 過濾爬蟲名稱即可得到粗略的到訪次數。</p>
+      <ul><li><strong>優點</strong>：不需要任何額外建置，資料本來就在。</li><li><strong>限制</strong>：只看得到自稱身分，無法辨別冒名；log 通常會輪替，看不到長期趨勢；若網站在 CDN 之後，log 裡的來源 IP 是 CDN 邊緣節點而非真實爬蟲 IP。</li></ul>
+      <h3>二、在 CDN 邊緣收集</h3>
+      <p>若網站走 Cloudflare 這類 CDN，可以在邊緣層收集請求資訊。好處是拿得到真實的 client IP，而那是驗證身分的必要條件。</p>
+      <h3>三、用工具持續監控</h3>
+      <p>ShellFans 的 <a href="https://shell.fans/aeo-geo">AEO Managed Hosting</a> 屬於這一類：在邊緣收集請求，記錄自稱身分與驗證結果，並保留逐日趨勢。適合需要長期觀察、而不只是查一次的情況。</p>
     </div>
   </section>
 
   <section>
     <div class="container">
-      <span class="section-eyebrow">Measure First</span>
-      <h2>先量測，再決定要不要做</h2>
-      <p>在讀完任何一篇之前，其實可以先花三十秒知道自己的起點在哪裡。ShellFans 的 <a href="https://shell.fans/tools/aeo-geo-checker">AEO/GEO 免費檢測工具</a> 會抓取你的網站，就八個面向給出 0–100 分，並列出具體待修項目。</p>
-      <div class="sf-table-wrap"><table class="sf-dim-table"><caption>AI Readiness Score 面向與配分（aeo_geo_score_v1）</caption><thead><tr><th scope="col">面向</th><th scope="col">配分</th><th scope="col">檢視內容</th></tr></thead><tbody><tr><th scope="row">Crawlability<br><span style="font-weight:400;color:var(--text-tertiary);font-size:0.86rem">可爬取性</span></th><td>15</td><td>HTTP 狀態、重新導向鏈、canonical、meta robots、sitemap.xml 是否正常回應。</td></tr><tr><th scope="row">Technical<br><span style="font-weight:400;color:var(--text-tertiary);font-size:0.86rem">技術基礎</span></th><td>15</td><td>HTTPS、行動裝置 viewport、首頁 HTML 體積是否消耗過多抓取預算。</td></tr><tr><th scope="row">Structured Data<br><span style="font-weight:400;color:var(--text-tertiary);font-size:0.86rem">結構化資料</span></th><td>15</td><td>Schema.org JSON-LD 是否存在、Organization 是否具備、FAQ 文案是否對應 FAQPage。</td></tr><tr><th scope="row">Answer Readiness<br><span style="font-weight:400;color:var(--text-tertiary);font-size:0.86rem">答覆整備</span></th><td>15</td><td>是否有問答式內容、meta description，以及可讀文字量是否足以擷取可引用段落。</td></tr><tr><th scope="row">Entity Clarity<br><span style="font-weight:400;color:var(--text-tertiary);font-size:0.86rem">實體與信任訊號</span></th><td>15</td><td>Organization 結構化資料、About、Contact 是否一致可驗證。Trust Signals 併入此項。</td></tr><tr><th scope="row">AI Crawler Policy<br><span style="font-weight:400;color:var(--text-tertiary);font-size:0.86rem">爬蟲政策</span></th><td>10</td><td>robots.txt 是否存在、是否誤擋 OAI-SearchBot／GPTBot／ClaudeBot／PerplexityBot。</td></tr><tr><th scope="row">Content Clarity<br><span style="font-weight:400;color:var(--text-tertiary);font-size:0.86rem">內容結構</span></th><td>10</td><td>是否有 title、是否恰有一個 H1、是否以 H2／H3 建立語意階層。</td></tr><tr><th scope="row">llms.txt</th><td>5</td><td>是否提供 /llms.txt 摘要入口，以及其中是否具備 Markdown 標題結構。</td></tr></tbody></table></div>
-      <p>各面向的判定細節與評級對照，見 <a href="https://shell.fans/aeo-geo/methodology">AI Readiness Score 方法論</a>。</p>
+      <span class="section-eyebrow">Verify</span>
+      <h2>為什麼必須驗證身分</h2>
+      <div class="disclaimer"><p><strong>自稱不等於身分。</strong>任何人都可以把 user-agent 設成 <code>GPTBot</code>。實務上確實有相當比例自稱知名 AI 爬蟲的流量無法通過驗證——把這些算成「AI 有來抓」，會讓你以為能見度不錯，而實際上真正的爬蟲根本沒來。</p></div>
+      <h3>兩種驗證方式</h3>
+      <ol><li><strong>反向 DNS（rDNS）</strong>：把來源 IP 反查主機名，確認它屬於該業者的網域（例如 OpenAI 的爬蟲應解析到 openai 的網域），再正查回去確認一致。這是最通用的做法。</li><li><strong>官方 IP 清單比對</strong>：部分業者公布爬蟲的 IP 範圍，直接比對即可。準確但需要定期更新清單。</li></ol>
+      <p>兩者都做不到時，該筆請求只能標記為「未驗證」，不該當成已確認的到訪。</p>
     </div>
   </section>
 
   <section>
     <div class="container">
-      <span class="section-eyebrow">Scope</span>
-      <h2>這個知識中心不涵蓋什麼</h2>
-      <p>把邊界講清楚，比多寫幾頁有用。</p>
-      <ul><li><strong>不是 SEO 教學</strong>。傳統關鍵字研究、外部連結建置、Core Web Vitals 調校不在範圍內；那些仍然重要，但屬於另一個題目。</li><li><strong>不提供排名保證</strong>。沒有任何服務能保證 ChatGPT 或 Perplexity 引用特定網站，本站不做這種承諾。</li><li><strong>不做競品排名</strong>。<a href="https://shell.fans/aeo/taiwan-companies">台灣 AEO 服務商</a> 提供的是評估準則，不是廠商排行榜。</li></ul>
+      <span class="section-eyebrow">What to look</span>
+      <h2>該看哪些指標</h2>
+      <p>「來訪次數」單看沒有意義——爬蟲流量會因為新內容上線後的密集抓取、以及抓完之後回到正常頻率而劇烈起伏。次數下降不等於能見度變差。</p>
+      <div class="sf-table-wrap"><table class="sf-dim-table"><caption>比次數更有意義的指標</caption><thead><tr><th scope="col">指標</th><th scope="col">為什麼重要</th></tr></thead><tbody><tr><th scope="row">不重複 URL 數</th><td>爬蟲是抓遍全站，還是只重複抓首頁</td></tr><tr><th scope="row">成功抓取率</th><td>來了有沒有真的拿到內容，還是被擋掉或撞到 404</td></tr><tr><th scope="row">429 次數</th><td>被速率限制或 WAF 擋下 —— 這是<strong>你這端</strong>的問題，最該優先處理</td></tr><tr><th scope="row">5xx 次數</th><td>伺服器錯誤，爬蟲拿到的是錯誤頁</td></tr><tr><th scope="row">有幾家 AI 爬蟲來過</th><td>涵蓋面比單一家的次數更能代表整體能見度</td></tr></tbody></table></div>
+      <p>各面向的完整定義見 <a href="https://shell.fans/aeo-geo/methodology">AI Readiness Score 方法論</a>。</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="container">
+      <span class="section-eyebrow">Pitfalls</span>
+      <h2>常見的判讀錯誤</h2>
+      <ul><li><strong>拿今天的半天跟完整日比</strong>。今天還沒過完，數字必然偏低，看起來像暴跌。任何比較都應該只用已結束的完整日。</li><li><strong>把冒名流量算進來</strong>。見上一節。</li><li><strong>只看總量不看成功率</strong>。爬蟲來了一萬次但全部 404，等於沒來。</li><li><strong>用單日判斷趨勢</strong>。爬蟲流量的日間波動極大，至少要看 7 日移動平均。</li><li><strong>擋掉 Googlebot</strong>。Google AI Overviews 走的也是 Googlebot，擋掉會同時失去一般搜尋與 AI 摘要。詳見 <a href="https://shell.fans/aeo/ai-crawler">AI 爬蟲總覽</a>。</li></ul>
     </div>
   </section>
 
@@ -481,9 +506,10 @@ footer small{color:rgba(255,255,255,0.45);display:block;margin-top:14px;font-siz
       <span class="section-eyebrow">FAQ</span>
       <h2>常見問題</h2>
       <div class="faq" style="margin-top:32px">
-        <details><summary>AEO 和 SEO 需要二選一嗎？</summary><p>不需要，而且不應該。AEO 的技術基礎（可爬取性、結構化資料、內容階層）與 SEO 高度重疊，多數項目做一次兩邊都受益。差別在於 AEO 額外要求內容具備「可直接被擷取成答案」的形狀，以及品牌實體的可辨識度。詳見 <a href="https://shell.fans/aeo/aeo-vs-seo">AEO 與 SEO 的差異</a>。</p></details>
-        <details><summary>做了這些，ChatGPT 就會推薦我嗎？</summary><p>不保證。技術整備決定的是「AI 能不能正確理解與引用你的網站」，屬於必要條件；是否實際被引用，取決於各 AI 平台自身的演算法、資料來源策略與當下的查詢情境。任何宣稱能保證 AI 引用的說法都不可信。</p></details>
-        <details><summary>我的網站很小，值得做 AEO 嗎？</summary><p>取決於你的客戶會不會用 AI 問到你的產品類別。頁數少不是問題——AEO 看重的是內容的清晰度與實體可辨識度，不是數量。可以先用免費檢測看基礎分數，再決定投入程度。</p></details>
+        <details><summary>看不到任何 AI 爬蟲來訪，是被擋住了嗎？</summary><p>先確認三件事：robots.txt 是否誤擋（特定 user-agent 群組不會繼承 <code>User-agent: *</code> 的規則）、CDN 或 WAF 是否在 robots.txt 之外另行攔截、以及網站是否夠新或內容太少而尚未被發現。前兩者可以用該 user-agent 實際送出請求測試，看回應是 200 還是 403。</p></details>
+        <details><summary>access log 裡的 IP 是 CDN 的，還能驗證嗎？</summary><p>不能。反向 DNS 驗證需要真實的 client IP，而 CDN 之後的 log 記錄的是邊緣節點位址。要驗證身分必須在 CDN 邊緣層收集，或使用 CDN 提供的真實 IP 標頭。</p></details>
+        <details><summary>爬蟲來訪次數下降代表 AEO 變差嗎？</summary><p>不一定，多數情況下不是。新內容上線後會有一波密集抓取，抓完之後回到正常頻率，次數自然下降——那是正常化不是衰退。判斷應該看成功抓取率、不重複 URL 數與涵蓋的爬蟲家數，並以 7 日移動平均觀察，而非單日次數。</p></details>
+        <details><summary>多久檢查一次比較合理？</summary><p>若只是確認設定有沒有生效，改動後查一次即可。若要觀察趨勢，需要持續收集——爬蟲行為的變化以週為單位才看得出來，臨時查一次的資料無法區分趨勢與雜訊。</p></details>
       </div>
     </div>
   </section>
@@ -491,7 +517,7 @@ footer small{color:rgba(255,255,255,0.45);display:block;margin-top:14px;font-siz
   <section>
     <div class="container">
       <div class="disclaimer"><p><strong>說明：</strong>本頁內容為 ShellFans 依公開技術文件與實務經驗整理，用於協助網站主理解 AI 搜尋的運作方式。各 AI 平台的實際演算法、資料來源策略與引用邏輯由該平台自行決定且可能隨時調整；任何技術整備都無法保證特定 AI 平台的引用、推薦或排名。</p></div>
-      <p class="sf-inline-links">相關頁面：<a href="https://shell.fans/tools/aeo-geo-checker">免費 AEO/GEO 檢測工具</a>　·　<a href="https://shell.fans/aeo-geo/methodology">AI Readiness Score 方法論</a>　·　<a href="https://shell.fans/aeo-geo">AEO Managed Hosting</a>　·　<a href="https://shell.fans/aeo-geo/taiwan-aeo-tools">台灣 AEO 工具比較</a></p>
+      <p class="sf-inline-links">相關頁面：<a href="https://shell.fans/aeo/ai-crawler">AI 爬蟲總覽</a>　·　<a href="https://shell.fans/aeo/gptbot-oai-searchbot">GPTBot 與 OAI-SearchBot</a>　·　<a href="https://shell.fans/aeo-geo">AEO Managed Hosting</a>　·　<a href="https://shell.fans/tools/aeo-geo-checker">免費檢測工具</a></p>
     </div>
   </section>
 
