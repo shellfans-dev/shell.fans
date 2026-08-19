@@ -208,8 +208,12 @@ def render_main(page):
 ORGANIZATION_NODE = {
     '@type': 'Organization',
     '@id': SITE + '/#organization',
-    'name': '唄粉智能科技股份有限公司',
-    'alternateName': ['ShellFans AI Technology', 'ShellFans', 'ShellFans AI', '唄粉智能科技'],
+    # name 用品牌名而非法人中文名 —— 2026-08-19 的稽核發現 OpenAI 查「唄粉智能科技」
+    # 完全找不到，還推薦了一堆粉體物料處理公司（把「粉」當成粉末）。
+    # 法人名放 legalName，各種寫法放 alternateName，讓實體收斂到同一個節點。
+    'name': 'ShellFans AI Technology',
+    'alternateName': ['ShellFans', 'ShellFans AI', '唄粉智能科技股份有限公司',
+                      '唄粉智能科技', 'shell.fans'],
     'legalName': '唄粉智能科技股份有限公司',
     'url': SITE,
     'logo': ORG_LOGO,
