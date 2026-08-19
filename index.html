@@ -622,6 +622,17 @@ html[data-embed="1"] .chatbot > .container > div:first-child { display: none !im
 
 .footer-company-row a[href^="mailto:"],
 .footer-company-row a[href^="tel:"]{display:inline-block;min-height:24px;padding:6px 4px;line-height:1.6;text-decoration:underline}
+
+/* 首頁 FAQ —— 預設收合，收合時每題只佔一行，不增加閱讀長度 */
+.home-faq-list details{border-bottom:1px solid var(--border-light)}
+.home-faq-list details:first-child{border-top:1px solid var(--border-light)}
+.home-faq-list summary{cursor:pointer;padding:15px 30px 15px 0;font-weight:500;font-size:1rem;position:relative;list-style:none}
+.home-faq-list summary::-webkit-details-marker{display:none}
+.home-faq-list summary::after{content:"+";position:absolute;right:6px;top:50%;transform:translateY(-50%);font-size:1.2rem;color:var(--text-tertiary);line-height:1}
+.home-faq-list details[open] summary::after{content:"\2212"}
+.home-faq-list summary:hover{color:var(--signal-coral)}
+.home-faq-a{padding:0 30px 18px 0;color:var(--text-secondary);font-size:.94rem;line-height:1.75}
+.home-faq-a a{color:var(--signal-coral);text-decoration:underline}
 </style>
 <script data-shellfans-embed-bootstrap="1">
 (function () {
@@ -717,6 +728,60 @@ html[data-embed="1"] .chatbot > .container > div:first-child { display: none !im
       "about": {
         "@id": "https://shell.fans/#organization"
       }
+    },
+    {
+      "@type": "FAQPage",
+      "@id": "https://shell.fans/#faq",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "ShellFans 是做什麼的？",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "ShellFans AI Technology 是唄粉智能科技股份有限公司旗下品牌，提供兩條並行的核心服務：AEO/GEO 代管，讓網站被 ChatGPT、Perplexity、Claude、Google AI Overviews 等 AI 答案引擎正確理解與引用；以及跨平台社群資產續航，保存 Facebook、Instagram、Threads 的貼文、媒體素材、留言互動與粉絲成長數據。"
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "AEO/GEO 代管跟一般網站代管差在哪？",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "一般代管只負責主機能不能跑。AEO/GEO 代管在此之上，持續維護 robots.txt 對 AI 爬蟲的規則並實際驗證是否生效、建立與維護結構化資料與 llms.txt、依可擷取性調整內容結構，並定期量測網站在 AI 回答中的能見度。詳見 AEO Managed Hosting。"
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "社群帳號被停權，之前的貼文救得回來嗎？",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "如果事前已經備份，可以。續航引擎會持續保存貼文內容、媒體素材、留言互動與粉絲成長數據，帳號被盜、停權、限流或內容消失時，這份資料仍在你自己手上。但備份必須在事發之前就開始——帳號已經被停權之後才想備份，平台通常已無法讀取。"
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "怎麼知道我的網站有沒有被 AI 引用？",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "需要兩件事：一是查 AI 爬蟲有沒有來抓、抓到什麼狀態碼；二是固定一組問題定期去問 AI，記錄品牌是否被提及、網站是否被引用。單次詢問不足以判斷，生成式回答本身有隨機性。可先用免費檢測工具看網站目前的整備程度。"
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "支援哪些社群平台？",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "目前支援 Facebook 粉絲專頁、Instagram、Threads。X 與 TikTok 即將支援。不支援 YouTube、小紅書。完整粉絲個資會受平台 API 與隱私權限制，ShellFans 著重保存貼文內容、媒體素材、留言互動、公開互動紀錄、粉絲成長數據與受眾輪廓。"
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "兩條服務線一定要一起用嗎？",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "不用，兩者各自獨立。只做網站 AI 能見度的客戶不需要社群備份；只要備份社群資產的客戶也不需要網站代管。合併使用的情況通常是品牌同時經營官網與社群，希望兩邊的內容資產都不流失。"
+          }
+        }
+      ]
     }
   ]
 }
@@ -1983,6 +2048,40 @@ html[data-embed="1"] .chatbot > .container > div:first-child { display: none !im
   </div>
 </section>
 
+  <!-- ===== 首頁 FAQ（預設收合，避免頁面過長）===== -->
+  <section id="home-faq" style="padding:56px 0;border-top:1px solid var(--border-light)">
+    <div class="container" style="max-width:860px">
+      <h2 style="font-size:1.5rem;margin:0 0 6px" data-i18n="home.faq.h2">常見問題</h2>
+      <p style="margin:0 0 22px;color:var(--text-secondary);font-size:.94rem" data-i18n="home.faq.sub">點開看詳細說明。</p>
+      <div class="home-faq-list">
+        <details>
+          <summary data-i18n="home.faq.q1">ShellFans 是做什麼的？</summary>
+          <div class="home-faq-a" data-i18n="home.faq.a1" data-i18n-html>ShellFans AI Technology 是唄粉智能科技股份有限公司旗下品牌，提供兩條並行的核心服務：<strong>AEO/GEO 代管</strong>，讓網站被 ChatGPT、Perplexity、Claude、Google AI Overviews 等 AI 答案引擎正確理解與引用；以及<strong>跨平台社群資產續航</strong>，保存 Facebook、Instagram、Threads 的貼文、媒體素材、留言互動與粉絲成長數據。</div>
+        </details>
+        <details>
+          <summary data-i18n="home.faq.q2">AEO/GEO 代管跟一般網站代管差在哪？</summary>
+          <div class="home-faq-a" data-i18n="home.faq.a2" data-i18n-html>一般代管只負責主機能不能跑。AEO/GEO 代管在此之上，持續維護 robots.txt 對 AI 爬蟲的規則並實際驗證是否生效、建立與維護結構化資料與 llms.txt、依可擷取性調整內容結構，並定期量測網站在 AI 回答中的能見度。詳見 <a href="/aeo/managed-hosting">AEO Managed Hosting</a>。</div>
+        </details>
+        <details>
+          <summary data-i18n="home.faq.q3">社群帳號被停權，之前的貼文救得回來嗎？</summary>
+          <div class="home-faq-a" data-i18n="home.faq.a3" data-i18n-html>如果事前已經備份，可以。續航引擎會持續保存貼文內容、媒體素材、留言互動與粉絲成長數據，帳號被盜、停權、限流或內容消失時，這份資料仍在你自己手上。但<strong>備份必須在事發之前就開始</strong>——帳號已經被停權之後才想備份，平台通常已無法讀取。</div>
+        </details>
+        <details>
+          <summary data-i18n="home.faq.q4">怎麼知道我的網站有沒有被 AI 引用？</summary>
+          <div class="home-faq-a" data-i18n="home.faq.a4" data-i18n-html>需要兩件事：一是查 AI 爬蟲有沒有來抓、抓到什麼狀態碼；二是固定一組問題定期去問 AI，記錄品牌是否被提及、網站是否被引用。單次詢問不足以判斷，生成式回答本身有隨機性。可先用<a href="/tools/aeo-geo-checker">免費檢測工具</a>看網站目前的整備程度。</div>
+        </details>
+        <details>
+          <summary data-i18n="home.faq.q5">支援哪些社群平台？</summary>
+          <div class="home-faq-a" data-i18n="home.faq.a5" data-i18n-html>目前支援 <strong>Facebook 粉絲專頁、Instagram、Threads</strong>。X 與 TikTok 即將支援。<strong>不支援 YouTube、小紅書</strong>。完整粉絲個資會受平台 API 與隱私權限制，ShellFans 著重保存貼文內容、媒體素材、留言互動、公開互動紀錄、粉絲成長數據與受眾輪廓。</div>
+        </details>
+        <details>
+          <summary data-i18n="home.faq.q6">兩條服務線一定要一起用嗎？</summary>
+          <div class="home-faq-a" data-i18n="home.faq.a6" data-i18n-html>不用，兩者各自獨立。只做網站 AI 能見度的客戶不需要社群備份；只要備份社群資產的客戶也不需要網站代管。合併使用的情況通常是品牌同時經營官網與社群，希望兩邊的內容資產都不流失。</div>
+        </details>
+      </div>
+    </div>
+  </section>
+
 <!-- ===== FOOTER ===== -->
 
 </main>
@@ -2064,7 +2163,7 @@ html[data-embed="1"] .chatbot > .container > div:first-child { display: none !im
   // on the console.shell.fans repo. These are the fallback if /api/site/i18n is
   // unreachable.
   var BASE = {
-    'zh-TW': {
+    'zh-TW': {'home.faq.h2': '常見問題','home.faq.sub': '點開看詳細說明。','home.faq.q1': 'ShellFans 是做什麼的？','home.faq.a1': 'ShellFans AI Technology 是唄粉智能科技股份有限公司旗下品牌，提供兩條並行的核心服務：<strong>AEO/GEO 代管</strong>，讓網站被 ChatGPT、Perplexity、Claude、Google AI Overviews 等 AI 答案引擎正確理解與引用；以及<strong>跨平台社群資產續航</strong>，保存 Facebook、Instagram、Threads 的貼文、媒體素材、留言互動與粉絲成長數據。','home.faq.q2': 'AEO/GEO 代管跟一般網站代管差在哪？','home.faq.a2': '一般代管只負責主機能不能跑。AEO/GEO 代管在此之上，持續維護 robots.txt 對 AI 爬蟲的規則並實際驗證是否生效、建立與維護結構化資料與 llms.txt、依可擷取性調整內容結構，並定期量測網站在 AI 回答中的能見度。詳見 <a href="/aeo/managed-hosting">AEO Managed Hosting</a>。','home.faq.q3': '社群帳號被停權，之前的貼文救得回來嗎？','home.faq.a3': '如果事前已經備份，可以。續航引擎會持續保存貼文內容、媒體素材、留言互動與粉絲成長數據，帳號被盜、停權、限流或內容消失時，這份資料仍在你自己手上。但<strong>備份必須在事發之前就開始</strong>——帳號已經被停權之後才想備份，平台通常已無法讀取。','home.faq.q4': '怎麼知道我的網站有沒有被 AI 引用？','home.faq.a4': '需要兩件事：一是查 AI 爬蟲有沒有來抓、抓到什麼狀態碼；二是固定一組問題定期去問 AI，記錄品牌是否被提及、網站是否被引用。單次詢問不足以判斷，生成式回答本身有隨機性。可先用<a href="/tools/aeo-geo-checker">免費檢測工具</a>看網站目前的整備程度。','home.faq.q5': '支援哪些社群平台？','home.faq.a5': '目前支援 <strong>Facebook 粉絲專頁、Instagram、Threads</strong>。X 與 TikTok 即將支援。<strong>不支援 YouTube、小紅書</strong>。完整粉絲個資會受平台 API 與隱私權限制，ShellFans 著重保存貼文內容、媒體素材、留言互動、公開互動紀錄、粉絲成長數據與受眾輪廓。','home.faq.q6': '兩條服務線一定要一起用嗎？','home.faq.a6': '不用，兩者各自獨立。只做網站 AI 能見度的客戶不需要社群備份；只要備份社群資產的客戶也不需要網站代管。合併使用的情況通常是品牌同時經營官網與社群，希望兩邊的內容資產都不流失。',
       'nav.aeoGeo': 'AEO/GEO 代管','aeo.xlink.label': 'AEO/GEO 相關資源','aeo.xlink.score': '免費 AEO/GEO 現況評分','aeo.xlink.checker': '台灣 AEO/GEO Checker','aeo.xlink.audit': '網站 AI 搜尋整備度檢測','aeo.xlink.score2': 'ShellFans AI Readiness Score','aeo.xlink.mh': 'AEO Managed Hosting','aeo.xlink.hosting': 'AI-ready 網站代管','nav.engine': '續航引擎','nav.fansAnalysis': '粉絲分析','nav.wordOfMouth': '口碑行銷','nav.pricing': '查看方案','nav.login': '登入','nav.engineLogin': '續航引擎登入','nav.womLogin': '口碑行銷登入','nav.getStarted': '開始使用','nav.myPlan': '我的方案','nav.memberCenter': '會員中心','nav.logout': '登出',
       'aria.mainMenu': '主選單','aria.openMenu': '開啟選單','aria.planSelect': '方案','aria.send': '送出','aria.companyInfo': '公司資訊','aria.socialLinks': '社群連結','aria.langCurrent': '目前語言：繁體中文',
       'hero.eyebrow': '跨平台社群 AI 指揮中心','hero.h2.line1': '把社群經營，','hero.h2.line2': '變成','hero.h2.accent': '可管理的長期資產','hero.sub': 'ShellFans AI 幫助創作者、經紀人與品牌主整合 IG、Facebook、Threads 等平台資料，保存內容與互動紀錄，並用 AI 分析粉絲與口碑成長。',
@@ -2102,7 +2201,7 @@ html[data-embed="1"] .chatbot > .container > div:first-child { display: none !im
       'meta.title': 'ShellFans｜AEO/GEO 代管與跨平台社群資產續航','meta.description': 'ShellFans 提供兩條並行的核心服務：AEO/GEO 代管，讓網站被 ChatGPT、Perplexity、Claude、Google AI Overviews 等 AI 答案引擎正確理解與引用；以及跨平台社群資產續航，備份 Facebook、Instagram、Threads（X、TikTok 即將支援）的貼文、媒體素材、留言互動與粉絲成長數據。','chat.contextModeOn': 'Chat 模式：開','chat.contextModeRoundsPrefix': 'Chat 模式：','chat.contextModeRoundsSuffix': ' 輪','chat.quotaTodayLabel': '今日 Chat 剩餘','chat.quotaTodayFreeLabel': '今日免費剩餘','chat.quotaPlanSuffix': '（{plan}）','chat.quotaSeparator': '：','chat.quotaTimes': ' 次','chat.quotaSlash': ' / ','quota.exhaustedTitlePrefix': '⏳ ','quota.exhaustedTitle': '今日免費額度已用完',
       'chat.disclaimer1': 'ShellFans Social AI 可能會出錯。ShellFans 不會使用您的資料來訓練模型。','chat.disclaimer2': '由於社群數據量龐大，AI 分析可能會需要 30s~60s 的時間，請耐心等待。','chat.disclaimer3': '未註冊用戶每天 2 次免費社群分析；如需更多請註冊成為付費會員。','chat.aboutCta': '了解 ShellFans 是什麼 →'
     },
-    'en': {
+    'en': {'home.faq.h2': 'Frequently asked questions','home.faq.sub': 'Tap a question to expand.','home.faq.q1': 'What does ShellFans do?','home.faq.a1': 'ShellFans AI Technology is a brand of 唄粉智能科技股份有限公司, running two parallel core services: <strong>AEO/GEO managed hosting</strong>, making websites correctly understood and citable by AI answer engines such as ChatGPT, Perplexity, Claude and Google AI Overviews; and <strong>cross-platform social media asset continuity</strong> for Facebook, Instagram and Threads.','home.faq.q2': 'How is AEO/GEO managed hosting different from ordinary hosting?','home.faq.a2': 'Ordinary hosting only keeps the server running. AEO/GEO managed hosting additionally maintains robots.txt rules for AI crawlers (and verifies they actually take effect), builds and maintains structured data and llms.txt, reshapes content for extractability, and measures visibility in AI answers on a regular basis.','home.faq.q3': 'If my social account is suspended, can I get my posts back?','home.faq.a3': 'If you backed it up beforehand, yes. The continuity engine preserves post content, media, comments and audience data, so the material remains yours even if the account is hijacked, suspended or throttled. But <strong>backup has to start before the incident</strong> — once an account is already suspended, the platform typically no longer allows retrieval.','home.faq.q4': 'How do I know whether AI is citing my site?','home.faq.a4': 'Two things are needed: check whether AI crawlers actually visit and what status codes they receive; and ask a fixed set of questions on a regular schedule, recording whether the brand is mentioned and the site cited. A single query is not enough — generative answers are inherently variable.','home.faq.q5': 'Which social platforms are supported?','home.faq.a5': 'Currently <strong>Facebook Pages, Instagram and Threads</strong>. X and TikTok are coming soon. <strong>YouTube and Xiaohongshu are not supported.</strong> Complete follower personal data is limited by platform APIs and privacy rules; ShellFans focuses on post content, media assets, comments, public interaction records, audience growth data and audience profiles.','home.faq.q6': 'Do I have to use both service lines?','home.faq.a6': 'No — they are independent. Clients who only need website AI visibility do not need social backup, and vice versa. Combining them typically makes sense for brands running both a website and social accounts.',
       'nav.aeoGeo': 'AEO/GEO Hosting','aeo.xlink.label': 'AEO/GEO resources','aeo.xlink.score': 'Free AEO/GEO readiness scoring','aeo.xlink.checker': 'Taiwan AEO/GEO Checker','aeo.xlink.audit': 'Website AI search readiness check','aeo.xlink.score2': 'ShellFans AI Readiness Score','aeo.xlink.mh': 'AEO Managed Hosting','aeo.xlink.hosting': 'AI-ready website hosting','nav.engine': 'Engagement Engine','nav.fansAnalysis': 'Fans Analysis','nav.wordOfMouth': 'Word-of-Mouth','nav.pricing': 'Pricing','nav.login': 'Log in','nav.engineLogin': 'Engine Login','nav.womLogin': 'WoM Login','nav.getStarted': 'Get Started','nav.myPlan': 'My Plan','nav.memberCenter': 'Member Center','nav.logout': 'Log out',
       'aria.mainMenu': 'Main menu','aria.openMenu': 'Open menu','aria.planSelect': 'Plan','aria.send': 'Send','aria.companyInfo': 'Company info','aria.socialLinks': 'Social links','aria.langCurrent': 'Current language: English',
       'hero.eyebrow': 'Cross-platform Social AI Command','hero.h2.line1': 'Turn social into','hero.h2.line2': 'a','hero.h2.accent': 'manageable long-term asset','hero.sub': 'ShellFans AI helps creators, talent managers, and brand owners unify IG, Facebook, Threads, and other platform data — preserving content and engagement records, and applying AI to analyze fans and reputation growth.',
