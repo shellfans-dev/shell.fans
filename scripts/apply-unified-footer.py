@@ -25,6 +25,22 @@ Usage:
     python3 scripts/apply-unified-footer.py --dry-run  # report only
     python3 scripts/apply-unified-footer.py --page index.html [...]  # subset
 """
+
+# ---------------------------------------------------------------------------
+# ⚠️ 法人名稱：唄粉智能科技股份有限公司
+#
+# 這支腳本會把 footer / JSON-LD 的公司名稱寫進全站每一頁。曾經有一版寫的是
+# 舊名（帶國別前綴、且無「股份」），重跑一次就會把全站 ~76 處改回舊名，
+# 而且不會有任何地方報錯。
+#
+# 正確名稱只有一個：唄粉智能科技股份有限公司
+#   - 台灣登記公司，統一編號 83032387，臺北市內湖區瑞光路335號4樓
+#   - 沒有海外母公司，不是外資或海外子公司
+#   - 名稱前不加任何國別前綴
+#
+# 修改此檔的公司名稱前，請先確認你改的是「登記名稱變更」而不是筆誤。
+# ---------------------------------------------------------------------------
+
 import re
 import sys
 from pathlib import Path
@@ -62,7 +78,7 @@ DEFAULT_INNER = (
     '<a href="https://shell.fans/contact">歡迎聯繫</a>'
     '<a href="https://shell.fans/co-founder">創辦人</a></div></div>'
     '<div class="sf-footer-company" aria-label="公司資訊">'
-    '<span class="sf-footer-company-row">日商唄粉智能科技有限公司</span>'
+    '<span class="sf-footer-company-row">唄粉智能科技股份有限公司</span>'
     '<span class="sf-footer-company-row">地址：臺北市內湖區瑞光路335號4樓</span>'
     '<span class="sf-footer-company-row"><a href="mailto:hello@shell.fans">信箱：hello@shell.fans</a></span>'
     '<span class="sf-footer-company-row"><a href="tel:0277143635">電話：02-77143635</a></span>'
@@ -71,7 +87,7 @@ DEFAULT_INNER = (
     '<a href="https://tiponet.tipo.gov.tw/gpss2/gpsskmc/gpssbkm?!!FRURLTWI908295B" target="_blank" rel="noopener noreferrer">發明專利 I908295(臺灣)</a>'
     '<span>及其他申請中美國、日本之專利保護。</span></div>'
     '<div class="sf-footer-bottom">'
-    '<span class="sf-footer-copy">© 2026 ShellFans AI. 日商唄粉智能科技有限公司. All rights reserved.</span>'
+    '<span class="sf-footer-copy">© 2026 ShellFans AI. 唄粉智能科技股份有限公司. All rights reserved.</span>'
     '<button type="button" class="sf-footer-lang" data-sf-lang aria-label="切換語言">' + _GLOBE + '<span>English</span></button>'
     '<div class="sf-footer-social" aria-label="社群連結">'
     '<a href="https://www.facebook.com/profile.php?id=61581243232686" target="_blank" rel="noopener noreferrer" aria-label="Facebook">'

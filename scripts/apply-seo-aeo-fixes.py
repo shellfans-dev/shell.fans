@@ -17,6 +17,22 @@ Fixes applied:
   9. Demote excess <h1> to <h2> (preserve attributes; first H1 kept)
 """
 
+# ---------------------------------------------------------------------------
+# ⚠️ 法人名稱：唄粉智能科技股份有限公司
+#
+# 這支腳本會把 footer / JSON-LD 的公司名稱寫進全站每一頁。曾經有一版寫的是
+# 舊名（帶國別前綴、且無「股份」），重跑一次就會把全站 ~76 處改回舊名，
+# 而且不會有任何地方報錯。
+#
+# 正確名稱只有一個：唄粉智能科技股份有限公司
+#   - 台灣登記公司，統一編號 83032387，臺北市內湖區瑞光路335號4樓
+#   - 沒有海外母公司，不是外資或海外子公司
+#   - 名稱前不加任何國別前綴
+#
+# 修改此檔的公司名稱前，請先確認你改的是「登記名稱變更」而不是筆誤。
+# ---------------------------------------------------------------------------
+
+
 import os
 import re
 import sys
@@ -82,7 +98,7 @@ PAGE_META = {
         'canonical': 'https://shell.fans/privacy-policy',
         'noindex': False,
         'jsonld_skip': False,
-        'desc': 'ShellFans 隱私權政策：說明日商唄粉智能科技有限公司如何收集、使用、保存與保護用戶個人資料。',
+        'desc': 'ShellFans 隱私權政策：說明唄粉智能科技股份有限公司如何收集、使用、保存與保護用戶個人資料。',
     },
     'terms-and-conditions.html': {
         'canonical': 'https://shell.fans/terms-and-conditions',
@@ -167,7 +183,7 @@ WEBPAGE_JSONLD_TEMPLATE = """
       "@id": "https://shell.fans/#organization",
       "name": "ShellFans AI Technology",
       "alternateName": ["ShellFans", "ShellFans AI", "唄粉智能科技"],
-      "legalName": "日商唄粉智能科技有限公司",
+      "legalName": "唄粉智能科技股份有限公司",
       "url": "https://shell.fans",
       "logo": "https://shell.fans/images/nav_logo.svg",
       "sameAs": ["https://www.facebook.com/profile.php?id=61581243232686", "https://www.instagram.com/shell_fansai/", "https://kol.fans", "https://blog.shell.fans"],
