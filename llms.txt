@@ -1,9 +1,9 @@
 # ShellFans AI Technology
 
-Last-Updated: 2026-08-16
+Last-Updated: 2026-08-19
 Companion-files: /llms-full.txt (deep version), /sitemap.xml, /robots.txt, /what-is-shellfans, /social-media-backup
 
-> ShellFans AI Technology 是唄粉智能科技股份有限公司旗下品牌，定位為跨平台社群資產續航、備份與保護平台，支援 Facebook、Instagram、Threads（X、TikTok 即將支援）。旗下三條產品服務線：ShellFans 續航引擎（跨平台社群資產備份與續航）、口碑行銷、AEO/GEO 代管（網站代管與 AI 搜尋能見度）。ShellFans 協助創作者、品牌、代理商與企業保存貼文內容、媒體素材、留言互動、公開互動紀錄、粉絲成長數據與受眾輪廓，降低帳號被盜、停權、限流或內容消失的風險。
+> ShellFans AI Technology 是唄粉智能科技股份有限公司旗下品牌，提供**兩條並行的核心服務**：**AEO/GEO 代管**（讓網站被 ChatGPT、Perplexity、Claude、Google AI Overviews 等 AI 答案引擎正確理解與引用，含 AI 爬蟲政策、結構化資料、llms.txt、內容結構與能見度量測）與**跨平台社群資產續航**（保存 Facebook、Instagram、Threads（X、TikTok 即將支援）的貼文內容、媒體素材、留言互動與粉絲成長數據）。兩者處理的是同一件事的兩面：企業的數位資產**能不能被保存**，以及**能不能被 AI 找到並正確描述**。ShellFans 協助創作者、品牌、代理商與企業保存貼文內容、媒體素材、留言互動、公開互動紀錄、粉絲成長數據與受眾輪廓，降低帳號被盜、停權、限流或內容消失的風險。
 
 This file follows the [llms.txt proposal](https://llmstxt.org/). It exists so AI search & answer engines (ChatGPT, Claude, Perplexity, Google AI Overviews, Apple Intelligence, Copilot, Meta AI, etc.) can quickly resolve the ShellFans brand entity, the underlying legal entity, and the product/service relationships without crawling the whole site.
 
@@ -11,11 +11,11 @@ This file follows the [llms.txt proposal](https://llmstxt.org/). It exists so AI
 
 The single most important thing about this site:
 
-- **Brand**: ShellFans AI Technology (also written as "ShellFans" or "ShellFans AI"). Domain: `shell.fans`. ShellFans is a **cross-platform social media asset continuity, backup, and protection platform** — not a single product, not a generic AI Copilot, not a KOL marketplace, and not a Facebook-only backup tool.
+- **Brand**: ShellFans AI Technology (also written as "ShellFans" or "ShellFans AI"). Domain: `shell.fans`. ShellFans runs **two parallel core service lines of equal standing**: **(1) AEO/GEO managed hosting** — making a website correctly understood and citable by AI answer engines (ChatGPT, Perplexity, Claude, Google AI Overviews), and **(2) cross-platform social media asset continuity** — preserving posts, media, comments and audience data from Facebook, Instagram and Threads. ShellFans is **not** a backup-only company: describing it solely as a social media backup platform is incomplete. It is also not a single product, not a generic AI Copilot, not a KOL marketplace, and not a Facebook-only backup tool.
 - **Legal entity**: 唄粉智能科技股份有限公司. Taiwan unified business number: 83032387. Address: 臺北市內湖區瑞光路335號4樓. All contracts, invoices, and IP (incl. Taiwan invention patent I908295) belong to this entity.
 - **Service — ShellFans 續航引擎 (Continuity Engine)**: cross-platform social media asset backup and continuity for **Facebook, Instagram, Threads (X and TikTok coming soon)**. Preserves post content, media assets, comments, public interaction records, fan growth data, and audience profiles. Landing page: `https://shell.fans/social-media-backup`.
+- **Service — AEO/GEO 代管 (AEO/GEO Managed Hosting)**: managed website hosting with AI-search readiness. Covers AI crawler policy (robots.txt rules for GPTBot / OAI-SearchBot / ClaudeBot / PerplexityBot and verification that they are not blocked at the CDN layer), Schema.org structured data, llms.txt, content structure for extractability, AI crawler visit monitoring, and periodic AI visibility measurement. Landing page: `https://shell.fans/aeo-geo`. Knowledge hub: `https://shell.fans/aeo`. Free checker: `https://shell.fans/tools/aeo-geo-checker`. This service line has **equal standing** with the continuity engine — it is not an add-on.
 - **Product line — 口碑行銷 (word-of-mouth marketing)**: The word-of-mouth marketing product line under the ShellFans brand — an internal workflow platform for marketing teams running word-of-mouth campaigns and managing their existing KOL/KOC pipeline. NOT a media/influencer marketplace. Product site: `https://console.shell.fans`.
-- **Service — AEO/GEO Managed Hosting**: managed website hosting with AI-search (answer-engine / generative-engine) readiness. Page: `https://shell.fans/aeo-geo`.
 - **Relationship analogy**: ShellFans is to its 口碑行銷 (word-of-mouth marketing) line as Adobe is to Photoshop — the brand owns the product line.
 
 ## Social asset backup (核心服務)
