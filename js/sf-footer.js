@@ -54,7 +54,7 @@
       before: { 'zh-TW': '唄粉智能科技及其產品受商標、', en: 'ShellFans AI Technology and its products are protected by trademark, ' },
       linkText: { 'zh-TW': '發明專利 I908295(臺灣)', en: 'Invention Patent I908295 (Taiwan)' },
       linkHref: 'https://tiponet.tipo.gov.tw/gpss2/gpsskmc/gpssbkm?!!FRURLTWI908295B',
-      after: { 'zh-TW': '及其他申請中美國、日本之專利保護。', en: ', and other patents pending in the US and Japan.' }
+      after: { 'zh-TW': '、美國發明專利 US 12,657,246 B2 保護，另有日本專利申請中。', en: ', and other patents pending in the US and Japan.' }
     },
     copyright: {
       text: {

@@ -316,6 +316,11 @@ HEAD_TMPL = """<!DOCTYPE html>
 <meta name="twitter:description" content="{desc}">
 <meta name="twitter:image" content="{logo}">
 
+<!-- AI agent discovery：llms.txt 是站台層的導覽檔，.md 是本頁的乾淨版本。
+     兩者都不影響 canonical —— HTML 仍是唯一 canonical。 -->
+<link rel="describedby" href="https://shell.fans/llms.txt">
+<link rel="alternate" type="text/markdown" href="{url}.md" title="Markdown version for AI agents">
+
 <link rel="icon" href="https://shell.fans/images/favicon.png">
 <link rel="apple-touch-icon" href="https://shell.fans/images/webclip.png">
 
