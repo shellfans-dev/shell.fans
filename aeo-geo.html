@@ -103,6 +103,60 @@
   }
 }
 </script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Service",
+  "@id": "https://shell.fans/aeo-geo#service-ai-visibility",
+  "name": "唄粉智能科技ShellFans AI 能見度分析",
+  "serviceType": "AI Visibility Analysis",
+  "provider": {
+    "@id": "https://shell.fans/#organization"
+  },
+  "areaServed": {
+    "@type": "Country",
+    "name": "Taiwan"
+  },
+  "url": "https://shell.fans/aeo-geo",
+  "description": "以固定的問題組與平台定期探測品牌在 ChatGPT、Perplexity、Claude 等答案引擎中的提及與引用情形，產出可比較的時間序列。不保證任何第三方 AI 平台的引用、推薦或排名。"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Service",
+  "@id": "https://shell.fans/aeo-geo#service-citation-monitoring",
+  "name": "唄粉智能科技ShellFans AI 引用監測",
+  "serviceType": "AI Citation Monitoring",
+  "provider": {
+    "@id": "https://shell.fans/#organization"
+  },
+  "areaServed": {
+    "@type": "Country",
+    "name": "Taiwan"
+  },
+  "url": "https://shell.fans/aeo-geo",
+  "description": "記錄 AI 回答中是否引用官方網站、引用了哪些網址，並區分「被引用」與「被指名」，以歸因落差量化「網站被引用但品牌沒被提到」的程度。"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Service",
+  "@id": "https://shell.fans/aeo-geo#service-entity-optimization",
+  "name": "唄粉智能科技ShellFans 品牌實體優化",
+  "serviceType": "Brand Entity Optimization",
+  "provider": {
+    "@id": "https://shell.fans/#organization"
+  },
+  "areaServed": {
+    "@type": "Country",
+    "name": "Taiwan"
+  },
+  "url": "https://shell.fans/aeo/entity-clarity",
+  "description": "收斂品牌名稱、法人名稱與產品線的表述方式，建立 Organization 結構化資料與可驗證的公司資訊，讓 AI 能唯一辨識該品牌並正確描述其業務。"
+}
+</script>
 
 <script type="application/ld+json">
 {
@@ -129,11 +183,27 @@
   "alternateName": [
     "ShellFans",
     "ShellFans AI",
+    "唄粉智能科技ShellFans",
     "唄粉智能科技股份有限公司",
     "唄粉智能科技",
     "shell.fans"
   ],
-  "@id": "https://shell.fans/#organization"
+  "@id": "https://shell.fans/#organization",
+  "knowsAbout": [
+    "Answer Engine Optimization",
+    "Generative Engine Optimization",
+    "AI Search Visibility",
+    "AI Crawler Monitoring",
+    "Brand Entity Optimization",
+    "Structured Data",
+    "Schema.org",
+    "llms.txt",
+    "答案引擎優化",
+    "生成式引擎優化",
+    "AI 搜尋能見度",
+    "AI 爬蟲監測",
+    "網站代管"
+  ]
 }
 </script>
 
@@ -215,8 +285,18 @@
   "@context": "https://schema.org",
   "@type": "BreadcrumbList",
   "itemListElement": [
-    { "@type": "ListItem", "position": 1, "name": "首頁", "item": "https://shell.fans/" },
-    { "@type": "ListItem", "position": 2, "name": "AEO/GEO 現況評分與網站代管", "item": "https://shell.fans/aeo-geo" }
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "首頁",
+      "item": "https://shell.fans/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "AEO/GEO 現況評分與網站代管",
+      "item": "https://shell.fans/aeo-geo"
+    }
   ]
 }
 </script>

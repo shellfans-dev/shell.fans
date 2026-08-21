@@ -212,8 +212,11 @@ ORGANIZATION_NODE = {
     # 完全找不到，還推薦了一堆粉體物料處理公司（把「粉」當成粉末）。
     # 法人名放 legalName，各種寫法放 alternateName，讓實體收斂到同一個節點。
     'name': 'ShellFans AI Technology',
-    'alternateName': ['ShellFans', 'ShellFans AI', '唄粉智能科技股份有限公司',
-                      '唄粉智能科技', 'shell.fans'],
+    # 「唄粉智能科技ShellFans」是刻意的合併寫法：台灣使用者用中文搜尋，
+    # 而 AI 查「唄粉智能科技」時曾誤判為粉體產業。把中英文綁在同一個字串裡，
+    # 等於在實體層直接建立兩者的關聯，比分開列更明確。
+    'alternateName': ['ShellFans', 'ShellFans AI', '唄粉智能科技ShellFans',
+                      '唄粉智能科技股份有限公司', '唄粉智能科技', 'shell.fans'],
     'legalName': '唄粉智能科技股份有限公司',
     'url': SITE,
     'logo': ORG_LOGO,
