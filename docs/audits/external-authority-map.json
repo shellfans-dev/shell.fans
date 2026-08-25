@@ -1,0 +1,190 @@
+{
+ "generated": "2026-08-21",
+ "note": "外部權威來源地圖。FB 與 Medium 回 400/403 是它們擋伺服器端請求，非連結失效 —— 未經瀏覽器確認前不得判定為壞連結。",
+ "official": {
+  "website": {
+   "url": "https://shell.fans",
+   "status": 200,
+   "linked_from_site": "N/A（本站）"
+  },
+  "blog": {
+   "url": "https://blog.shell.fans",
+   "status": 200,
+   "title": "Home - ShellFans 官方部落格",
+   "linked_from_site": "nav + footer + main（89 次）"
+  },
+  "linkedin": {
+   "url": "https://www.linkedin.com/company/shellfans/",
+   "status": 200,
+   "title": "ShellFans AI Technology Co., Ltd. | LinkedIn",
+   "linked_from_site": "❌ 完全沒有",
+   "issue": "LinkedIn 頁名為 \"ShellFans AI Technology Co., Ltd.\"，與站上 legalName「唄粉智能科技股份有限公司」的英文對應關係未在任何地方說明"
+  },
+  "facebook": {
+   "url_on_site": "https://www.facebook.com/profile.php?id=61581243232686",
+   "url_provided": "https://www.facebook.com/shellfans.fans",
+   "status": "400（FB 擋伺服器端請求，無法驗證）",
+   "linked_from_site": "footer（44 次）",
+   "issue": "站上用 profile.php?id= 而非 vanity URL；兩者皆需以瀏覽器人工確認"
+  },
+  "instagram": {
+   "url": "https://www.instagram.com/shell_fansai/",
+   "linked_from_site": "footer（44 次）"
+  }
+ },
+ "founder": {
+  "medium": {
+   "url": "https://medium.com/kaito-blog-海斗様-の-it宅",
+   "status": "403（Cloudflare 擋伺服器端請求，無法驗證）",
+   "linked_from_site": "❌ 完全沒有",
+   "recommended_placement": "/co-founder 的 Person schema sameAs，不放 Organization sameAs"
+  }
+ },
+ "media": {
+  "meet_bnext": {
+   "31048": {
+    "title": "從「數位佃農」到「有專利」：唄粉智能技術獲美國認證",
+    "shellfans": 10,
+    "beifen": 14,
+    "founder": 0,
+    "patent": 15,
+    "aeo": 0,
+    "backlinks": 2,
+    "cls": "Patent Citation",
+    "value": "最高",
+    "note": "明確寫出 US 12,657,246 與「美國專利商標局審查核准」，回連 / 與 /what-is-shellfans"
+   },
+   "30453": {
+    "title": "社群帳號說沒就沒？…推 ShellFans AI，守護創作者數位資產",
+    "shellfans": 36,
+    "beifen": 12,
+    "founder": 0,
+    "patent": 0,
+    "aeo": 0,
+    "backlinks": 1,
+    "cls": "Product Citation",
+    "value": "高（但有風險）",
+    "note": "ShellFans 提及最多（36 次），但標題與內文含「日商唄粉智能科技」8 次 —— 正是全站已移除的錯誤寫法"
+   },
+   "30514": {
+    "title": "2025 停權潮升溫：創作者如何奪回內容所有權？",
+    "shellfans": 10,
+    "beifen": 2,
+    "founder": 0,
+    "patent": 0,
+    "aeo": 0,
+    "backlinks": 1,
+    "cls": "Product Citation",
+    "value": "中高",
+    "note": "主題與續航引擎的價值主張直接相關，有回連"
+   },
+   "30481": {
+    "title": "數位足跡，妥善守護：瞭解唄粉智能的創新策略",
+    "shellfans": 6,
+    "beifen": 11,
+    "founder": 0,
+    "patent": 0,
+    "aeo": 0,
+    "backlinks": 1,
+    "cls": "Brand Citation",
+    "value": "中",
+    "note": "品牌策略介紹，有回連"
+   },
+   "19206": {
+    "title": "從零開始！「網紅學院」強勢登場，唄粉智能助力素人成神之路",
+    "shellfans": 6,
+    "beifen": 14,
+    "founder": 1,
+    "patent": 0,
+    "aeo": 0,
+    "backlinks": 0,
+    "cls": "Founder / Historical",
+    "value": "低",
+    "note": "唯一提到創辦人姓名的一篇，但主題是已封存的網紅學院；無回連"
+   },
+   "30377": {
+    "title": "暑假不打工，來新創挑戰！唄粉智能校園星探計畫精彩落幕",
+    "shellfans": 6,
+    "beifen": 14,
+    "founder": 0,
+    "patent": 0,
+    "aeo": 0,
+    "backlinks": 0,
+    "cls": "Historical Citation",
+    "value": "低",
+    "note": "活動 PR，與現行服務線無關；無回連"
+   },
+   "20354": {
+    "title": "唄粉智能科技「網紅學院」第三集課程上線",
+    "shellfans": 6,
+    "beifen": 16,
+    "founder": 0,
+    "patent": 0,
+    "aeo": 0,
+    "backlinks": 0,
+    "cls": "Historical Citation",
+    "value": "低",
+    "note": "已封存產品線的課程 PR；無回連"
+   },
+   "30463": {
+    "title": "洞悉AI時代新機遇！唄粉智能台北文華東方「創作者分享會」圓滿成功",
+    "shellfans": 6,
+    "beifen": 10,
+    "founder": 0,
+    "patent": 0,
+    "aeo": 0,
+    "backlinks": 0,
+    "cls": "Historical Citation",
+    "value": "低",
+    "note": "活動 PR；無回連"
+   },
+   "19770": {
+    "title": "從一本60年代的縫紉書到國際品牌：社群力量的現代寓言",
+    "shellfans": 6,
+    "beifen": 2,
+    "founder": 0,
+    "patent": 0,
+    "aeo": 0,
+    "backlinks": 0,
+    "cls": "Irrelevant",
+    "value": "極低",
+    "note": "主題與品牌無關，唄粉僅出現 2 次（多為頁尾/推薦區）；不應作為 citation"
+   }
+  },
+  "summary": {
+   "total": 9,
+   "with_backlink": 4,
+   "mentioning_aeo_or_geo": 0,
+   "mentioning_patent": 1,
+   "mentioning_founder_name": 1,
+   "high_value": [
+    "31048",
+    "30453",
+    "30514"
+   ],
+   "low_or_irrelevant": [
+    "19206",
+    "30377",
+    "20354",
+    "30463",
+    "19770"
+   ],
+   "critical": "9 篇全部 0 次提到 AEO/GEO —— 無任何第三方來源佐證「ShellFans 做 AEO/GEO」"
+  }
+ },
+ "public_evidence": {
+  "tw_patent": {
+   "id": "TWI908295B",
+   "url": "https://tiponet.tipo.gov.tw/gpss2/gpsskmc/gpssbkm?!!FRURLTWI908295B",
+   "status": 200,
+   "linked_from_site": "footer（44 次）"
+  },
+  "us_patent": {
+   "id": "US 12,657,246 B2",
+   "url": "（USPTO 連結尚未建立）",
+   "status": "N/A",
+   "linked_from_site": "❌ 無連結",
+   "evidence": "Meet 31048 明確報導，站上 08-21 已補上專利號文字但無 USPTO 連結"
+  }
+ }
+}

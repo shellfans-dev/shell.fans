@@ -61,8 +61,8 @@ AEO 顧問服務提供的是**判斷與方法**，不是代工。適合已有技
 
 ## 相關頁面
 
+- [AEO/GEO 代管服務總覽](https://shell.fans/aeo-geo.md)
 - [AEO Managed Hosting](https://shell.fans/aeo/managed-hosting.md)
-- [AEO 費用怎麼計算](https://shell.fans/aeo/cost.md)
 - [如何挑選 AEO 廠商](https://shell.fans/aeo/how-to-choose-agency.md)
 - [免費檢測工具](https://shell.fans/tools/aeo-geo-checker)
 ---

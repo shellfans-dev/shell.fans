@@ -61,7 +61,7 @@
 
 - [AEO 是什麼](https://shell.fans/aeo/what-is-aeo.md)
 - [AEO 費用怎麼計算](https://shell.fans/aeo/cost.md)
-- [AEO 導入流程](https://shell.fans/aeo/implementation.md)
+- [回 AEO/GEO 知識中心看完整主題](https://shell.fans/aeo.md)
 - [免費檢測工具](https://shell.fans/tools/aeo-geo-checker)
 ---
 

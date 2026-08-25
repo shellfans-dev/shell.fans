@@ -220,9 +220,13 @@ ORGANIZATION_NODE = {
     'legalName': '唄粉智能科技股份有限公司',
     'url': SITE,
     'logo': ORG_LOGO,
+    # 第三方身分來源（社群平台）排在自有子網域之前 —— 前者才是可獨立驗證的實體佐證。
+    # LinkedIn 於 2026-08-25 補上：稽核發現它實測 200 但全站完全沒有連結，
+    # 而那是 B2B 場景中最重要的公司身分來源。
     'sameAs': [
         'https://www.facebook.com/profile.php?id=61581243232686',
         'https://www.instagram.com/shell_fansai/',
+        'https://www.linkedin.com/company/shellfans/',
         'https://console.shell.fans',
         'https://blog.shell.fans',
     ],

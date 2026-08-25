@@ -1278,7 +1278,7 @@ PAGES.append(page(
         ('顧問會幫忙寫程式嗎？',
          '顧問服務提供的是規格而非施工。若需要有人直接執行，適合的是 Managed Hosting。兩者可以搭配——先顧問確認方向，再決定自行執行或委外。'),
     ],
-    related=[('/aeo/managed-hosting', 'AEO Managed Hosting'), ('/aeo/cost', 'AEO 費用怎麼計算'),
+    related=[(SERVICE, 'AEO/GEO 代管服務總覽'), ('/aeo/managed-hosting', 'AEO Managed Hosting'),
              ('/aeo/how-to-choose-agency', '如何挑選 AEO 廠商'), (CHECKER, '免費檢測工具')],
     cta=CTA_CONTACT, cta2=CTA_CHECK,
 ))
@@ -1351,7 +1351,7 @@ PAGES.append(page(
          '免費檢測提供自動化的技術面掃描與缺口清單，不需註冊即可使用。付費服務的差異在於執行、人工判讀、持續維護與量測——也就是把清單上的項目真的做完並確保它不會退回去。'),
     ],
     related=[('/aeo/implementation', 'AEO 導入流程'), ('/aeo/managed-hosting', 'AEO Managed Hosting'),
-             ('/aeo/how-to-choose-agency', '如何挑選 AEO 廠商'), (CHECKER, '免費檢測工具')],
+             (SERVICE, 'ShellFans 的 AEO/GEO 服務內容'), (CHECKER, '免費檢測工具')],
     cta=CTA_CHECK, cta2=CTA_CONTACT,
 ))
 
@@ -1909,6 +1909,6 @@ PAGES.append(page(
          '短期通常沒有立即影響。風險在於：當客戶開始習慣用 AI 查詢時，你的同業若已被納入回答，你會在使用者的候選名單之外，而且不會有任何訊號告訴你這件事正在發生。建議至少做最低限度的三件事，成本很低。'),
     ],
     related=[('/aeo/what-is-aeo', 'AEO 是什麼'), ('/aeo/cost', 'AEO 費用怎麼計算'),
-             ('/aeo/implementation', 'AEO 導入流程'), (CHECKER, '免費檢測工具')],
+             (HUB, '回 AEO/GEO 知識中心看完整主題'), (CHECKER, '免費檢測工具')],
     cta=CTA_CHECK, cta2={'href': '/aeo/cost', 'label': '了解費用如何形成'},
 ))

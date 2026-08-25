@@ -71,7 +71,7 @@ AEO 服務沒有業界統一定價，因為工作量差異極大——同樣是�
 
 - [AEO 導入流程](https://shell.fans/aeo/implementation.md)
 - [AEO Managed Hosting](https://shell.fans/aeo/managed-hosting.md)
-- [如何挑選 AEO 廠商](https://shell.fans/aeo/how-to-choose-agency.md)
+- [ShellFans 的 AEO/GEO 服務內容](https://shell.fans/aeo-geo.md)
 - [免費檢測工具](https://shell.fans/tools/aeo-geo-checker)
 ---
 
