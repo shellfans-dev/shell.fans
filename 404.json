@@ -1,0 +1,20 @@
+{
+  "error": {
+    "code": "RESOURCE_NOT_FOUND",
+    "message": "The requested path does not exist on shell.fans.",
+    "hint": "This is a static content site, not an API host. Use the discovery documents below to find valid URLs before retrying."
+  },
+  "discovery": {
+    "sitemap": "https://shell.fans/sitemap.xml",
+    "agent_guide": "https://shell.fans/llms.txt",
+    "agent_guide_full": "https://shell.fans/llms-full.txt",
+    "developers": "https://shell.fans/developers",
+    "openapi": "https://shell.fans/openapi.json",
+    "robots": "https://shell.fans/robots.txt"
+  },
+  "notes": [
+    "Every indexable URL is listed in sitemap.xml. If a path is not there, it does not exist.",
+    "Public informational pages support content negotiation: send 'Accept: text/markdown' to receive a Markdown representation of the same URL.",
+    "shell.fans serves no public write API. Do not attempt to POST, PUT, PATCH or DELETE."
+  ]
+}

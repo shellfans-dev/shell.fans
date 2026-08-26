@@ -49,7 +49,11 @@ LEGAL_NAME = '唄粉智能科技股份有限公司'
 BRAND_TW = '唄粉智能科技ShellFans'
 
 # content module 之外、但值得提供 .md 的頁面。內容來源是 HTML 本身。
-EXTRA_PAGES = ['what-is-shellfans.html', 'aeo-geo.html']
+#
+# index.html 在此的理由與其他頁不同：首頁是 agent 的預設進入點，也是
+# Accept: text/markdown 內容協商最常被打的網址（nginx 把 "/" 映射到
+# /index.md）。少了它，首頁會是全站唯一不支援協商的公開頁面。
+EXTRA_PAGES = ['index.html', 'what-is-shellfans.html', 'aeo-geo.html']
 
 
 # ---------------------------------------------------------------------------
@@ -194,8 +198,12 @@ def build_from_html(path, updated):
 
     # 只取語意元素，不碰版面。順序保留原文順序。
     out = []
+    # \b 不能省。少了它，`p` 會匹配到 SVG 的 <path>（`p` + `[^>]*` 吃掉 `ath …`），
+    # 接著 `</p>` 找到的是同一張卡片段落的結尾標籤 —— 整段連同中間的 <h3>
+    # 都被當成一個 <p> 吞掉，標題在輸出的 Markdown 裡整個消失。
+    # 首頁與 aeo-geo 的功能卡片都是「SVG 圖示 + h3 + p」結構，全數受害。
     pattern = re.compile(
-        r'<(h1|h2|h3|p|li|summary|caption)[^>]*>(.*?)</\1>|<(details)[^>]*>', re.S)
+        r'<(h1|h2|h3|p|li|summary|caption)\b[^>]*>(.*?)</\1>|<(details)\b[^>]*>', re.S)
     seen_h1 = False
     for mm in pattern.finditer(body):
         tag, inner = mm.group(1), mm.group(2)
