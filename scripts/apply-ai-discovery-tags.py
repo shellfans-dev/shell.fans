@@ -48,6 +48,18 @@ def page_url(rel):
     return SITE + '/' + rel[:-len('.html')]
 
 
+def md_url(rel):
+    """
+    Markdown alternate 的網址。
+
+    不能用 page_url() 直接接 '.md'：首頁的 page_url 是 SITE + '/'，接起來
+    會變成 https://shell.fans/.md —— 那是 dotfile，被 nginx 的
+    `location ~ /\.(?!well-known)` 規則擋掉，回 404。宣告一個必然 404 的
+    alternate 比不宣告更糟。首頁的實體檔是 /index.md。
+    """
+    return SITE + '/' + rel[:-len('.html')] + '.md'
+
+
 def main():
     check = '--check' in sys.argv
     touched, skipped = [], []
@@ -77,7 +89,7 @@ def main():
 
         md_rel = rel[:-len('.html')] + '.md'
         if os.path.exists(os.path.join(ROOT, md_rel)) and 'type="text/markdown"' not in out:
-            alt = (f'<link rel="alternate" type="text/markdown" href="{page_url(rel)}.md"'
+            alt = (f'<link rel="alternate" type="text/markdown" href="{md_url(rel)}"'
                    ' title="Markdown version for AI agents">\n')
             out = out.replace(DESCRIBEDBY + '\n', DESCRIBEDBY + '\n' + alt, 1)
             added.append('alternate')
