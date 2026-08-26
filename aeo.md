@@ -87,6 +87,6 @@ AEO（Answer Engine Optimization，答案引擎最佳化）是讓網站內容能
 **Canonical:** https://shell.fans/aeo
 **Brand:** ShellFans AI Technology（唄粉智能科技ShellFans）
 **Publisher:** 唄粉智能科技股份有限公司（Taiwan, 統一編號 83032387）
-**Last-Updated:** 2026-08-16
+**Last-Updated:** 2026-08-25
 
 本檔是 https://shell.fans/aeo 的 Markdown 等價版本，供 AI agent 讀取。HTML 版為 canonical，本檔不參與搜尋索引。

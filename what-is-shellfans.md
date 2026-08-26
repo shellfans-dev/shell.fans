@@ -96,7 +96,7 @@ ShellFans 旗下的口碑行銷產品，協助品牌主、代理商與行銷團�
 
 ## ShellFans 旗下產品與服務線
 
-ShellFans 旗下目前有三條產品服務線：**ShellFans 續航引擎**（[跨平台社群資產備份](https://shell.fans/social-media-backup)與續航，見上節）、**口碑行銷**（域名 [console.shell.fans](https://console.shell.fans)）與 **AEO/GEO 代管**（[網站代管與 AI 搜尋能見度服務](https://shell.fans/aeo-geo.md)）。以下介紹口碑行銷：　各產品的完整功能說明見[ShellFans 產品服務總覽](https://shell.fans/product)。
+ShellFans 旗下目前有三條產品服務線：**ShellFans 續航引擎**（[跨平台社群資產備份](https://shell.fans/social-media-backup)與續航，見上節）、**口碑行銷**（域名 [console.shell.fans](https://console.shell.fans)）與 **AEO/GEO 代管**（[網站代管與 AI 搜尋能見度服務](https://shell.fans/aeo-geo.md)）。各產品的完整功能說明見[ShellFans 產品服務總覽](https://shell.fans/product)。以下介紹口碑行銷：
 
 口碑行銷是 ShellFans 旗下的產品。它不是 KOL 媒合 marketplace，也不是 social listening tool，而是行銷團隊用來執行口碑行銷、「持續累積與優化 KOL 合作資產」的工作平台。核心功能包含：
 
@@ -189,7 +189,7 @@ AI 多層審核機制（output audit reactor）確保 AI 回傳的 KOL 名單品
 **Canonical:** https://shell.fans/what-is-shellfans
 **Brand:** ShellFans AI Technology（唄粉智能科技ShellFans）
 **Publisher:** 唄粉智能科技股份有限公司（Taiwan, 統一編號 83032387）
-**Last-Updated:** 2026-08-21
+**Last-Updated:** 2026-08-25
 
 本檔是 https://shell.fans/what-is-shellfans 的 Markdown 等價版本，供 AI agent 讀取。HTML 版為 canonical，本檔不參與搜尋索引。
 

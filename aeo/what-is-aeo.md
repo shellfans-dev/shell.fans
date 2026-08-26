@@ -81,6 +81,6 @@ AEO 是 Answer Engine Optimization 的縮寫，中文稱「答案引擎最佳化
 **Canonical:** https://shell.fans/aeo/what-is-aeo
 **Brand:** ShellFans AI Technology（唄粉智能科技ShellFans）
 **Publisher:** 唄粉智能科技股份有限公司（Taiwan, 統一編號 83032387）
-**Last-Updated:** 2026-08-16
+**Last-Updated:** 2026-08-25
 
 本檔是 https://shell.fans/aeo/what-is-aeo 的 Markdown 等價版本，供 AI agent 讀取。HTML 版為 canonical，本檔不參與搜尋索引。
