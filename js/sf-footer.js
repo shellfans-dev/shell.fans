@@ -35,7 +35,8 @@
       { title: { 'zh-TW': '資源', en: 'Resources' }, links: [
         { label: { 'zh-TW': 'Klog 部落格', en: 'Klog Blog' }, href: 'https://blog.shell.fans/', external: true },
         { label: { 'zh-TW': '幫助中心', en: 'Help Center' }, href: 'https://shell.fans/helpcenter' },
-        { label: { 'zh-TW': '客服支援', en: 'Support' }, href: 'https://shell.fans/support' }
+        { label: { 'zh-TW': '客服支援', en: 'Support' }, href: 'https://shell.fans/support' },
+        { label: { 'zh-TW': '開發者資源', en: 'Developers' }, href: 'https://shell.fans/developers' }
       ] },
       { title: { 'zh-TW': '聯繫', en: 'Contact' }, links: [
         { label: { 'zh-TW': '關於我們', en: 'About Us' }, href: 'https://shell.fans/contact' },
@@ -54,7 +55,13 @@
       before: { 'zh-TW': '唄粉智能科技及其產品受商標、', en: 'ShellFans AI Technology and its products are protected by trademark, ' },
       linkText: { 'zh-TW': '發明專利 I908295(臺灣)', en: 'Invention Patent I908295 (Taiwan)' },
       linkHref: 'https://tiponet.tipo.gov.tw/gpss2/gpsskmc/gpssbkm?!!FRURLTWI908295B',
-      after: { 'zh-TW': '、美國發明專利 US 12,657,246 B2 保護，另有日本專利申請中。', en: ', and other patents pending in the US and Japan.' }
+      // 英文原本寫 "pending in the US and Japan"，與同一物件的中文矛盾——
+      // 美國專利 US 12,657,246 B2 已於 2025 年 12 月核准（見 /co-founder 沿革
+      // 與 /about）。這裡對齊為「美國已核准、日本申請中」。
+      // ⚠ 線上實際顯示的值來自 console.shell.fans/api/site/footer，該處目前
+      // 兩種語言都仍寫成「申請中美國、日本」，需要在後台一併更正，
+      // 否則這份內建 fallback 只在 API 斷線時才會生效。
+      after: { 'zh-TW': '、美國發明專利 US 12,657,246 B2 保護，另有日本專利申請中。', en: ', and US Invention Patent US 12,657,246 B2, with a further application pending in Japan.' }
     },
     copyright: {
       text: {
@@ -115,6 +122,13 @@
       h += '<p class="sf-footer-desc">' + esc(loc(cfg.description, l)) + '</p>';
     }
     h += '</div>';
+    // 視覺隱藏的區塊標題。footer 欄位標題是 <h3>，出現在頁面最後一個內容
+    // <h2> 之後——在文件大綱裡會被讀成該 H2 的子節（首頁就掛在「常見問題」
+    // 底下）。<footer> 包起來不會解決：HTML5 的 outline 演算法從未被瀏覽器
+    // 實作。補一個父層 <h2> 讓它們有正確歸屬。與靜態烘焙版的 footer 一致。
+    h += '<h2 style="position:absolute;width:1px;height:1px;padding:0;margin:-1px;'
+      + 'overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0">'
+      + (l === 'en' ? 'Site navigation' : '網站導覽') + '</h2>';
     (cfg.linkGroups || []).forEach(function (g) {
       if (g.enabled === false) return;
       h += '<div class="sf-footer-col"><h3>' + esc(loc(g.title, l)) + '</h3>';

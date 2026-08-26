@@ -183,7 +183,13 @@ def render_main(page):
                 '      <h2>常見問題</h2>',
                 '      <div class="faq" style="margin-top:32px">']
         for q, a in page['faq']:
-            out.append('        <details><summary>%s</summary><p>%s</p></details>' % (esc(q), a))
+            # 問句包成 h3：折疊狀態下 <summary> 的文字不是標題，整個 FAQ 區
+            # 在文件大綱裡會是「一個 H2 底下什麼都沒有」。inline style 把 h3
+            # 的預設樣式中和成與裸文字節點相同，外觀不變。
+            out.append(
+                '        <details><summary><h3 style="display:inline;font:inherit;'
+                'margin:0;padding:0;color:inherit">%s</h3></summary><p>%s</p></details>'
+                % (esc(q), a))
         out += ['      </div>', '    </div>', '  </section>', '']
 
     out += ['  <section>', '    <div class="container">',
@@ -231,6 +237,27 @@ ORGANIZATION_NODE = {
         'https://blog.shell.fans',
     ],
     'taxID': '83032387',
+    # 2026-08-26 補：Is Agentic 稽核把 Organization schema 判為 Partial，
+    # 缺的正是 address 與 contactPoint。這兩個欄位是 agent 做實體解析時的
+    # 對照依據 —— 要確認「網路上這個 ShellFans」與「台灣某家登記在案的公司」
+    # 是同一個實體，靠的就是地址、統編、聯絡管道能不能跟第三方紀錄對上。
+    # 全部取自 footer 既有的公開資訊，電話只是轉成 E.164 國際格式。
+    'foundingDate': '2023-03',   # /co-founder 沿革：2023/03 創辦唄粉智能科技
+    'address': {
+        '@type': 'PostalAddress',
+        'streetAddress': '瑞光路335號4樓',
+        'addressLocality': '內湖區',
+        'addressRegion': '臺北市',
+        'addressCountry': 'TW',
+    },
+    'contactPoint': [{
+        '@type': 'ContactPoint',
+        'contactType': 'customer support',
+        'email': 'hello@shell.fans',
+        'telephone': '+886-2-7714-3635',
+        'areaServed': 'TW',
+        'availableLanguage': ['zh-Hant', 'en'],
+    }],
 }
 
 

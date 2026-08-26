@@ -53,7 +53,8 @@ BRAND_TW = '唄粉智能科技ShellFans'
 # index.html 在此的理由與其他頁不同：首頁是 agent 的預設進入點，也是
 # Accept: text/markdown 內容協商最常被打的網址（nginx 把 "/" 映射到
 # /index.md）。少了它，首頁會是全站唯一不支援協商的公開頁面。
-EXTRA_PAGES = ['index.html', 'what-is-shellfans.html', 'aeo-geo.html']
+EXTRA_PAGES = ['index.html', 'what-is-shellfans.html', 'aeo-geo.html',
+               'about.html', 'developers.html']
 
 
 # ---------------------------------------------------------------------------

@@ -1,0 +1,562 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "ShellFans Public Read-Only API",
+    "version": "2026-08-26",
+    "summary": "The small set of unauthenticated read-only endpoints that ShellFans intentionally exposes.",
+    "description": "ShellFans (唄粉智能科技股份有限公司 / ShellFans AI Technology) is a Taiwan company operating two service lines: AEO/GEO managed hosting, and cross-platform social media asset continuity.\n\n**Scope of this document.** It describes only endpoints that are (a) already publicly reachable without credentials, (b) read-only, (c) free of personal data, and (d) intended to be consumed by third parties. Everything else ShellFans runs — the chat pipeline, the administrative API, the customer console, payment webhooks — is deliberately absent. Their absence is documented at https://shell.fans/developers rather than implied.\n\n**There is no write API.** No endpoint here creates, modifies or deletes anything. ShellFans cannot be driven as a tool to perform work on a user's behalf. Requests using POST, PUT, PATCH or DELETE will not succeed.\n\n**No authentication is required or accepted.** There is no OAuth authorization server, no API keys for public consumers, and no scopes. Sending an Authorization header has no effect on these endpoints.\n\n**Stability.** These endpoints back ShellFans' own public website, so they are stable in practice, but they carry no formal versioning or deprecation policy. Content fields are editorial and change without notice; treat their text as data, not as a contract.",
+    "contact": {
+      "name": "ShellFans AI Technology",
+      "email": "hello@shell.fans",
+      "url": "https://shell.fans/developers"
+    },
+    "license": {
+      "name": "Content free to quote with attribution to ShellFans AI Technology",
+      "url": "https://shell.fans/terms-and-conditions"
+    }
+  },
+  "externalDocs": {
+    "description": "ShellFans developer resources — what exists, what does not, and why",
+    "url": "https://shell.fans/developers"
+  },
+  "servers": [
+    {
+      "url": "https://shell.fans",
+      "description": "Public website. Hosts the site-status endpoints."
+    },
+    {
+      "url": "https://console.shell.fans",
+      "description": "Customer console. Hosts the read-only site-content endpoints that the public website renders from."
+    }
+  ],
+  "tags": [
+    {
+      "name": "status",
+      "description": "Service availability and anonymous usage allowance."
+    },
+    {
+      "name": "site-content",
+      "description": "Editorial content that the public website renders. Read-only, no personal data."
+    }
+  ],
+  "paths": {
+    "/api/dify/health": {
+      "get": {
+        "operationId": "getHealth",
+        "summary": "Service health check",
+        "description": "Reports whether the ShellFans chat backend is accepting requests. Use this to decide whether shell.fans is reachable before attempting anything else. Always returns 200 when the service is up; a non-200 or a connection failure means it is not.",
+        "tags": ["status"],
+        "servers": [{ "url": "https://shell.fans" }],
+        "security": [],
+        "responses": {
+          "200": {
+            "description": "Service is up.",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Health" },
+                "example": { "ok": true, "ts": "2026-08-26T02:58:16.359Z" }
+              }
+            }
+          },
+          "404": { "$ref": "#/components/responses/NotFound" }
+        }
+      }
+    },
+    "/api/dify/quota": {
+      "get": {
+        "operationId": "getQuota",
+        "summary": "Remaining anonymous query allowance for the caller",
+        "description": "Returns how many free ShellFans Chat queries the calling IP address has left today. The allowance is per-IP and resets daily.\n\nThis endpoint is informational only — it reports the allowance, it does not grant, reserve or consume it. There is no public endpoint for spending the allowance: ShellFans Chat is only callable from the website's own interface. An agent should read this to explain the limit to a user, not to plan automated calls.",
+        "tags": ["status"],
+        "servers": [{ "url": "https://shell.fans" }],
+        "security": [],
+        "responses": {
+          "200": {
+            "description": "Current allowance for the calling IP address.",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Quota" },
+                "example": {
+                  "remaining": 2,
+                  "limit": 2,
+                  "resetAt": 1787799496806,
+                  "anonymous": true,
+                  "searchable_platforms": ["facebook"]
+                }
+              }
+            }
+          },
+          "404": { "$ref": "#/components/responses/NotFound" }
+        }
+      }
+    },
+    "/api/site/product-flags": {
+      "get": {
+        "operationId": "getProductAvailability",
+        "summary": "Which ShellFans service lines are currently offered",
+        "description": "Returns one boolean per service line, reflecting whether ShellFans is currently selling it. The public website hides navigation entries for lines that are off.\n\nRead this before telling a user that a ShellFans service is available — a line can be archived without its marketing pages being removed. A `false` value means the service is not currently being sold, regardless of what other pages say.",
+        "tags": ["site-content"],
+        "servers": [{ "url": "https://console.shell.fans" }],
+        "security": [],
+        "responses": {
+          "200": {
+            "description": "Availability of each service line.",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ProductFlagsEnvelope" },
+                "example": {
+                  "data": {
+                    "shellfans_endurance_engine_enabled": true,
+                    "kolfans_wom_enabled": false,
+                    "aeo_geo_managed_hosting_enabled": true
+                  }
+                }
+              }
+            }
+          },
+          "404": { "$ref": "#/components/responses/NotFound" }
+        }
+      }
+    },
+    "/api/site/pricing": {
+      "get": {
+        "operationId": "getPricing",
+        "summary": "Published plan tiers and the feature comparison table",
+        "description": "Returns the plan cards and comparison table exactly as rendered on https://shell.fans/pricing.\n\nAmounts are in New Taiwan Dollars. A card whose `cta` is not a purchase call-to-action indicates a tier that is announced but not yet purchasable — do not quote it as available. Always cross-check `getProductAvailability` before telling a user a plan can be bought.",
+        "tags": ["site-content"],
+        "servers": [{ "url": "https://console.shell.fans" }],
+        "security": [],
+        "responses": {
+          "200": {
+            "description": "Plan cards and comparison table.",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Pricing" }
+              }
+            }
+          },
+          "404": { "$ref": "#/components/responses/NotFound" }
+        }
+      }
+    },
+    "/api/site/footer": {
+      "get": {
+        "operationId": "getSiteFooter",
+        "summary": "Company identity block and site-wide footer links",
+        "description": "Returns the footer content shared by every ShellFans page: legal entity name, registered address, contact details, Taiwan unified business number, patent notices, official social profiles, and the footer link groups.\n\nThis is the authoritative machine-readable source for ShellFans' corporate identity. All strings are bilingual objects keyed `zh-TW` and `en`. The same facts appear as Schema.org Organization / PostalAddress / ContactPoint JSON-LD on every page of https://shell.fans.",
+        "tags": ["site-content"],
+        "servers": [{ "url": "https://console.shell.fans" }],
+        "security": [],
+        "responses": {
+          "200": {
+            "description": "Footer and company identity content.",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/FooterEnvelope" }
+              }
+            }
+          },
+          "404": { "$ref": "#/components/responses/NotFound" }
+        }
+      }
+    },
+    "/api/site/cofounder": {
+      "get": {
+        "operationId": "getFounderProfile",
+        "summary": "Founder biography and company milestones",
+        "description": "Returns the content rendered at https://shell.fans/co-founder: the founder's biography and the dated company milestones (incorporation, the Tokyo entity, and the Taiwan and US patent grants).\n\nUseful for entity resolution — confirming that a ShellFans reference on the open web corresponds to this specific Taiwan company. Biography and milestone bodies contain a restricted set of inline HTML.",
+        "tags": ["site-content"],
+        "servers": [{ "url": "https://console.shell.fans" }],
+        "security": [],
+        "responses": {
+          "200": {
+            "description": "Founder profile and milestones.",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/CofounderEnvelope" }
+              }
+            }
+          },
+          "404": { "$ref": "#/components/responses/NotFound" }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {},
+    "responses": {
+      "NotFound": {
+        "description": "No such endpoint. ShellFans does not expose an API surface beyond the operations in this document.",
+        "content": {
+          "application/json": {
+            "schema": { "$ref": "#/components/schemas/Error" },
+            "example": {
+              "error": {
+                "code": "RESOURCE_NOT_FOUND",
+                "message": "The requested endpoint does not exist.",
+                "hint": "Public endpoints are described at https://shell.fans/openapi.json. Administrative routes are not public."
+              }
+            }
+          }
+        }
+      }
+    },
+    "schemas": {
+      "Error": {
+        "type": "object",
+        "description": "Every machine-oriented error response from ShellFans uses this envelope.",
+        "required": ["error"],
+        "additionalProperties": false,
+        "properties": {
+          "error": {
+            "type": "object",
+            "required": ["code", "message"],
+            "additionalProperties": false,
+            "properties": {
+              "code": {
+                "type": "string",
+                "description": "Stable machine-readable identifier. Branch on this, not on `message`.",
+                "enum": [
+                  "RESOURCE_NOT_FOUND",
+                  "METHOD_NOT_ALLOWED",
+                  "UNAUTHORIZED",
+                  "ADMIN_DISABLED"
+                ]
+              },
+              "message": {
+                "type": "string",
+                "description": "Human-readable explanation. Wording is not stable.",
+                "maxLength": 500
+              },
+              "hint": {
+                "type": "string",
+                "description": "Where to look next. Present on most errors.",
+                "maxLength": 500
+              }
+            }
+          }
+        }
+      },
+      "Health": {
+        "type": "object",
+        "required": ["ok", "ts"],
+        "additionalProperties": false,
+        "properties": {
+          "ok": {
+            "type": "boolean",
+            "description": "True when the service is accepting requests. Never false in a 200 response.",
+            "const": true
+          },
+          "ts": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Server time in ISO 8601 with a UTC offset."
+          }
+        }
+      },
+      "Quota": {
+        "type": "object",
+        "required": ["remaining", "limit", "resetAt", "anonymous"],
+        "additionalProperties": true,
+        "properties": {
+          "remaining": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "Free queries left today for the calling IP address."
+          },
+          "limit": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "Daily allowance for the calling IP address."
+          },
+          "resetAt": {
+            "type": "integer",
+            "format": "int64",
+            "description": "When the allowance resets, as Unix milliseconds."
+          },
+          "anonymous": {
+            "type": "boolean",
+            "description": "True when the caller is not an authenticated ShellFans user. Always true for public callers."
+          },
+          "searchable_platforms": {
+            "type": "array",
+            "description": "Social platforms the caller's tier may query. Public callers get the anonymous set.",
+            "items": {
+              "type": "string",
+              "enum": ["facebook", "instagram", "threads", "x", "tiktok", "ptt"]
+            }
+          }
+        }
+      },
+      "ProductFlagsEnvelope": {
+        "type": "object",
+        "required": ["data"],
+        "additionalProperties": false,
+        "properties": {
+          "data": {
+            "type": "object",
+            "required": [
+              "shellfans_endurance_engine_enabled",
+              "kolfans_wom_enabled",
+              "aeo_geo_managed_hosting_enabled"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "shellfans_endurance_engine_enabled": {
+                "type": "boolean",
+                "description": "Cross-platform social media asset continuity (ShellFans 續航引擎)."
+              },
+              "kolfans_wom_enabled": {
+                "type": "boolean",
+                "description": "Word-of-mouth marketing workflow platform (口碑行銷)."
+              },
+              "aeo_geo_managed_hosting_enabled": {
+                "type": "boolean",
+                "description": "AEO/GEO managed hosting."
+              }
+            }
+          }
+        }
+      },
+      "LocalizedText": {
+        "type": "object",
+        "description": "A string in both supported locales.",
+        "additionalProperties": false,
+        "properties": {
+          "zh-TW": { "type": "string" },
+          "en": { "type": "string" }
+        }
+      },
+      "Pricing": {
+        "type": "object",
+        "required": ["cards", "table"],
+        "additionalProperties": true,
+        "properties": {
+          "cards": {
+            "type": "array",
+            "description": "Plan tiers, in display order.",
+            "items": { "$ref": "#/components/schemas/PricingCard" }
+          },
+          "table": { "$ref": "#/components/schemas/PricingTable" }
+        }
+      },
+      "PricingCard": {
+        "type": "object",
+        "required": ["slug", "tier", "name"],
+        "additionalProperties": true,
+        "properties": {
+          "slug": {
+            "type": "string",
+            "description": "Stable identifier for the plan. Use this to correlate across responses, not `name`.",
+            "maxLength": 64
+          },
+          "tier": { "type": "string", "description": "Tier family the plan belongs to.", "maxLength": 64 },
+          "name": { "type": "string", "description": "Display name (Traditional Chinese).", "maxLength": 120 },
+          "eyebrow": { "type": "string", "maxLength": 120 },
+          "tagline": { "type": "string", "maxLength": 300 },
+          "popular": { "type": "boolean", "description": "Whether the plan is highlighted as the recommended choice." },
+          "cta": {
+            "type": "string",
+            "description": "Call-to-action label. A non-purchase label (for example 敬請期待 / coming soon) means the plan is announced but not purchasable.",
+            "maxLength": 120
+          },
+          "prices": {
+            "type": "object",
+            "description": "Billing periods offered for this plan. Absent when the plan has no published price.",
+            "additionalProperties": { "$ref": "#/components/schemas/Price" }
+          },
+          "features": {
+            "type": "array",
+            "description": "Feature list shown on the card.",
+            "items": {
+              "type": "object",
+              "additionalProperties": true,
+              "properties": {
+                "label": { "type": "string", "maxLength": 200 },
+                "supported": { "type": "boolean" }
+              }
+            }
+          }
+        }
+      },
+      "Price": {
+        "type": "object",
+        "additionalProperties": true,
+        "properties": {
+          "amount": { "type": "number", "minimum": 0, "description": "Numeric amount." },
+          "label": { "type": "string", "description": "Formatted amount as displayed.", "maxLength": 60 },
+          "currency": { "type": "string", "description": "ISO 4217 code. TWD unless stated otherwise.", "maxLength": 8 }
+        }
+      },
+      "PricingTable": {
+        "type": "object",
+        "required": ["columns", "sections"],
+        "additionalProperties": true,
+        "properties": {
+          "title": { "type": "string", "maxLength": 200 },
+          "subtitle": { "type": "string", "maxLength": 300 },
+          "columns": {
+            "type": "array",
+            "description": "Column headers, aligned with the plan cards.",
+            "items": { "type": "string", "maxLength": 120 }
+          },
+          "sections": {
+            "type": "array",
+            "description": "Feature groups. Each row's `value` array is positionally aligned with `columns`.",
+            "items": {
+              "type": "object",
+              "additionalProperties": true,
+              "properties": {
+                "title": { "type": "string", "maxLength": 200 },
+                "rows": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "additionalProperties": true,
+                    "properties": {
+                      "label": { "type": "string", "maxLength": 200 },
+                      "value": { "type": "array", "items": { "type": ["string", "boolean", "null"] } }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "FooterEnvelope": {
+        "type": "object",
+        "required": ["data"],
+        "additionalProperties": false,
+        "properties": { "data": { "$ref": "#/components/schemas/Footer" } }
+      },
+      "Footer": {
+        "type": "object",
+        "additionalProperties": true,
+        "properties": {
+          "logo": {
+            "type": "object",
+            "additionalProperties": true,
+            "properties": {
+              "src": { "type": "string", "format": "uri" },
+              "alt": { "type": "string", "maxLength": 200 }
+            }
+          },
+          "description": { "$ref": "#/components/schemas/LocalizedText" },
+          "linkGroups": {
+            "type": "array",
+            "description": "Footer navigation groups.",
+            "items": {
+              "type": "object",
+              "additionalProperties": true,
+              "properties": {
+                "title": { "$ref": "#/components/schemas/LocalizedText" },
+                "links": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "additionalProperties": true,
+                    "properties": {
+                      "label": { "$ref": "#/components/schemas/LocalizedText" },
+                      "href": { "type": "string", "format": "uri" },
+                      "external": { "type": "boolean" }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "company": {
+            "type": "object",
+            "description": "Legal entity block: company name, registered address, email, phone, Taiwan unified business number.",
+            "additionalProperties": true,
+            "properties": {
+              "lines": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "additionalProperties": true,
+                  "properties": {
+                    "text": { "$ref": "#/components/schemas/LocalizedText" },
+                    "href": { "type": "string" }
+                  }
+                }
+              }
+            }
+          },
+          "patent": {
+            "type": "object",
+            "description": "Patent notice. Covers the social media maintenance technology only — ShellFans claims no AEO or GEO patent.",
+            "additionalProperties": true,
+            "properties": {
+              "before": { "$ref": "#/components/schemas/LocalizedText" },
+              "linkText": { "$ref": "#/components/schemas/LocalizedText" },
+              "linkHref": { "type": "string", "format": "uri" },
+              "after": { "$ref": "#/components/schemas/LocalizedText" }
+            }
+          },
+          "copyright": {
+            "type": "object",
+            "additionalProperties": true,
+            "properties": { "text": { "$ref": "#/components/schemas/LocalizedText" } }
+          },
+          "social": {
+            "type": "array",
+            "description": "Official ShellFans profiles. These are the same URLs published as Organization.sameAs.",
+            "items": {
+              "type": "object",
+              "additionalProperties": true,
+              "properties": {
+                "platform": { "type": "string", "maxLength": 60 },
+                "url": { "type": "string", "format": "uri" },
+                "iconUrl": { "type": "string", "format": "uri" }
+              }
+            }
+          },
+          "legal": {
+            "type": "array",
+            "description": "Privacy policy and terms links.",
+            "items": {
+              "type": "object",
+              "additionalProperties": true,
+              "properties": {
+                "label": { "$ref": "#/components/schemas/LocalizedText" },
+                "href": { "type": "string", "format": "uri" }
+              }
+            }
+          }
+        }
+      },
+      "CofounderEnvelope": {
+        "type": "object",
+        "required": ["data"],
+        "additionalProperties": false,
+        "properties": { "data": { "$ref": "#/components/schemas/Cofounder" } }
+      },
+      "Cofounder": {
+        "type": "object",
+        "additionalProperties": true,
+        "properties": {
+          "hero": { "type": "object", "additionalProperties": true, "description": "Name, role and portrait." },
+          "intro": { "type": "object", "additionalProperties": true, "description": "Biography. `bodyHtml` contains a restricted set of inline HTML." },
+          "milestones": {
+            "type": "array",
+            "description": "Dated company milestones, oldest first.",
+            "items": {
+              "type": "object",
+              "additionalProperties": true,
+              "properties": {
+                "eyebrow": { "type": "string", "description": "Date, as published (for example 2023/03).", "maxLength": 40 },
+                "title": { "type": "string", "maxLength": 200 },
+                "description": { "type": "string" }
+              }
+            }
+          },
+          "vision": { "type": "object", "additionalProperties": true },
+          "cta": { "type": "object", "additionalProperties": true }
+        }
+      }
+    }
+  },
+  "security": []
+}

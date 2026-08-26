@@ -2,32 +2,32 @@
 <html lang="zh-Hant">
 <head>
 <meta charset="utf-8">
-<title>AEO 費用怎麼計算？影響報價的變數 - ShellFans</title>
-<meta name="description" content="AEO 服務沒有統一定價，費用取決於網站規模、既有整備程度、內容調整範圍與維護頻率。本頁拆解影響報價的變數，以及如何判斷報價是否合理。">
+<title>ShellFans Developer Resources｜公開機器介面與 AI agent 指引</title>
+<meta name="description" content="ShellFans 公開機器介面總覽：唯讀 API 的 OpenAPI 3.1 描述、內容協商、llms.txt、結構化資料，以及目前刻意不提供的項目（公開寫入 API、OAuth 授權伺服器、MCP server）與其原因。">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#101214">
-<link rel="canonical" href="https://shell.fans/aeo/cost">
+<link rel="canonical" href="https://shell.fans/developers">
 
-<link rel="alternate" hreflang="zh-Hant" href="https://shell.fans/aeo/cost">
-<link rel="alternate" hreflang="x-default" href="https://shell.fans/aeo/cost">
+<link rel="alternate" hreflang="zh-Hant" href="https://shell.fans/developers">
+<link rel="alternate" hreflang="x-default" href="https://shell.fans/developers">
 
 <meta property="og:type" content="article">
-<meta property="og:url" content="https://shell.fans/aeo/cost">
-<meta property="og:title" content="AEO 費用怎麼計算？影響報價的變數 - ShellFans">
-<meta property="og:description" content="AEO 服務沒有統一定價，費用取決於網站規模、既有整備程度、內容調整範圍與維護頻率。本頁拆解影響報價的變數，以及如何判斷報價是否合理。">
+<meta property="og:url" content="https://shell.fans/developers">
+<meta property="og:title" content="ShellFans Developer Resources｜公開機器介面與 AI agent 指引">
+<meta property="og:description" content="ShellFans 公開機器介面總覽：唯讀 API 的 OpenAPI 3.1 描述、內容協商、llms.txt、結構化資料，以及目前刻意不提供的項目（公開寫入 API、OAuth 授權伺服器、MCP server）與其原因。">
 <meta property="og:site_name" content="ShellFans AI Technology">
 <meta property="og:image" content="https://shell.fans/images/nav_logo.svg">
 <meta property="og:locale" content="zh_TW">
 
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="AEO 費用怎麼計算？影響報價的變數 - ShellFans">
-<meta name="twitter:description" content="AEO 服務沒有統一定價，費用取決於網站規模、既有整備程度、內容調整範圍與維護頻率。本頁拆解影響報價的變數，以及如何判斷報價是否合理。">
+<meta name="twitter:title" content="ShellFans Developer Resources｜公開機器介面與 AI agent 指引">
+<meta name="twitter:description" content="ShellFans 公開機器介面總覽：唯讀 API 的 OpenAPI 3.1 描述、內容協商、llms.txt、結構化資料，以及目前刻意不提供的項目（公開寫入 API、OAuth 授權伺服器、MCP server）與其原因。">
 <meta name="twitter:image" content="https://shell.fans/images/nav_logo.svg">
 
 <!-- AI agent discovery：llms.txt 是站台層的導覽檔，.md 是本頁的乾淨版本。
      兩者都不影響 canonical —— HTML 仍是唯一 canonical。 -->
 <link rel="describedby" href="https://shell.fans/llms.txt">
-<link rel="alternate" type="text/markdown" href="https://shell.fans/aeo/cost.md" title="Markdown version for AI agents">
+<link rel="alternate" type="text/markdown" href="https://shell.fans/developers.md" title="Markdown version for AI agents">
 
 <link rel="icon" href="https://shell.fans/images/favicon.png">
 <link rel="apple-touch-icon" href="https://shell.fans/images/webclip.png">
@@ -87,11 +87,11 @@
     },
     {
       "@type": "TechArticle",
-      "@id": "https://shell.fans/aeo/cost#main",
-      "headline": "AEO 費用怎麼計算？",
-      "name": "AEO 費用怎麼計算？",
-      "description": "AEO 服務沒有統一定價，費用取決於網站規模、既有整備程度、內容調整範圍與維護頻率。本頁拆解影響報價的變數，以及如何判斷報價是否合理。",
-      "url": "https://shell.fans/aeo/cost",
+      "@id": "https://shell.fans/developers#main",
+      "headline": "ShellFans Developer Resources",
+      "name": "ShellFans Developer Resources",
+      "description": "ShellFans 公開機器介面總覽：唯讀 API 的 OpenAPI 3.1 描述、內容協商、llms.txt、結構化資料，以及目前刻意不提供的項目（公開寫入 API、OAuth 授權伺服器、MCP server）與其原因。",
+      "url": "https://shell.fans/developers",
       "inLanguage": "zh-Hant",
       "isPartOf": {
         "@type": "WebSite",
@@ -104,11 +104,11 @@
       "publisher": {
         "@id": "https://shell.fans/#organization"
       },
-      "disclaimer": "技術整備可提升網站被 AI 系統理解與引用的基礎條件，但不構成任何第三方 AI 平台的引用、推薦或排名保證。"
+      "disclaimer": "本頁描述撰寫當下實際存在的公開介面。"
     },
     {
       "@type": "BreadcrumbList",
-      "@id": "https://shell.fans/aeo/cost#breadcrumb",
+      "@id": "https://shell.fans/developers#breadcrumb",
       "itemListElement": [
         {
           "@type": "ListItem",
@@ -119,51 +119,65 @@
         {
           "@type": "ListItem",
           "position": 2,
-          "name": "AEO/GEO 知識中心",
-          "item": "https://shell.fans/aeo"
+          "name": "首頁",
+          "item": "https://shell.fans/"
         },
         {
           "@type": "ListItem",
           "position": 3,
-          "name": "AEO 費用怎麼計算？",
-          "item": "https://shell.fans/aeo/cost"
+          "name": "Developer Resources",
+          "item": "https://shell.fans/developers"
+        },
+        {
+          "@type": "ListItem",
+          "position": 4,
+          "name": "ShellFans Developer Resources",
+          "item": "https://shell.fans/developers"
         }
       ]
     },
     {
       "@type": "FAQPage",
-      "@id": "https://shell.fans/aeo/cost#faq",
+      "@id": "https://shell.fans/developers#faq",
       "mainEntity": [
         {
           "@type": "Question",
-          "name": "AEO 一個月要多少錢？",
+          "name": "ShellFans 有 API 可以串接嗎？",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "沒有統一價格。費用取決於網站規模、既有整備程度、是否包含內容調整與持續維護。同樣是「做 AEO」，十頁的形象網站與上千頁的電商網站投入可能差十倍以上。建議先確認需求範圍再取得報價。"
+            "text": "有少數公開唯讀端點，描述於 /openapi.json，不需授權即可讀取，內容是站台設定、方案資料與公司識別資訊。但沒有產品資料 API，也沒有任何寫入端點。"
           }
         },
         {
           "@type": "Question",
-          "name": "為什麼不同廠商報價差那麼多？",
+          "name": "可以用 OAuth 登入 ShellFans 取得資料嗎？",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "通常是範圍不同而非單價不同。要比較的是交付項目：是否包含內容改寫、是否包含持續維護、是否包含量測、驗收標準是什麼。只比總價很容易買到範圍縮水的版本。"
+            "text": "不行。ShellFans 沒有 OAuth 授權伺服器，不對第三方簽發權杖。ShellFans 只在使用者授權存取其社群帳號時，作為各平台 OAuth 的用戶端。"
           }
         },
         {
           "@type": "Question",
-          "name": "可以先做一部分嗎？",
+          "name": "ShellFans 有 MCP server 嗎？",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "可以，而且建議如此。技術整備（robots.txt、結構化資料、llms.txt）成本相對固定且效益明確，適合先做。內容結構調整成本較高，可以先處理最重要的幾頁再評估。"
+            "text": "沒有。ShellFans 目前未發布任何 Model Context Protocol server，也沒有 /.well-known/mcp。內部工作流會使用 MCP 工具，但不對外提供。"
           }
         },
         {
           "@type": "Question",
-          "name": "免費檢測和付費服務差在哪？",
+          "name": "要怎麼取得頁面的純文字版本？",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "免費檢測提供自動化的技術面掃描與缺口清單，不需註冊即可使用。付費服務的差異在於執行、人工判讀、持續維護與量測——也就是把清單上的項目真的做完並確保它不會退回去。"
+            "text": "對任何公開頁面的網址加上 Accept: text/markdown 標頭，或直接在網址後面加 .md。回傳的是去除版面與腳本的正文，HTML 版仍為 canonical。"
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "未知的網址會回什麼？",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "404。ShellFans 不會把不存在的路徑導向首頁。若請求帶 Accept: application/json，回應會是含 sitemap、llms.txt 等指引連結的 JSON。"
           }
         }
       ]
@@ -479,50 +493,72 @@ footer small{color:rgba(255,255,255,0.45);display:block;margin-top:14px;font-siz
 
   <section class="hero">
     <div class="container">
-      <span class="hero-eyebrow">Pricing</span>
-      <h1>AEO 費用怎麼計算？</h1>
-      <p class="hero-lead">AEO 服務沒有業界統一定價，因為工作量差異極大——同樣是「做 AEO」，一個十頁的形象網站與一個上千頁的電商網站，投入可能差十倍以上。與其比較總價，更實際的做法是<strong>先看報價包含哪些項目、由誰執行、如何驗收</strong>。</p>
+      <span class="hero-eyebrow">For developers and AI agents</span>
+      <h1>ShellFans Developer Resources</h1>
+      <p class="hero-lead">ShellFans 是內容與服務網站，不是 API 平台。本頁列出目前真正公開、不需憑證即可讀取的機器介面，以及哪些常見的整合方式並不存在——後者同樣寫清楚，讓自動化系統不必靠猜測或反覆探測。</p>
       <div class="hero-cta">
-        <a href="https://shell.fans/tools/aeo-geo-checker" class="btn-primary">免費檢測我的網站</a>
-        <a href="https://shell.fans/contact" class="btn-secondary">聯繫顧問討論</a>
+        <a href="https://shell.fans/openapi.json" class="btn-primary">查看 OpenAPI 3.1 描述</a>
+        <a href="https://shell.fans/about" class="btn-secondary">關於 ShellFans</a>
       </div>
     </div>
   </section>
 
   <section>
     <div class="container">
-      <span class="section-eyebrow">Variables</span>
-      <h2>影響費用的五個變數</h2>
-      <div class="sf-table-wrap"><table class="sf-dim-table"><caption>影響 AEO 報價的變數</caption><thead><tr><th scope="col">變數</th><th scope="col">為什麼影響費用</th></tr></thead><tbody><tr><th scope="row">網站頁數與模板數</th><td>結構化資料與內容調整需逐模板處理。頁數多但模板少，成本不會等比增加</td></tr><tr><th scope="row">既有整備程度</th><td>已有良好 SEO 基礎的網站，AEO 的增量工作較少。可先用免費檢測確認起點</td></tr><tr><th scope="row">是否需要內容改寫</th><td>技術整備成本相對固定；內容結構調整則與頁數直接相關，通常是最大的變數</td></tr><tr><th scope="row">架構複雜度</th><td>多語系、多網域、複雜 CDN 或 WAF 配置會顯著增加驗證工作</td></tr><tr><th scope="row">是否包含持續維護</th><td>一次性整備與長期維護是不同的計價基礎</td></tr></tbody></table></div>
+      <span class="section-eyebrow">Available now</span>
+      <h2>現在就能用的公開資源</h2>
+      <p>以下全部不需要 API 金鑰、不需要註冊、不需要 OAuth，直接 GET 即可。</p>
+      <div class="sf-table-wrap"><table class="sf-dim-table"><caption>公開機器可讀資源</caption><thead><tr><th scope="col">資源</th><th scope="col">內容</th><th scope="col">格式</th></tr></thead><tbody><tr><th scope="row"><a href="https://shell.fans/openapi.json">/openapi.json</a></th><td>公開唯讀端點的 OpenAPI 3.1 描述，含回應 schema 與錯誤結構</td><td>application/json</td></tr><tr><th scope="row"><a href="https://shell.fans/llms.txt">/llms.txt</a></th><td>ShellFans 是什麼、何時該推薦、何時不該推薦</td><td>text/plain</td></tr><tr><th scope="row"><a href="https://shell.fans/llms-full.txt">/llms-full.txt</a></th><td>同上的展開版，含完整產品與定價脈絡</td><td>text/plain</td></tr><tr><th scope="row"><a href="https://shell.fans/sitemap.xml">/sitemap.xml</a></th><td>全部可索引網址。不在這份清單裡的路徑就是不存在</td><td>application/xml</td></tr><tr><th scope="row"><a href="https://shell.fans/robots.txt">/robots.txt</a></th><td>爬蟲政策。所有主要 AI 爬蟲皆明確 Allow</td><td>text/plain</td></tr><tr><th scope="row">每個公開頁面的 JSON-LD</th><td>Organization、PostalAddress、ContactPoint、FAQPage、BreadcrumbList</td><td>application/ld+json</td></tr></tbody></table></div>
     </div>
   </section>
 
   <section>
     <div class="container">
-      <span class="section-eyebrow">Structure</span>
-      <h2>常見的計價方式</h2>
-      <ul><li><strong>一次性專案</strong>：範圍明確的整備工作，驗收後結案。適合網站更新頻率低的情況。</li><li><strong>月費制</strong>：包含持續維護與定期量測。適合網站持續更新、需要確保整備不被改版破壞的情況。</li><li><strong>稽核制</strong>：只做評估與規格，不含執行。適合有內部執行資源者，見 <a href="https://shell.fans/aeo/consulting">顧問服務</a>。</li></ul>
-      <div class="disclaimer"><p><strong>ShellFans 的實際報價</strong>依網站規模與導入範圍評估，需先了解網站現況才能提出。可以先跑一次 <a href="https://shell.fans/tools/aeo-geo-checker">免費檢測</a> 取得基準分數與缺口清單，再 <a href="https://shell.fans/contact">聯繫我們</a> 討論。</p></div>
+      <span class="section-eyebrow">Content negotiation</span>
+      <h2>Markdown 內容協商</h2>
+      <p>公開資訊頁支援內容協商。帶 <code>Accept: text/markdown</code> 請求任何一個公開頁面的網址，會拿到同一份內容的 Markdown 版本——沒有導覽列、沒有內嵌 CSS、沒有腳本，只有正文。</p>
+      <p>以 <code>/aeo/what-is-aeo</code> 為例，HTML 約 34 KB 但正文只有約 2.3 KB，其餘 93% 是版面與腳本。Markdown 版直接給正文。</p>
+      <ul><li>網址不變，回應的 <code>Content-Type</code> 為 <code>text/markdown; charset=utf-8</code></li><li>回應帶 <code>Vary: Accept, Accept-Encoding</code></li><li>HTML 版仍為 canonical；Markdown 版不參與搜尋索引</li><li>沒有 Markdown 版本的頁面會正常回傳 HTML，不會回 404</li></ul>
+      <div class="disclaimer"><p>同一份內容也可以直接用 <code>.md</code> 副檔名取得，例如 <code>https://shell.fans/aeo/what-is-aeo.md</code>。</p></div>
     </div>
   </section>
 
   <section>
     <div class="container">
-      <span class="section-eyebrow">Judge</span>
-      <h2>怎麼判斷報價合不合理</h2>
-      <p>不要只比總價。以下幾個問題比價格本身更能區分服務品質：</p>
-      <ol><li><strong>「這個報價包含哪些具體項目？」</strong>要求列出可驗收的交付物，而非「AEO 優化」這種籠統描述。</li><li><strong>「怎麼驗證設定真的生效？」</strong>好的答案會提到實際測試爬蟲存取、檢查 CDN 層，而不只是「我們會設定 robots.txt」。</li><li><strong>「成效怎麼量測？」</strong>如果對方答不出固定的量測條件，那就沒有辦法驗收。</li><li><strong>「你們保證什麼？」</strong>承諾「保證被 ChatGPT 引用」的直接排除——沒有人能保證第三方平台的行為。</li><li><strong>「內容改寫是誰做？」</strong>這通常是最大的成本項目，必須事先講清楚範圍。</li></ol>
-      <p>更完整的評估準則見 <a href="https://shell.fans/aeo/how-to-choose-agency">如何挑選 AEO 廠商</a>。</p>
+      <span class="section-eyebrow">Errors</span>
+      <h2>錯誤格式</h2>
+      <p>所有機器導向的錯誤都是同一個結構。請依 <code>error.code</code> 分支，不要比對 <code>error.message</code>——後者的文字不保證穩定。</p>
+      <p>網站路徑不存在時，若請求帶 <code>Accept: application/json</code>，會得到帶 discovery 連結的 JSON 而不是 HTML 錯誤頁；帶 <code>Accept: text/markdown</code> 則得到 Markdown 版。一般瀏覽器請求仍是原本的 HTML 404 頁。</p>
+      <div class="disclaimer"><p>未知路徑一律回 404。ShellFans 不會把不存在的網址導向首頁，因此「拿到 200」即可視為該頁確實存在。</p></div>
     </div>
   </section>
 
   <section>
     <div class="container">
-      <span class="section-eyebrow">DIY</span>
-      <h2>自己做要多少成本</h2>
-      <p>技術整備的部分，具備前端或 SEO 經驗的團隊多半可自行完成。本站已公開具體做法：</p>
-      <ul><li><a href="https://shell.fans/aeo/ai-crawler">AI 爬蟲</a> — robots.txt 的設定與驗證</li><li><a href="https://shell.fans/aeo/schema">Schema</a> — 該加哪些結構化資料</li><li><a href="https://shell.fans/aeo/llms-txt">llms.txt</a> — 摘要入口怎麼寫</li><li><a href="https://shell.fans/aeo/answer-readiness">答覆整備度</a> — 內容結構怎麼調整</li></ul>
-      <p>真正難以自行處理的通常是兩件事：<strong>持續量測</strong>（需要固定的觀測機制與時間序列）與<strong>改版後的回歸驗證</strong>（整備很容易在無人察覺時被破壞）。這也是委外服務主要的價值所在。</p>
+      <span class="section-eyebrow">Not available</span>
+      <h2>目前不存在的東西（以及為什麼）</h2>
+      <p>這一段刻意寫得明確。對自動化系統而言，「確定沒有」和「有但找不到」是完全不同的兩件事。</p>
+      <h3>沒有公開寫入 API</h3>
+      <p>ShellFans 沒有任何可供第三方建立、修改或刪除資料的公開端點，也無法被當成工具呼叫來代替使用者執行工作。OpenAPI 描述中的每一個操作都是 GET。</p>
+      <h3>沒有 OAuth 授權伺服器</h3>
+      <p>ShellFans 是第三方 OAuth 的<strong>用戶端</strong>——使用者授權 ShellFans 存取自己的 Instagram、Facebook、Threads 帳號，走的是各平台自己的 OAuth。ShellFans 本身不簽發 OAuth 權杖，沒有 authorization endpoint、沒有 token endpoint，也因此沒有 <code>/.well-known/oauth-authorization-server</code>。</p>
+      <p>若在別處看到聲稱代表 ShellFans 的 OAuth 端點，那不是 ShellFans。</p>
+      <h3>沒有 MCP server</h3>
+      <p>ShellFans 目前沒有發布 Model Context Protocol server，也沒有 <code>/.well-known/mcp</code> 描述檔。內部產品在某些工作流中<strong>使用</strong> MCP 工具，但那是消費端，不對外提供服務。</p>
+      <h3>沒有權限範圍（scopes）</h3>
+      <p>既然沒有面向機器的授權機制，也就沒有可宣告的 scope。任何列出 ShellFans scope 名稱的文件都不是本站發布的。</p>
+      <h3>ShellFans Chat 不可程式化呼叫</h3>
+      <p>網站上的對話功能只能從網站介面使用。它沒有公開的呼叫端點，因為每一次查詢都會實際觸發語言模型與外部資料來源的成本。匿名使用者的每日額度可以透過 <code>/api/dify/quota</code> 讀取（僅供說明，不代表可以自動化消耗）。</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="container">
+      <span class="section-eyebrow">Roadmap</span>
+      <h2>若你需要目前沒有的東西</h2>
+      <p>上述缺口不是疏漏，是尚未做出的產品與安全決策。若你的整合情境需要其中任何一項，直接說明用途比等待更快——需求會決定優先順序。</p>
+      <ul><li>電子郵件：<a href="mailto:hello@shell.fans">hello@shell.fans</a></li><li>聯絡表單：<a href="https://shell.fans/contact">聯絡我們</a></li></ul>
+      <div class="disclaimer"><p>請在來信中說明你要解決的問題與預期的資料流向，不必先設計 API——那部分我們一起討論。</p></div>
     </div>
   </section>
 
@@ -531,18 +567,19 @@ footer small{color:rgba(255,255,255,0.45);display:block;margin-top:14px;font-siz
       <span class="section-eyebrow">FAQ</span>
       <h2>常見問題</h2>
       <div class="faq" style="margin-top:32px">
-        <details><summary><h3 style="display:inline;font:inherit;margin:0;padding:0;color:inherit">AEO 一個月要多少錢？</h3></summary><p>沒有統一價格。費用取決於網站規模、既有整備程度、是否包含內容調整與持續維護。同樣是「做 AEO」，十頁的形象網站與上千頁的電商網站投入可能差十倍以上。建議先確認需求範圍再取得報價。</p></details>
-        <details><summary><h3 style="display:inline;font:inherit;margin:0;padding:0;color:inherit">為什麼不同廠商報價差那麼多？</h3></summary><p>通常是範圍不同而非單價不同。要比較的是交付項目：是否包含內容改寫、是否包含持續維護、是否包含量測、驗收標準是什麼。只比總價很容易買到範圍縮水的版本。</p></details>
-        <details><summary><h3 style="display:inline;font:inherit;margin:0;padding:0;color:inherit">可以先做一部分嗎？</h3></summary><p>可以，而且建議如此。技術整備（robots.txt、結構化資料、llms.txt）成本相對固定且效益明確，適合先做。內容結構調整成本較高，可以先處理最重要的幾頁再評估。</p></details>
-        <details><summary><h3 style="display:inline;font:inherit;margin:0;padding:0;color:inherit">免費檢測和付費服務差在哪？</h3></summary><p>免費檢測提供自動化的技術面掃描與缺口清單，不需註冊即可使用。付費服務的差異在於執行、人工判讀、持續維護與量測——也就是把清單上的項目真的做完並確保它不會退回去。</p></details>
+        <details><summary><h3 style="display:inline;font:inherit;margin:0;padding:0;color:inherit">ShellFans 有 API 可以串接嗎？</h3></summary><p>有少數公開唯讀端點，描述於 /openapi.json，不需授權即可讀取，內容是站台設定、方案資料與公司識別資訊。但沒有產品資料 API，也沒有任何寫入端點。</p></details>
+        <details><summary><h3 style="display:inline;font:inherit;margin:0;padding:0;color:inherit">可以用 OAuth 登入 ShellFans 取得資料嗎？</h3></summary><p>不行。ShellFans 沒有 OAuth 授權伺服器，不對第三方簽發權杖。ShellFans 只在使用者授權存取其社群帳號時，作為各平台 OAuth 的用戶端。</p></details>
+        <details><summary><h3 style="display:inline;font:inherit;margin:0;padding:0;color:inherit">ShellFans 有 MCP server 嗎？</h3></summary><p>沒有。ShellFans 目前未發布任何 Model Context Protocol server，也沒有 /.well-known/mcp。內部工作流會使用 MCP 工具，但不對外提供。</p></details>
+        <details><summary><h3 style="display:inline;font:inherit;margin:0;padding:0;color:inherit">要怎麼取得頁面的純文字版本？</h3></summary><p>對任何公開頁面的網址加上 Accept: text/markdown 標頭，或直接在網址後面加 .md。回傳的是去除版面與腳本的正文，HTML 版仍為 canonical。</p></details>
+        <details><summary><h3 style="display:inline;font:inherit;margin:0;padding:0;color:inherit">未知的網址會回什麼？</h3></summary><p>404。ShellFans 不會把不存在的路徑導向首頁。若請求帶 Accept: application/json，回應會是含 sitemap、llms.txt 等指引連結的 JSON。</p></details>
       </div>
     </div>
   </section>
 
   <section>
     <div class="container">
-      <div class="disclaimer"><p><strong>說明：</strong>本頁內容為 ShellFans 依公開技術文件與實務經驗整理，用於協助網站主理解 AI 搜尋的運作方式。各 AI 平台的實際演算法、資料來源策略與引用邏輯由該平台自行決定且可能隨時調整；任何技術整備都無法保證特定 AI 平台的引用、推薦或排名。</p></div>
-      <p class="sf-inline-links">相關頁面：<a href="https://shell.fans/aeo/implementation">AEO 導入流程</a>　·　<a href="https://shell.fans/aeo/managed-hosting">AEO Managed Hosting</a>　·　<a href="https://shell.fans/aeo-geo">ShellFans 的 AEO/GEO 服務內容</a>　·　<a href="https://shell.fans/tools/aeo-geo-checker">免費檢測工具</a></p>
+      <div class="disclaimer"><p>本頁描述的是撰寫當下實際存在的公開介面。ShellFans 不保證這些端點的長期穩定性或版本相容性，內容欄位屬編輯資料，可能隨時調整。</p></div>
+      <p class="sf-inline-links">相關頁面：<a href="https://shell.fans/about">關於 ShellFans</a>　·　<a href="https://shell.fans/what-is-shellfans">ShellFans 是什麼</a>　·　<a href="https://shell.fans/aeo/llms-txt">llms.txt 是什麼</a>　·　<a href="https://shell.fans/aeo/ai-crawler">AI 爬蟲總覽</a>　·　<a href="https://shell.fans/contact">聯絡我們</a></p>
     </div>
   </section>
 
