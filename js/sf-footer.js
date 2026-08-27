@@ -27,6 +27,9 @@
     },
     linkGroups: [
       { title: { 'zh-TW': '產品', en: 'Product' }, links: [
+        // 產品總覽放在分組第一個位置。先前它在主導覽，但那一排其他項目
+        // 都是具體服務，總覽擺在同一層會讀成第五個服務，敘述重複。
+        { label: { 'zh-TW': '產品服務', en: 'Products' }, href: 'https://shell.fans/product' },
         { label: { 'zh-TW': '續航引擎', en: 'Engagement Engine' }, href: 'https://shell.fans/endurance' },
         { label: { 'zh-TW': '粉絲分析', en: 'Fans Analysis' }, href: 'https://shell.fans/fans-analysis' },
         { label: { 'zh-TW': '口碑行銷', en: 'Word-of-Mouth' }, href: 'https://console.shell.fans', external: true },
