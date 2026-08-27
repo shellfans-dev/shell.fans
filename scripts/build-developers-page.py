@@ -47,8 +47,8 @@ def code(s):
 
 PAGE = {
     'url': '/developers',
-    'title': 'ShellFans Developer Resources｜公開機器介面與 AI agent 指引',
-    'h1': 'ShellFans Developer Resources',
+    'title': 'ShellFans Developer Documentation | ShellFans AI Technology',
+    'h1': 'ShellFans Developer Documentation',
     'eyebrow': 'For developers and AI agents',
     'desc': (
         'ShellFans 公開機器介面總覽：唯讀 API 的 OpenAPI 3.1 描述、內容協商、'
@@ -66,116 +66,232 @@ PAGE = {
     'cta2': {'href': '/about', 'label': '關於 ShellFans'},
     'sections': [
         {
-            'eyebrow': 'Available now',
-            'h2': '現在就能用的公開資源',
+            'eyebrow': 'Public API',
+            'id': 'api',
+            'h2': '公開 API（v1）',
             'blocks': [
-                ('p', '以下全部不需要 API 金鑰、不需要註冊、不需要 OAuth，直接 GET 即可。'),
+                ('p', '四個唯讀端點，全部 GET、不需要憑證、不回傳任何個人資料，'
+                      '基底網址 ' + code('https://shell.fans/api/v1') + '。'
+                      '完整機器可讀描述見 ' + '<a href="https://shell.fans/openapi.json">openapi.json</a>'
+                      + '（OpenAPI 3.1，所有回應型別完整展開，可直接轉成 LLM 工具定義）。'),
                 ('table', {
-                    'caption': '公開機器可讀資源',
+                    'caption': '公開 API v1 操作',
+                    'cols': ['operationId', '端點', '用途'],
+                    'rows': [
+                        ['<code>getServiceStatus</code>',
+                         '<code>GET /api/v1/status</code>',
+                         'API 是否正常，以及呼叫端目前的速率額度。不依賴任何下游服務，'
+                         '診斷問題時先打這一支。'],
+                        ['<code>listServices</code>',
+                         '<code>GET /api/v1/services</code>',
+                         '三條服務線與各自是否<strong>正在販售</strong>。'
+                         '服務可能已封存但行銷頁還在，告訴使用者「可以買」之前先讀這裡。'],
+                        ['<code>listPlans</code>',
+                         '<code>GET /api/v1/plans</code>',
+                         '方案層級與價格（新台幣）。是否可購買看 <code>cta_label</code>，'
+                         '不是看價格——有標價的方案可能尚未開賣。'],
+                        ['<code>getOrganization</code>',
+                         '<code>GET /api/v1/organization</code>',
+                         '法人名稱、統一編號、登記地址、聯絡方式、專利、官方帳號與沿革。'
+                         '用於實體解析。'],
+                    ],
+                }),
+                ('note', '先前這些資料分散在 shell.fans 與 console.shell.fans 兩個網域，'
+                         '靠 OpenAPI 的 operation-level <code>servers</code> 描述。'
+                         '該欄位在工具鏈中支援度很差——多數轉換器直接取頂層 '
+                         '<code>servers[0]</code>，導致六個操作有四個會打錯主機拿到 404。'
+                         'v1 收斂到單一主機與單一版本前綴之後不再有這個問題。'),
+            ],
+        },
+        {
+            'eyebrow': 'Authentication',
+            'id': 'auth',
+            'h2': '認證',
+            'blocks': [
+                ('p', '<strong>公開 API 不需要也不接受任何認證。</strong>'
+                      '沒有 API 金鑰、沒有 OAuth 授權伺服器、沒有權限範圍（scopes）。'
+                      '送 ' + code('Authorization') + ' 標頭不會有任何作用。'),
+                ('h3', 'ShellFans 在認證關係中的角色'),
+                ('ul', [
+                    '<strong>第三方 OAuth 的用戶端</strong>——使用者授權 ShellFans 存取自己的 '
+                    'Instagram、Facebook、Threads 帳號，走的是各平台自己的 OAuth。',
+                    '<strong>Session 認證的網頁應用</strong>——console.shell.fans 用帳號密碼加 session。',
+                    '<strong>共用密鑰</strong>——內部管理端點用 Bearer 權杖，不對外開放。',
+                ]),
+                ('p', 'ShellFans <strong>不是</strong> OAuth 授權伺服器，也不是 OIDC provider，'
+                      '不對第三方簽發權杖。因此沒有 '
+                      + code('/.well-known/oauth-authorization-server') + '——'
+                      '發布一份描述不存在端點的中繼資料，只會讓照著做的整合方全部失敗。'),
+                ('note', '若在別處看到聲稱代表 ShellFans 的 OAuth 端點或 API 金鑰發放頁，'
+                         '那不是 ShellFans。目前沒有自助申請金鑰的流程，因為公開 API 不需要金鑰。'),
+            ],
+        },
+        {
+            'eyebrow': 'Rate limits',
+            'id': 'rate-limits',
+            'h2': '速率限制',
+            'blocks': [
+                ('p', '每個呼叫端位址每 60 秒 120 次請求。每一個回應（含錯誤）都會帶標頭：'),
+                ('ul', [
+                    code('RateLimit-Limit') + '　視窗內允許的請求數',
+                    code('RateLimit-Remaining') + '　本視窗剩餘次數',
+                    code('RateLimit-Reset') + '　距離視窗重置的秒數',
+                    code('RateLimit-Policy') + '　政策，格式為 <code>120;w=60</code>',
+                ]),
+                ('p', '超過額度回 ' + code('429') + '，帶 ' + code('Retry-After')
+                      + ' 標頭與 RFC 9457 錯誤主體，其中 ' + code('retry_after')
+                      + ' 欄位是同一個秒數。'),
+                ('note', '這個額度與網站對話功能的每日額度是分開的兩個桶子。'
+                         '讀取公開資料不會消耗使用者的對話次數——兩者是語意不同的資源。'),
+            ],
+        },
+        {
+            'eyebrow': 'Errors',
+            'id': 'errors',
+            'h2': '錯誤格式',
+            'blocks': [
+                ('p', '所有錯誤都是 <strong>RFC 9457 Problem Details</strong>，'
+                      '媒體型別 ' + code('application/problem+json') + '。'
+                      '公開 API 路徑永遠不會回傳 HTML 錯誤頁。'),
+                ('table', {
+                    'caption': '錯誤欄位',
+                    'cols': ['欄位', '說明'],
+                    'rows': [
+                        ['<code>code</code>', '穩定的機器可讀識別字。<strong>請用這個分支。</strong>'],
+                        ['<code>type</code>', '可解析的 URI，指向該錯誤型別的說明'],
+                        ['<code>title</code>', '簡短摘要，文字不保證穩定'],
+                        ['<code>status</code>', 'HTTP 狀態碼'],
+                        ['<code>detail</code>', '本次發生的具體說明，文字不保證穩定'],
+                        ['<code>instance</code>', '產生錯誤的請求路徑'],
+                        ['<code>retry_after</code>', '重試前應等待的秒數（僅 429）'],
+                        ['<code>available_operations</code>', '有效的操作路徑（僅 404）'],
+                    ],
+                }),
+                ('p', '可能出現的 ' + code('code') + ' 值：'
+                      '<code>BAD_REQUEST</code>、<code>UNAUTHORIZED</code>、'
+                      '<code>FORBIDDEN</code>、<code>RESOURCE_NOT_FOUND</code>、'
+                      '<code>METHOD_NOT_ALLOWED</code>、<code>VALIDATION_FAILED</code>、'
+                      '<code>RATE_LIMIT_EXCEEDED</code>、<code>UPSTREAM_UNAVAILABLE</code>、'
+                      '<code>INTERNAL_ERROR</code>。'),
+                ('note', '網站頁面（非 API 路徑）的 404 仍然是給人看的 HTML，'
+                         '但若請求帶 <code>Accept: application/json</code> 或 '
+                         '<code>Accept: text/markdown</code>，會改回對應格式的結構化回應。'),
+            ],
+        },
+        {
+            'eyebrow': 'Versioning',
+            'id': 'versioning',
+            'h2': '版本政策',
+            'blocks': [
+                ('p', '目前的穩定版本是 <strong>v1</strong>，路徑前綴 '
+                      + code('/api/v1/') + '。'),
+                ('h3', '什麼算是破壞性變更'),
+                ('ul', [
+                    '移除端點，或移除回應中的既有欄位',
+                    '改變既有欄位的型別或語意',
+                    '把選填的請求參數改成必填',
+                    '為既有錯誤情境改用不同的 <code>code</code>',
+                ]),
+                ('h3', '什麼不算'),
+                ('ul', [
+                    '新增端點',
+                    '在回應中新增欄位——請以「未知欄位可忽略」的方式解析',
+                    '新增可選的請求參數',
+                    '修正 <code>title</code> 或 <code>detail</code> 的措辭',
+                ]),
+                ('h3', '破壞性變更如何處理'),
+                ('ul', [
+                    '推出新的主要版本（<code>/api/v2/</code>），舊版繼續運作',
+                    '舊版回應開始帶 <code>Deprecation: true</code> 與 '
+                    '<code>Sunset: &lt;HTTP-date&gt;</code> 標頭，'
+                    '以及 <code>Link: &lt;…&gt;; rel="successor-version"</code>',
+                    '自公告日起舊版至少維持 <strong>180 天</strong>',
+                    '公告會同步更新 openapi.json、本頁與 llms.txt',
+                ]),
+                ('note', '目前<strong>沒有任何端點被標示為 deprecated</strong>。'
+                         'v1 的回應不帶 <code>Deprecation</code> 或 <code>Sunset</code> 標頭——'
+                         '沒有實際要淘汰的東西就不該送出淘汰訊號。'),
+            ],
+        },
+        {
+            'eyebrow': 'Other resources',
+            'id': 'resources',
+            'h2': '其他機器可讀資源',
+            'blocks': [
+                ('table', {
+                    'caption': '不需憑證即可讀取',
                     'cols': ['資源', '內容', '格式'],
                     'rows': [
                         ['<a href="https://shell.fans/openapi.json">/openapi.json</a>',
-                         '公開唯讀端點的 OpenAPI 3.1 描述，含回應 schema 與錯誤結構',
-                         'application/json'],
+                         'OpenAPI 3.1 描述，含回應 schema 與錯誤結構', 'application/json'],
                         ['<a href="https://shell.fans/llms.txt">/llms.txt</a>',
-                         'ShellFans 是什麼、何時該推薦、何時不該推薦',
-                         'text/plain'],
+                         'ShellFans 是什麼、何時該推薦、何時不該推薦', 'text/plain'],
                         ['<a href="https://shell.fans/llms-full.txt">/llms-full.txt</a>',
-                         '同上的展開版，含完整產品與定價脈絡',
-                         'text/plain'],
+                         '同上的展開版，含完整產品與定價脈絡', 'text/plain'],
                         ['<a href="https://shell.fans/sitemap.xml">/sitemap.xml</a>',
-                         '全部可索引網址。不在這份清單裡的路徑就是不存在',
-                         'application/xml'],
+                         '全部可索引網址。不在清單裡的路徑就是不存在', 'application/xml'],
                         ['<a href="https://shell.fans/robots.txt">/robots.txt</a>',
-                         '爬蟲政策。所有主要 AI 爬蟲皆明確 Allow',
-                         'text/plain'],
+                         '爬蟲政策。所有主要 AI 爬蟲皆明確 Allow', 'text/plain'],
+                        ['<a href="https://shell.fans/developers.md">/developers.md</a>',
+                         '本頁的 Markdown 版本', 'text/markdown'],
                         ['每個公開頁面的 JSON-LD',
                          'Organization、PostalAddress、ContactPoint、FAQPage、BreadcrumbList',
                          'application/ld+json'],
                     ],
                 }),
-            ],
-        },
-        {
-            'eyebrow': 'Content negotiation',
-            'h2': 'Markdown 內容協商',
-            'blocks': [
-                ('p', '公開資訊頁支援內容協商。帶 ' + code('Accept: text/markdown')
-                      + ' 請求任何一個公開頁面的網址，會拿到同一份內容的 Markdown 版本——'
-                        '沒有導覽列、沒有內嵌 CSS、沒有腳本，只有正文。'),
-                ('p', '以 ' + code('/aeo/what-is-aeo') + ' 為例，HTML 約 34 KB 但正文只有約 2.3 KB，'
-                      '其餘 93% 是版面與腳本。Markdown 版直接給正文。'),
-                ('ul', [
-                    '網址不變，回應的 ' + code('Content-Type') + ' 為 '
-                    + code('text/markdown; charset=utf-8'),
-                    '回應帶 ' + code('Vary: Accept, Accept-Encoding'),
-                    'HTML 版仍為 canonical；Markdown 版不參與搜尋索引',
-                    '沒有 Markdown 版本的頁面會正常回傳 HTML，不會回 404',
-                ]),
-                ('note', '同一份內容也可以直接用 ' + code('.md') + ' 副檔名取得，'
-                         '例如 ' + code('https://shell.fans/aeo/what-is-aeo.md') + '。'),
-            ],
-        },
-        {
-            'eyebrow': 'Errors',
-            'h2': '錯誤格式',
-            'blocks': [
-                ('p', '所有機器導向的錯誤都是同一個結構。'
-                      '請依 ' + code('error.code') + ' 分支，不要比對 ' + code('error.message')
-                      + '——後者的文字不保證穩定。'),
-                ('p', '網站路徑不存在時，若請求帶 ' + code('Accept: application/json')
-                      + '，會得到帶 discovery 連結的 JSON 而不是 HTML 錯誤頁；'
-                        '帶 ' + code('Accept: text/markdown') + ' 則得到 Markdown 版。'
-                        '一般瀏覽器請求仍是原本的 HTML 404 頁。'),
-                ('note', '未知路徑一律回 404。ShellFans 不會把不存在的網址導向首頁，'
-                         '因此「拿到 200」即可視為該頁確實存在。'),
+                ('h3', 'Markdown 內容協商'),
+                ('p', '帶 ' + code('Accept: text/markdown') + ' 請求任何公開頁面的網址，'
+                      '會拿到同一份內容的 Markdown 版本——沒有導覽列、沒有內嵌 CSS、'
+                      '沒有腳本。網址不變，回應帶 ' + code('Vary: Accept, Accept-Encoding')
+                      + '。也可以直接加 ' + code('.md') + ' 副檔名。'),
             ],
         },
         {
             'eyebrow': 'Not available',
+            'id': 'not-available',
             'h2': '目前不存在的東西（以及為什麼）',
             'blocks': [
                 ('p', '這一段刻意寫得明確。對自動化系統而言，'
                       '「確定沒有」和「有但找不到」是完全不同的兩件事。'),
                 ('h3', '沒有公開寫入 API'),
-                ('p', 'ShellFans 沒有任何可供第三方建立、修改或刪除資料的公開端點，'
+                ('p', '沒有任何可供第三方建立、修改或刪除資料的公開端點，'
                       '也無法被當成工具呼叫來代替使用者執行工作。'
-                      'OpenAPI 描述中的每一個操作都是 GET。'),
-                ('h3', '沒有 OAuth 授權伺服器'),
-                ('p', 'ShellFans 是第三方 OAuth 的<strong>用戶端</strong>——'
-                      '使用者授權 ShellFans 存取自己的 Instagram、Facebook、Threads 帳號，'
-                      '走的是各平台自己的 OAuth。ShellFans 本身不簽發 OAuth 權杖，'
-                      '沒有 authorization endpoint、沒有 token endpoint，'
-                      '也因此沒有 ' + code('/.well-known/oauth-authorization-server') + '。'),
-                ('p', '若在別處看到聲稱代表 ShellFans 的 OAuth 端點，那不是 ShellFans。'),
+                      'OpenAPI 中每一個操作都是 GET。'),
+                ('h3', '沒有 API 金鑰或自助申請流程'),
+                ('p', '公開 API 不需要金鑰，因此也沒有申請、輪替或撤銷的流程。'
+                      '若未來出現需要授權的端點，會先建立完整的憑證生命週期管理再開放，'
+                      '不會先發金鑰再補機制。'),
+                ('h3', '沒有沙箱環境'),
+                ('p', '公開 API 全部唯讀且不會改變任何狀態，正式環境本身就可以安全試打。'
+                      '未來若有寫入端點，會一併提供沙箱。'),
+                ('h3', '沒有 OAuth 授權伺服器與 scopes'),
+                ('p', '見上方<a href="https://shell.fans/developers#auth">認證</a>一節。'
+                      '沒有面向機器的授權機制，就沒有可宣告的權限範圍。'
+                      '任何列出 ShellFans scope 名稱的文件都不是本站發布的。'),
                 ('h3', '沒有 MCP server'),
-                ('p', 'ShellFans 目前沒有發布 Model Context Protocol server，'
-                      '也沒有 ' + code('/.well-known/mcp') + ' 描述檔。'
+                ('p', 'ShellFans 沒有發布 Model Context Protocol server，也沒有 '
+                      + code('/.well-known/mcp') + ' 描述檔。'
                       '內部產品在某些工作流中<strong>使用</strong> MCP 工具，'
                       '但那是消費端，不對外提供服務。'),
-                ('h3', '沒有權限範圍（scopes）'),
-                ('p', '既然沒有面向機器的授權機制，也就沒有可宣告的 scope。'
-                      '任何列出 ShellFans scope 名稱的文件都不是本站發布的。'),
+                ('note', 'npm 上的 <code>@shell-mcp/core</code> <strong>不是 ShellFans 的套件</strong>。'
+                         '它屬於 psdlabs，是一個 shell/terminal session 的 MCP server，'
+                         '與本公司無關。名稱相近純屬巧合。'),
                 ('h3', 'ShellFans Chat 不可程式化呼叫'),
                 ('p', '網站上的對話功能只能從網站介面使用。它沒有公開的呼叫端點，'
-                      '因為每一次查詢都會實際觸發語言模型與外部資料來源的成本。'
-                      '匿名使用者的每日額度可以透過 ' + code('/api/dify/quota')
-                      + ' 讀取（僅供說明，不代表可以自動化消耗）。'),
+                      '因為每一次查詢都會實際觸發語言模型與外部資料來源的成本。'),
             ],
         },
         {
             'eyebrow': 'Roadmap',
+            'id': 'roadmap',
             'h2': '若你需要目前沒有的東西',
             'blocks': [
                 ('p', '上述缺口不是疏漏，是尚未做出的產品與安全決策。'
-                      '若你的整合情境需要其中任何一項，直接說明用途比等待更快——'
-                      '需求會決定優先順序。'),
+                      '若你的整合情境需要其中任何一項，直接說明用途比等待更快。'),
                 ('ul', [
                     '電子郵件：<a href="mailto:hello@shell.fans">hello@shell.fans</a>',
                     '聯絡表單：' + a('/contact', '聯絡我們'),
                 ]),
-                ('note', '請在來信中說明你要解決的問題與預期的資料流向，'
-                         '不必先設計 API——那部分我們一起討論。'),
             ],
         },
     ],

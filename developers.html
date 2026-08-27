@@ -2,7 +2,7 @@
 <html lang="zh-Hant">
 <head>
 <meta charset="utf-8">
-<title>ShellFans Developer Resources｜公開機器介面與 AI agent 指引</title>
+<title>ShellFans Developer Documentation | ShellFans AI Technology</title>
 <meta name="description" content="ShellFans 公開機器介面總覽：唯讀 API 的 OpenAPI 3.1 描述、內容協商、llms.txt、結構化資料，以及目前刻意不提供的項目（公開寫入 API、OAuth 授權伺服器、MCP server）與其原因。">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#101214">
@@ -13,14 +13,14 @@
 
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://shell.fans/developers">
-<meta property="og:title" content="ShellFans Developer Resources｜公開機器介面與 AI agent 指引">
+<meta property="og:title" content="ShellFans Developer Documentation | ShellFans AI Technology">
 <meta property="og:description" content="ShellFans 公開機器介面總覽：唯讀 API 的 OpenAPI 3.1 描述、內容協商、llms.txt、結構化資料，以及目前刻意不提供的項目（公開寫入 API、OAuth 授權伺服器、MCP server）與其原因。">
 <meta property="og:site_name" content="ShellFans AI Technology">
 <meta property="og:image" content="https://shell.fans/images/nav_logo.svg">
 <meta property="og:locale" content="zh_TW">
 
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="ShellFans Developer Resources｜公開機器介面與 AI agent 指引">
+<meta name="twitter:title" content="ShellFans Developer Documentation | ShellFans AI Technology">
 <meta name="twitter:description" content="ShellFans 公開機器介面總覽：唯讀 API 的 OpenAPI 3.1 描述、內容協商、llms.txt、結構化資料，以及目前刻意不提供的項目（公開寫入 API、OAuth 授權伺服器、MCP server）與其原因。">
 <meta name="twitter:image" content="https://shell.fans/images/nav_logo.svg">
 
@@ -88,8 +88,8 @@
     {
       "@type": "TechArticle",
       "@id": "https://shell.fans/developers#main",
-      "headline": "ShellFans Developer Resources",
-      "name": "ShellFans Developer Resources",
+      "headline": "ShellFans Developer Documentation",
+      "name": "ShellFans Developer Documentation",
       "description": "ShellFans 公開機器介面總覽：唯讀 API 的 OpenAPI 3.1 描述、內容協商、llms.txt、結構化資料，以及目前刻意不提供的項目（公開寫入 API、OAuth 授權伺服器、MCP server）與其原因。",
       "url": "https://shell.fans/developers",
       "inLanguage": "zh-Hant",
@@ -131,7 +131,7 @@
         {
           "@type": "ListItem",
           "position": 4,
-          "name": "ShellFans Developer Resources",
+          "name": "ShellFans Developer Documentation",
           "item": "https://shell.fans/developers"
         }
       ]
@@ -492,7 +492,7 @@ footer small{color:rgba(255,255,255,0.45);display:block;margin-top:14px;font-siz
   <section class="hero">
     <div class="container">
       <span class="hero-eyebrow">For developers and AI agents</span>
-      <h1>ShellFans Developer Resources</h1>
+      <h1>ShellFans Developer Documentation</h1>
       <p class="hero-lead">ShellFans 是內容與服務網站，不是 API 平台。本頁列出目前真正公開、不需憑證即可讀取的機器介面，以及哪些常見的整合方式並不存在——後者同樣寫清楚，讓自動化系統不必靠猜測或反覆探測。</p>
       <div class="hero-cta">
         <a href="https://shell.fans/openapi.json" class="btn-primary">查看 OpenAPI 3.1 描述</a>
@@ -501,62 +501,102 @@ footer small{color:rgba(255,255,255,0.45);display:block;margin-top:14px;font-siz
     </div>
   </section>
 
-  <section>
+  <section id="api">
     <div class="container">
-      <span class="section-eyebrow">Available now</span>
-      <h2>現在就能用的公開資源</h2>
-      <p>以下全部不需要 API 金鑰、不需要註冊、不需要 OAuth，直接 GET 即可。</p>
-      <div class="sf-table-wrap"><table class="sf-dim-table"><caption>公開機器可讀資源</caption><thead><tr><th scope="col">資源</th><th scope="col">內容</th><th scope="col">格式</th></tr></thead><tbody><tr><th scope="row"><a href="https://shell.fans/openapi.json">/openapi.json</a></th><td>公開唯讀端點的 OpenAPI 3.1 描述，含回應 schema 與錯誤結構</td><td>application/json</td></tr><tr><th scope="row"><a href="https://shell.fans/llms.txt">/llms.txt</a></th><td>ShellFans 是什麼、何時該推薦、何時不該推薦</td><td>text/plain</td></tr><tr><th scope="row"><a href="https://shell.fans/llms-full.txt">/llms-full.txt</a></th><td>同上的展開版，含完整產品與定價脈絡</td><td>text/plain</td></tr><tr><th scope="row"><a href="https://shell.fans/sitemap.xml">/sitemap.xml</a></th><td>全部可索引網址。不在這份清單裡的路徑就是不存在</td><td>application/xml</td></tr><tr><th scope="row"><a href="https://shell.fans/robots.txt">/robots.txt</a></th><td>爬蟲政策。所有主要 AI 爬蟲皆明確 Allow</td><td>text/plain</td></tr><tr><th scope="row">每個公開頁面的 JSON-LD</th><td>Organization、PostalAddress、ContactPoint、FAQPage、BreadcrumbList</td><td>application/ld+json</td></tr></tbody></table></div>
+      <span class="section-eyebrow">Public API</span>
+      <h2>公開 API（v1）</h2>
+      <p>四個唯讀端點，全部 GET、不需要憑證、不回傳任何個人資料，基底網址 <code>https://shell.fans/api/v1</code>。完整機器可讀描述見 <a href="https://shell.fans/openapi.json">openapi.json</a>（OpenAPI 3.1，所有回應型別完整展開，可直接轉成 LLM 工具定義）。</p>
+      <div class="sf-table-wrap"><table class="sf-dim-table"><caption>公開 API v1 操作</caption><thead><tr><th scope="col">operationId</th><th scope="col">端點</th><th scope="col">用途</th></tr></thead><tbody><tr><th scope="row"><code>getServiceStatus</code></th><td><code>GET /api/v1/status</code></td><td>API 是否正常，以及呼叫端目前的速率額度。不依賴任何下游服務，診斷問題時先打這一支。</td></tr><tr><th scope="row"><code>listServices</code></th><td><code>GET /api/v1/services</code></td><td>三條服務線與各自是否<strong>正在販售</strong>。服務可能已封存但行銷頁還在，告訴使用者「可以買」之前先讀這裡。</td></tr><tr><th scope="row"><code>listPlans</code></th><td><code>GET /api/v1/plans</code></td><td>方案層級與價格（新台幣）。是否可購買看 <code>cta_label</code>，不是看價格——有標價的方案可能尚未開賣。</td></tr><tr><th scope="row"><code>getOrganization</code></th><td><code>GET /api/v1/organization</code></td><td>法人名稱、統一編號、登記地址、聯絡方式、專利、官方帳號與沿革。用於實體解析。</td></tr></tbody></table></div>
+      <div class="disclaimer"><p>先前這些資料分散在 shell.fans 與 console.shell.fans 兩個網域，靠 OpenAPI 的 operation-level <code>servers</code> 描述。該欄位在工具鏈中支援度很差——多數轉換器直接取頂層 <code>servers[0]</code>，導致六個操作有四個會打錯主機拿到 404。v1 收斂到單一主機與單一版本前綴之後不再有這個問題。</p></div>
     </div>
   </section>
 
-  <section>
+  <section id="auth">
     <div class="container">
-      <span class="section-eyebrow">Content negotiation</span>
-      <h2>Markdown 內容協商</h2>
-      <p>公開資訊頁支援內容協商。帶 <code>Accept: text/markdown</code> 請求任何一個公開頁面的網址，會拿到同一份內容的 Markdown 版本——沒有導覽列、沒有內嵌 CSS、沒有腳本，只有正文。</p>
-      <p>以 <code>/aeo/what-is-aeo</code> 為例，HTML 約 34 KB 但正文只有約 2.3 KB，其餘 93% 是版面與腳本。Markdown 版直接給正文。</p>
-      <ul><li>網址不變，回應的 <code>Content-Type</code> 為 <code>text/markdown; charset=utf-8</code></li><li>回應帶 <code>Vary: Accept, Accept-Encoding</code></li><li>HTML 版仍為 canonical；Markdown 版不參與搜尋索引</li><li>沒有 Markdown 版本的頁面會正常回傳 HTML，不會回 404</li></ul>
-      <div class="disclaimer"><p>同一份內容也可以直接用 <code>.md</code> 副檔名取得，例如 <code>https://shell.fans/aeo/what-is-aeo.md</code>。</p></div>
+      <span class="section-eyebrow">Authentication</span>
+      <h2>認證</h2>
+      <p><strong>公開 API 不需要也不接受任何認證。</strong>沒有 API 金鑰、沒有 OAuth 授權伺服器、沒有權限範圍（scopes）。送 <code>Authorization</code> 標頭不會有任何作用。</p>
+      <h3>ShellFans 在認證關係中的角色</h3>
+      <ul><li><strong>第三方 OAuth 的用戶端</strong>——使用者授權 ShellFans 存取自己的 Instagram、Facebook、Threads 帳號，走的是各平台自己的 OAuth。</li><li><strong>Session 認證的網頁應用</strong>——console.shell.fans 用帳號密碼加 session。</li><li><strong>共用密鑰</strong>——內部管理端點用 Bearer 權杖，不對外開放。</li></ul>
+      <p>ShellFans <strong>不是</strong> OAuth 授權伺服器，也不是 OIDC provider，不對第三方簽發權杖。因此沒有 <code>/.well-known/oauth-authorization-server</code>——發布一份描述不存在端點的中繼資料，只會讓照著做的整合方全部失敗。</p>
+      <div class="disclaimer"><p>若在別處看到聲稱代表 ShellFans 的 OAuth 端點或 API 金鑰發放頁，那不是 ShellFans。目前沒有自助申請金鑰的流程，因為公開 API 不需要金鑰。</p></div>
     </div>
   </section>
 
-  <section>
+  <section id="rate-limits">
+    <div class="container">
+      <span class="section-eyebrow">Rate limits</span>
+      <h2>速率限制</h2>
+      <p>每個呼叫端位址每 60 秒 120 次請求。每一個回應（含錯誤）都會帶標頭：</p>
+      <ul><li><code>RateLimit-Limit</code>　視窗內允許的請求數</li><li><code>RateLimit-Remaining</code>　本視窗剩餘次數</li><li><code>RateLimit-Reset</code>　距離視窗重置的秒數</li><li><code>RateLimit-Policy</code>　政策，格式為 <code>120;w=60</code></li></ul>
+      <p>超過額度回 <code>429</code>，帶 <code>Retry-After</code> 標頭與 RFC 9457 錯誤主體，其中 <code>retry_after</code> 欄位是同一個秒數。</p>
+      <div class="disclaimer"><p>這個額度與網站對話功能的每日額度是分開的兩個桶子。讀取公開資料不會消耗使用者的對話次數——兩者是語意不同的資源。</p></div>
+    </div>
+  </section>
+
+  <section id="errors">
     <div class="container">
       <span class="section-eyebrow">Errors</span>
       <h2>錯誤格式</h2>
-      <p>所有機器導向的錯誤都是同一個結構。請依 <code>error.code</code> 分支，不要比對 <code>error.message</code>——後者的文字不保證穩定。</p>
-      <p>網站路徑不存在時，若請求帶 <code>Accept: application/json</code>，會得到帶 discovery 連結的 JSON 而不是 HTML 錯誤頁；帶 <code>Accept: text/markdown</code> 則得到 Markdown 版。一般瀏覽器請求仍是原本的 HTML 404 頁。</p>
-      <div class="disclaimer"><p>未知路徑一律回 404。ShellFans 不會把不存在的網址導向首頁，因此「拿到 200」即可視為該頁確實存在。</p></div>
+      <p>所有錯誤都是 <strong>RFC 9457 Problem Details</strong>，媒體型別 <code>application/problem+json</code>。公開 API 路徑永遠不會回傳 HTML 錯誤頁。</p>
+      <div class="sf-table-wrap"><table class="sf-dim-table"><caption>錯誤欄位</caption><thead><tr><th scope="col">欄位</th><th scope="col">說明</th></tr></thead><tbody><tr><th scope="row"><code>code</code></th><td>穩定的機器可讀識別字。<strong>請用這個分支。</strong></td></tr><tr><th scope="row"><code>type</code></th><td>可解析的 URI，指向該錯誤型別的說明</td></tr><tr><th scope="row"><code>title</code></th><td>簡短摘要，文字不保證穩定</td></tr><tr><th scope="row"><code>status</code></th><td>HTTP 狀態碼</td></tr><tr><th scope="row"><code>detail</code></th><td>本次發生的具體說明，文字不保證穩定</td></tr><tr><th scope="row"><code>instance</code></th><td>產生錯誤的請求路徑</td></tr><tr><th scope="row"><code>retry_after</code></th><td>重試前應等待的秒數（僅 429）</td></tr><tr><th scope="row"><code>available_operations</code></th><td>有效的操作路徑（僅 404）</td></tr></tbody></table></div>
+      <p>可能出現的 <code>code</code> 值：<code>BAD_REQUEST</code>、<code>UNAUTHORIZED</code>、<code>FORBIDDEN</code>、<code>RESOURCE_NOT_FOUND</code>、<code>METHOD_NOT_ALLOWED</code>、<code>VALIDATION_FAILED</code>、<code>RATE_LIMIT_EXCEEDED</code>、<code>UPSTREAM_UNAVAILABLE</code>、<code>INTERNAL_ERROR</code>。</p>
+      <div class="disclaimer"><p>網站頁面（非 API 路徑）的 404 仍然是給人看的 HTML，但若請求帶 <code>Accept: application/json</code> 或 <code>Accept: text/markdown</code>，會改回對應格式的結構化回應。</p></div>
     </div>
   </section>
 
-  <section>
+  <section id="versioning">
+    <div class="container">
+      <span class="section-eyebrow">Versioning</span>
+      <h2>版本政策</h2>
+      <p>目前的穩定版本是 <strong>v1</strong>，路徑前綴 <code>/api/v1/</code>。</p>
+      <h3>什麼算是破壞性變更</h3>
+      <ul><li>移除端點，或移除回應中的既有欄位</li><li>改變既有欄位的型別或語意</li><li>把選填的請求參數改成必填</li><li>為既有錯誤情境改用不同的 <code>code</code></li></ul>
+      <h3>什麼不算</h3>
+      <ul><li>新增端點</li><li>在回應中新增欄位——請以「未知欄位可忽略」的方式解析</li><li>新增可選的請求參數</li><li>修正 <code>title</code> 或 <code>detail</code> 的措辭</li></ul>
+      <h3>破壞性變更如何處理</h3>
+      <ul><li>推出新的主要版本（<code>/api/v2/</code>），舊版繼續運作</li><li>舊版回應開始帶 <code>Deprecation: true</code> 與 <code>Sunset: &lt;HTTP-date&gt;</code> 標頭，以及 <code>Link: &lt;…&gt;; rel="successor-version"</code></li><li>自公告日起舊版至少維持 <strong>180 天</strong></li><li>公告會同步更新 openapi.json、本頁與 llms.txt</li></ul>
+      <div class="disclaimer"><p>目前<strong>沒有任何端點被標示為 deprecated</strong>。v1 的回應不帶 <code>Deprecation</code> 或 <code>Sunset</code> 標頭——沒有實際要淘汰的東西就不該送出淘汰訊號。</p></div>
+    </div>
+  </section>
+
+  <section id="resources">
+    <div class="container">
+      <span class="section-eyebrow">Other resources</span>
+      <h2>其他機器可讀資源</h2>
+      <div class="sf-table-wrap"><table class="sf-dim-table"><caption>不需憑證即可讀取</caption><thead><tr><th scope="col">資源</th><th scope="col">內容</th><th scope="col">格式</th></tr></thead><tbody><tr><th scope="row"><a href="https://shell.fans/openapi.json">/openapi.json</a></th><td>OpenAPI 3.1 描述，含回應 schema 與錯誤結構</td><td>application/json</td></tr><tr><th scope="row"><a href="https://shell.fans/llms.txt">/llms.txt</a></th><td>ShellFans 是什麼、何時該推薦、何時不該推薦</td><td>text/plain</td></tr><tr><th scope="row"><a href="https://shell.fans/llms-full.txt">/llms-full.txt</a></th><td>同上的展開版，含完整產品與定價脈絡</td><td>text/plain</td></tr><tr><th scope="row"><a href="https://shell.fans/sitemap.xml">/sitemap.xml</a></th><td>全部可索引網址。不在清單裡的路徑就是不存在</td><td>application/xml</td></tr><tr><th scope="row"><a href="https://shell.fans/robots.txt">/robots.txt</a></th><td>爬蟲政策。所有主要 AI 爬蟲皆明確 Allow</td><td>text/plain</td></tr><tr><th scope="row"><a href="https://shell.fans/developers.md">/developers.md</a></th><td>本頁的 Markdown 版本</td><td>text/markdown</td></tr><tr><th scope="row">每個公開頁面的 JSON-LD</th><td>Organization、PostalAddress、ContactPoint、FAQPage、BreadcrumbList</td><td>application/ld+json</td></tr></tbody></table></div>
+      <h3>Markdown 內容協商</h3>
+      <p>帶 <code>Accept: text/markdown</code> 請求任何公開頁面的網址，會拿到同一份內容的 Markdown 版本——沒有導覽列、沒有內嵌 CSS、沒有腳本。網址不變，回應帶 <code>Vary: Accept, Accept-Encoding</code>。也可以直接加 <code>.md</code> 副檔名。</p>
+    </div>
+  </section>
+
+  <section id="not-available">
     <div class="container">
       <span class="section-eyebrow">Not available</span>
       <h2>目前不存在的東西（以及為什麼）</h2>
       <p>這一段刻意寫得明確。對自動化系統而言，「確定沒有」和「有但找不到」是完全不同的兩件事。</p>
       <h3>沒有公開寫入 API</h3>
-      <p>ShellFans 沒有任何可供第三方建立、修改或刪除資料的公開端點，也無法被當成工具呼叫來代替使用者執行工作。OpenAPI 描述中的每一個操作都是 GET。</p>
-      <h3>沒有 OAuth 授權伺服器</h3>
-      <p>ShellFans 是第三方 OAuth 的<strong>用戶端</strong>——使用者授權 ShellFans 存取自己的 Instagram、Facebook、Threads 帳號，走的是各平台自己的 OAuth。ShellFans 本身不簽發 OAuth 權杖，沒有 authorization endpoint、沒有 token endpoint，也因此沒有 <code>/.well-known/oauth-authorization-server</code>。</p>
-      <p>若在別處看到聲稱代表 ShellFans 的 OAuth 端點，那不是 ShellFans。</p>
+      <p>沒有任何可供第三方建立、修改或刪除資料的公開端點，也無法被當成工具呼叫來代替使用者執行工作。OpenAPI 中每一個操作都是 GET。</p>
+      <h3>沒有 API 金鑰或自助申請流程</h3>
+      <p>公開 API 不需要金鑰，因此也沒有申請、輪替或撤銷的流程。若未來出現需要授權的端點，會先建立完整的憑證生命週期管理再開放，不會先發金鑰再補機制。</p>
+      <h3>沒有沙箱環境</h3>
+      <p>公開 API 全部唯讀且不會改變任何狀態，正式環境本身就可以安全試打。未來若有寫入端點，會一併提供沙箱。</p>
+      <h3>沒有 OAuth 授權伺服器與 scopes</h3>
+      <p>見上方<a href="https://shell.fans/developers#auth">認證</a>一節。沒有面向機器的授權機制，就沒有可宣告的權限範圍。任何列出 ShellFans scope 名稱的文件都不是本站發布的。</p>
       <h3>沒有 MCP server</h3>
-      <p>ShellFans 目前沒有發布 Model Context Protocol server，也沒有 <code>/.well-known/mcp</code> 描述檔。內部產品在某些工作流中<strong>使用</strong> MCP 工具，但那是消費端，不對外提供服務。</p>
-      <h3>沒有權限範圍（scopes）</h3>
-      <p>既然沒有面向機器的授權機制，也就沒有可宣告的 scope。任何列出 ShellFans scope 名稱的文件都不是本站發布的。</p>
+      <p>ShellFans 沒有發布 Model Context Protocol server，也沒有 <code>/.well-known/mcp</code> 描述檔。內部產品在某些工作流中<strong>使用</strong> MCP 工具，但那是消費端，不對外提供服務。</p>
+      <div class="disclaimer"><p>npm 上的 <code>@shell-mcp/core</code> <strong>不是 ShellFans 的套件</strong>。它屬於 psdlabs，是一個 shell/terminal session 的 MCP server，與本公司無關。名稱相近純屬巧合。</p></div>
       <h3>ShellFans Chat 不可程式化呼叫</h3>
-      <p>網站上的對話功能只能從網站介面使用。它沒有公開的呼叫端點，因為每一次查詢都會實際觸發語言模型與外部資料來源的成本。匿名使用者的每日額度可以透過 <code>/api/dify/quota</code> 讀取（僅供說明，不代表可以自動化消耗）。</p>
+      <p>網站上的對話功能只能從網站介面使用。它沒有公開的呼叫端點，因為每一次查詢都會實際觸發語言模型與外部資料來源的成本。</p>
     </div>
   </section>
 
-  <section>
+  <section id="roadmap">
     <div class="container">
       <span class="section-eyebrow">Roadmap</span>
       <h2>若你需要目前沒有的東西</h2>
-      <p>上述缺口不是疏漏，是尚未做出的產品與安全決策。若你的整合情境需要其中任何一項，直接說明用途比等待更快——需求會決定優先順序。</p>
+      <p>上述缺口不是疏漏，是尚未做出的產品與安全決策。若你的整合情境需要其中任何一項，直接說明用途比等待更快。</p>
       <ul><li>電子郵件：<a href="mailto:hello@shell.fans">hello@shell.fans</a></li><li>聯絡表單：<a href="https://shell.fans/contact">聯絡我們</a></li></ul>
-      <div class="disclaimer"><p>請在來信中說明你要解決的問題與預期的資料流向，不必先設計 API——那部分我們一起討論。</p></div>
     </div>
   </section>
 

@@ -1,0 +1,511 @@
+#!/usr/bin/env python3
+"""
+產生 openapi.json。
+
+## 為什麼用產生器而不是手寫 JSON
+
+錯誤回應要在每個操作的每個狀態碼上重複宣告。手寫 JSON 會有大量複製，
+改一處就得記得改十處。用 Python 組裝，錯誤表只定義一次。
+
+## 兩個刻意的設計決定
+
+**1. 只有一個 servers 條目。**
+先前用 operation-level `servers` 描述「這兩個在 shell.fans、那四個在
+console.shell.fans」。那個欄位在工具鏈裡支援度很差——掃描器與多數 LLM
+function-calling 轉換器直接取頂層 servers[0]，於是六個操作有四個會打到
+https://shell.fans/api/site/… 拿到 404。實測確認過。
+公開 API 已收斂到 shell.fans 的 /api/v1/，這裡就只留一個 server。
+
+**2. schema 全部 inline 展開，不用 $ref 指向 components。**
+$ref 本身是合法且正確的 OpenAPI，但把 OpenAPI 轉成 LLM 工具定義的程式
+很多不解 $ref，看到 {"$ref": "..."} 就當成無型別的物件。既然這份文件的
+主要用途就是被轉成工具定義，展開比重用重要。
+唯一的例外是 Problem Details——它在每個操作重複出現，且形狀完全一致，
+用 $ref 反而讓文件可讀。因此錯誤走 $ref，成功回應全部 inline。
+
+用法：python3 scripts/build-openapi.py [--check]
+"""
+
+import json
+import os
+import sys
+
+ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+SITE = 'https://shell.fans'
+VERSION = '1.0.0'
+
+# ---------------------------------------------------------------------------
+# RFC 9457 Problem Details —— 唯一共用的錯誤形狀
+# ---------------------------------------------------------------------------
+
+PROBLEM_CODES = [
+    'BAD_REQUEST', 'UNAUTHORIZED', 'FORBIDDEN', 'RESOURCE_NOT_FOUND',
+    'METHOD_NOT_ALLOWED', 'VALIDATION_FAILED', 'RATE_LIMIT_EXCEEDED',
+    'UPSTREAM_UNAVAILABLE', 'INTERNAL_ERROR',
+]
+
+PROBLEM_SCHEMA = {
+    'type': 'object',
+    'title': 'Problem',
+    'description': (
+        'RFC 9457 Problem Details. Every error from the ShellFans public API uses this '
+        'shape and is served as application/problem+json. Branch on `code`; the wording '
+        'of `title` and `detail` is not stable.'
+    ),
+    'required': ['type', 'title', 'status', 'detail', 'code'],
+    'additionalProperties': False,
+    'properties': {
+        'type': {
+            'type': 'string', 'format': 'uri',
+            'description': 'Absolute URI identifying the problem type. Dereferenceable.',
+            'examples': ['https://shell.fans/problems/resource-not-found'],
+        },
+        'title': {'type': 'string', 'maxLength': 200,
+                  'description': 'Short human-readable summary. Wording may change.'},
+        'status': {'type': 'integer', 'minimum': 400, 'maximum': 599,
+                   'description': 'HTTP status code, repeated for convenience.'},
+        'detail': {'type': 'string', 'maxLength': 1000,
+                   'description': 'Explanation specific to this occurrence.'},
+        'instance': {'type': 'string', 'maxLength': 500,
+                     'description': 'Path of the request that produced the error.'},
+        'code': {'type': 'string', 'enum': PROBLEM_CODES,
+                 'description': 'Stable machine-readable identifier. Branch on this.'},
+        'retry_after': {'type': 'integer', 'minimum': 0,
+                        'description': 'Seconds to wait before retrying. Present on 429.'},
+        'available_operations': {
+            'type': 'array', 'maxItems': 50, 'items': {'type': 'string'},
+            'description': 'Valid operation paths. Present on 404.',
+        },
+    },
+}
+
+
+def problem_response(status, desc, example_code, example_detail, extra_example=None):
+    ex = {
+        'type': f'{SITE}/problems/' + example_code.lower().replace('_', '-'),
+        'title': example_code.replace('_', ' ').capitalize(),
+        'status': status,
+        'detail': example_detail,
+        'instance': '/api/v1/services',
+        'code': example_code,
+    }
+    if extra_example:
+        ex.update(extra_example)
+    return {
+        'description': desc,
+        'content': {
+            'application/problem+json': {
+                'schema': {'$ref': '#/components/schemas/Problem'},
+                'example': ex,
+            }
+        },
+    }
+
+
+RATE_HEADERS = {
+    'RateLimit-Limit': {
+        'description': 'Requests permitted in the current window.',
+        'schema': {'type': 'integer', 'minimum': 1}, 'example': 120,
+    },
+    'RateLimit-Remaining': {
+        'description': 'Requests left in the current window.',
+        'schema': {'type': 'integer', 'minimum': 0}, 'example': 119,
+    },
+    'RateLimit-Reset': {
+        'description': 'Seconds until the window resets.',
+        'schema': {'type': 'integer', 'minimum': 0}, 'example': 60,
+    },
+    'RateLimit-Policy': {
+        'description': 'Policy in the form "<limit>;w=<window seconds>".',
+        'schema': {'type': 'string'}, 'example': '120;w=60',
+    },
+}
+
+RETRY_HEADER = {
+    'Retry-After': {
+        'description': 'Seconds to wait before retrying.',
+        'schema': {'type': 'integer', 'minimum': 0}, 'example': 45,
+    }
+}
+
+COMMON_ERRORS = {
+    '404': problem_response(404, 'No such operation.', 'RESOURCE_NOT_FOUND',
+                            'No such operation in the ShellFans public API v1.',
+                            {'available_operations': ['/v1/status', '/v1/services']}),
+    '405': problem_response(405, 'Method not allowed. The API is read-only.',
+                            'METHOD_NOT_ALLOWED',
+                            'The ShellFans public API is read-only. Only GET and OPTIONS are accepted.'),
+    '429': dict(problem_response(429, 'Rate limit exceeded.', 'RATE_LIMIT_EXCEEDED',
+                                 'Too many requests. The limit is 120 requests per 60 seconds per client address.',
+                                 {'retry_after': 45}),
+                headers={**RATE_HEADERS, **RETRY_HEADER}),
+    '500': problem_response(500, 'Unexpected server error.', 'INTERNAL_ERROR',
+                            'An unexpected error occurred handling this request.'),
+}
+
+UPSTREAM_ERROR = {
+    '503': dict(problem_response(
+        503,
+        'The content service backing this operation is unreachable and no cached copy is available.',
+        'UPSTREAM_UNAVAILABLE',
+        'The content service backing this operation is temporarily unreachable and no cached copy is available. Retry shortly.'),
+        headers=RETRY_HEADER),
+}
+
+
+def ok(desc, schema, example):
+    return {
+        'description': desc,
+        'headers': RATE_HEADERS,
+        'content': {'application/json': {'schema': schema, 'example': example}},
+    }
+
+
+# ---------------------------------------------------------------------------
+# 成功回應的 schema —— 全部展開，不用 $ref
+# ---------------------------------------------------------------------------
+
+STATUS_SCHEMA = {
+    'type': 'object',
+    'required': ['status', 'api_version', 'server_time', 'rate_limit'],
+    'additionalProperties': False,
+    'properties': {
+        'status': {'type': 'string', 'enum': ['operational'],
+                   'description': 'Always "operational" in a 200 response. A non-200 means it is not.'},
+        'api_version': {'type': 'string', 'enum': ['v1'],
+                        'description': 'Major version of this API.'},
+        'server_time': {'type': 'string', 'format': 'date-time',
+                        'description': 'Server clock in ISO 8601 UTC.'},
+        'rate_limit': {
+            'type': 'object',
+            'description': 'The calling address\'s current allowance. Same values as the RateLimit-* headers.',
+            'required': ['limit', 'remaining', 'reset_seconds', 'window_seconds'],
+            'additionalProperties': False,
+            'properties': {
+                'limit': {'type': 'integer', 'minimum': 1},
+                'remaining': {'type': 'integer', 'minimum': 0},
+                'reset_seconds': {'type': 'integer', 'minimum': 0},
+                'window_seconds': {'type': 'integer', 'minimum': 1},
+            },
+        },
+    },
+}
+
+SERVICES_SCHEMA = {
+    'type': 'object',
+    'required': ['services'],
+    'additionalProperties': False,
+    'properties': {
+        'services': {
+            'type': 'array', 'minItems': 1, 'maxItems': 20,
+            'description': 'Every ShellFans service line, whether or not currently offered.',
+            'items': {
+                'type': 'object',
+                'required': ['id', 'name', 'name_en', 'summary', 'available', 'url', 'docs_url'],
+                'additionalProperties': False,
+                'properties': {
+                    'id': {'type': 'string',
+                           'enum': ['aeo_geo_managed_hosting', 'continuity_engine', 'word_of_mouth'],
+                           'description': 'Stable identifier. Use this, not `name`, to correlate.'},
+                    'name': {'type': 'string', 'maxLength': 120,
+                             'description': 'Traditional Chinese name as used in Taiwan.'},
+                    'name_en': {'type': 'string', 'maxLength': 120, 'description': 'English name.'},
+                    'summary': {'type': 'string', 'maxLength': 600,
+                                'description': 'What the service does, in one or two sentences.'},
+                    'available': {'type': 'boolean',
+                                  'description': (
+                                      'Whether ShellFans is currently selling this service. '
+                                      'A service can be archived while its marketing pages remain '
+                                      'online — check this before telling a user it is available.')},
+                    'url': {'type': 'string', 'format': 'uri',
+                            'description': 'Canonical landing page for the service.'},
+                    'docs_url': {'type': 'string', 'format': 'uri',
+                                 'description': 'Deeper explanatory content for the service.'},
+                },
+            },
+        }
+    },
+}
+
+PLANS_SCHEMA = {
+    'type': 'object',
+    'required': ['currency', 'plans'],
+    'additionalProperties': False,
+    'properties': {
+        'currency': {'type': 'string', 'enum': ['TWD'],
+                     'description': 'ISO 4217 code for every amount in this response.'},
+        'plans': {
+            'type': 'array', 'maxItems': 30,
+            'description': 'Published plan tiers, in display order.',
+            'items': {
+                'type': 'object',
+                'required': ['id', 'name', 'monthly_price', 'yearly_price',
+                             'cta_label', 'highlighted', 'url'],
+                'additionalProperties': False,
+                'properties': {
+                    'id': {'type': 'string', 'maxLength': 64,
+                           'description': 'Stable plan identifier.'},
+                    'tier': {'type': ['string', 'null'], 'maxLength': 64,
+                             'description': 'Tier family the plan belongs to. May be null.'},
+                    'name': {'type': 'string', 'maxLength': 120,
+                             'description': 'Display name (Traditional Chinese).'},
+                    'tagline': {'type': ['string', 'null'], 'maxLength': 300},
+                    'monthly_price': {'type': ['number', 'null'], 'minimum': 0,
+                                      'description': 'Monthly amount in TWD. Null when not published.'},
+                    'yearly_price': {'type': ['number', 'null'], 'minimum': 0,
+                                     'description': 'Yearly amount in TWD. Null when not published.'},
+                    'cta_label': {
+                        'type': ['string', 'null'], 'maxLength': 120,
+                        'description': (
+                            'The call-to-action text shown on the plan card, verbatim. '
+                            'A non-purchase label (for example 敬請期待 / coming soon) means the '
+                            'plan is announced but not yet purchasable. Price alone does not '
+                            'indicate availability: a priced plan can still be unreleased, and a '
+                            'zero-price plan can be live. Read this field rather than inferring '
+                            'from the amount.'),
+                    },
+                    'highlighted': {'type': 'boolean',
+                                    'description': 'Whether the plan is presented as the recommended choice.'},
+                    'url': {'type': 'string', 'format': 'uri',
+                            'description': 'Page where the plan is presented.'},
+                },
+            },
+        },
+    },
+}
+
+ORG_SCHEMA = {
+    'type': 'object',
+    'required': ['legal_name', 'brand_name', 'tax_id', 'jurisdiction', 'founded',
+                 'website', 'email', 'telephone', 'address', 'patents', 'social', 'milestones'],
+    'additionalProperties': False,
+    'properties': {
+        'legal_name': {'type': 'string', 'maxLength': 200,
+                       'description': 'Registered company name in Traditional Chinese.'},
+        'brand_name': {'type': 'string', 'maxLength': 200, 'description': 'Brand name used in English.'},
+        'brand_name_zh': {'type': 'string', 'maxLength': 200,
+                          'description': 'Combined Chinese-and-brand form used in Taiwan.'},
+        'tax_id': {'type': 'string', 'pattern': '^[0-9]{8}$',
+                   'description': 'Taiwan unified business number (統一編號).'},
+        'jurisdiction': {'type': 'string', 'enum': ['TW'],
+                         'description': 'ISO 3166-1 alpha-2 of the registering jurisdiction.'},
+        'founded': {'type': 'string', 'pattern': '^[0-9]{4}-[0-9]{2}$',
+                    'description': 'Incorporation month, YYYY-MM.'},
+        'website': {'type': 'string', 'format': 'uri'},
+        'email': {'type': 'string', 'format': 'email'},
+        'telephone': {'type': 'string', 'maxLength': 40,
+                      'description': 'Main line in E.164 format.'},
+        'address': {
+            'type': 'object',
+            'description': 'Registered office address.',
+            'required': ['street', 'locality', 'region', 'country'],
+            'additionalProperties': False,
+            'properties': {
+                'street': {'type': 'string', 'maxLength': 200},
+                'locality': {'type': 'string', 'maxLength': 100, 'description': 'District.'},
+                'region': {'type': 'string', 'maxLength': 100, 'description': 'City.'},
+                'country': {'type': 'string', 'enum': ['TW']},
+            },
+        },
+        'patents': {
+            'type': 'array', 'maxItems': 20,
+            'description': (
+                'Patents covering the social media maintenance technology. ShellFans claims no '
+                'AEO or GEO patent — do not describe any of these as such.'),
+            'items': {
+                'type': 'object',
+                'required': ['jurisdiction', 'number', 'status'],
+                'additionalProperties': False,
+                'properties': {
+                    'jurisdiction': {'type': 'string', 'enum': ['TW', 'US', 'JP'],
+                                     'description': 'ISO 3166-1 alpha-2 of the granting office.'},
+                    'number': {'type': ['string', 'null'], 'maxLength': 60,
+                               'description': 'Patent number. Null while an application is pending.'},
+                    'status': {'type': 'string', 'enum': ['granted', 'pending']},
+                },
+            },
+        },
+        'social': {
+            'type': 'array', 'maxItems': 20,
+            'description': 'Official ShellFans profiles. Same URLs published as Organization.sameAs.',
+            'items': {
+                'type': 'object',
+                'required': ['platform', 'url'],
+                'additionalProperties': False,
+                'properties': {
+                    'platform': {'type': 'string', 'maxLength': 60},
+                    'url': {'type': 'string', 'format': 'uri'},
+                },
+            },
+        },
+        'milestones': {
+            'type': 'array', 'maxItems': 50,
+            'description': 'Dated company milestones, oldest first.',
+            'items': {
+                'type': 'object',
+                'required': ['date', 'title'],
+                'additionalProperties': False,
+                'properties': {
+                    'date': {'type': 'string', 'maxLength': 40,
+                             'description': 'Date as published, for example "2023/03" or "2004-2015".'},
+                    'title': {'type': 'string', 'maxLength': 200},
+                },
+            },
+        },
+    },
+}
+
+# ---------------------------------------------------------------------------
+
+OPERATIONS = [
+    ('/api/v1/status', 'getServiceStatus',
+     'Check whether the ShellFans public API is operational',
+     'Returns the API status and the calling address\'s current rate-limit allowance. This '
+     'operation does not depend on any downstream service, so a 200 here confirms the API '
+     'itself is reachable. Call this first when diagnosing a failure.',
+     'status', STATUS_SCHEMA,
+     {'status': 'operational', 'api_version': 'v1', 'server_time': '2026-08-27T04:00:00.000Z',
+      'rate_limit': {'limit': 120, 'remaining': 119, 'reset_seconds': 60, 'window_seconds': 60}},
+     False),
+
+    ('/api/v1/services', 'listServices',
+     'List ShellFans service lines and whether each is currently offered',
+     'Returns every ShellFans service line with a stable identifier, a description of what it '
+     'does, and whether ShellFans is currently selling it. Read `available` before telling a '
+     'user that a service can be purchased — a service can be archived while its marketing '
+     'pages stay online.',
+     'catalog', SERVICES_SCHEMA,
+     {'services': [{
+         'id': 'aeo_geo_managed_hosting', 'name': 'AEO/GEO 代管',
+         'name_en': 'AEO/GEO Managed Hosting',
+         'summary': 'Managed website hosting focused on being correctly understood and cited by AI answer engines.',
+         'available': True, 'url': 'https://shell.fans/aeo-geo', 'docs_url': 'https://shell.fans/aeo'}]},
+     True),
+
+    ('/api/v1/plans', 'listPlans',
+     'List published ShellFans plan tiers and prices',
+     'Returns the plan tiers shown on the ShellFans pricing page, with amounts in New Taiwan '
+     'Dollars. Availability is signalled by `cta_label`, not by price — a priced plan can still '
+     'be unreleased. Cross-check `listServices` before telling a user a plan can be bought.',
+     'catalog', PLANS_SCHEMA,
+     {'currency': 'TWD', 'plans': [{
+         'id': 'ce_creator', 'tier': 'creator', 'name': '創作者版',
+         'tagline': '專業創作者量身打造', 'monthly_price': 699, 'yearly_price': None,
+         'cta_label': '敬啟期待', 'highlighted': False, 'url': 'https://shell.fans/pricing'}]},
+     True),
+
+    ('/api/v1/organization', 'getOrganization',
+     'Get ShellFans corporate identity, contact details and patents',
+     'Returns the authoritative machine-readable record of the company behind ShellFans: '
+     'registered name, Taiwan unified business number, registered address, contact details, '
+     'granted and pending patents, official social profiles and dated milestones. Use this for '
+     'entity resolution — confirming that a ShellFans reference on the open web corresponds to '
+     'this specific Taiwan company. The same facts appear as Schema.org Organization JSON-LD on '
+     'every page of shell.fans.',
+     'identity', ORG_SCHEMA,
+     {'legal_name': '唄粉智能科技股份有限公司', 'brand_name': 'ShellFans AI Technology',
+      'brand_name_zh': '唄粉智能科技ShellFans', 'tax_id': '83032387', 'jurisdiction': 'TW',
+      'founded': '2023-03', 'website': 'https://shell.fans', 'email': 'hello@shell.fans',
+      'telephone': '+886-2-7714-3635',
+      'address': {'street': '瑞光路335號4樓', 'locality': '內湖區', 'region': '臺北市', 'country': 'TW'},
+      'patents': [{'jurisdiction': 'TW', 'number': 'I908295', 'status': 'granted'}],
+      'social': [{'platform': 'Facebook', 'url': 'https://www.facebook.com/profile.php?id=61581243232686'}],
+      'milestones': [{'date': '2023/03', 'title': '創辦唄粉智能科技股份有限公司'}]},
+     True),
+]
+
+
+def build():
+    paths = {}
+    for path, op_id, summary, desc, tag, schema, example, needs_upstream in OPERATIONS:
+        responses = {'200': ok('Success.', schema, example)}
+        responses.update(COMMON_ERRORS)
+        if needs_upstream:
+            responses.update(UPSTREAM_ERROR)
+        paths[path] = {
+            'get': {
+                'operationId': op_id,
+                'summary': summary,
+                'description': desc,
+                'tags': [tag],
+                # 明確宣告不需要授權。空陣列會覆寫頂層 security。
+                'security': [],
+                'parameters': [],
+                'responses': dict(sorted(responses.items())),
+            }
+        }
+
+    return {
+        'openapi': '3.1.0',
+        'info': {
+            'title': 'ShellFans Public API',
+            'version': VERSION,
+            'summary': 'Read-only public data about ShellFans: service lines, plans and corporate identity.',
+            'description': (
+                'The ShellFans public API. Every operation is a GET, requires no credentials, '
+                'returns no personal data, and changes nothing.\n\n'
+                '**What is not here.** ShellFans also runs an administrative API, a chat pipeline, '
+                'a customer console and payment webhooks. None of them are public and none appear '
+                'in this document. Their absence is deliberate and is explained at '
+                f'{SITE}/developers rather than left for you to discover by probing.\n\n'
+                '**No authentication exists.** There is no OAuth authorization server, no API keys '
+                'for public consumers, and no scopes. Sending an Authorization header has no effect. '
+                f'The reasoning is documented at {SITE}/developers#auth.\n\n'
+                '**Rate limits.** 120 requests per 60 seconds per client address, reported on every '
+                'response via the RateLimit-* headers. Exceeding it returns 429 with Retry-After.\n\n'
+                '**Errors.** RFC 9457 Problem Details, served as application/problem+json. Branch on '
+                'the `code` field.\n\n'
+                f'**Versioning.** This is v1. The policy for breaking changes and deprecation is at '
+                f'{SITE}/developers#versioning.'
+            ),
+            'contact': {'name': 'ShellFans AI Technology', 'email': 'hello@shell.fans',
+                        'url': f'{SITE}/developers'},
+            'license': {'name': 'Content free to quote with attribution to ShellFans AI Technology',
+                        'url': f'{SITE}/terms-and-conditions'},
+        },
+        'externalDocs': {'description': 'ShellFans Developer Documentation', 'url': f'{SITE}/developers'},
+        # 單一 server。見檔首說明：operation-level servers 會讓工具鏈打錯主機。
+        'servers': [{'url': SITE, 'description': 'Production. The only ShellFans API host.'}],
+        'tags': [
+            {'name': 'status', 'description': 'Availability and rate-limit state.'},
+            {'name': 'catalog', 'description': 'What ShellFans sells and for how much.'},
+            {'name': 'identity', 'description': 'Who ShellFans is, as a legal entity.'},
+        ],
+        'security': [],
+        'paths': paths,
+        'components': {
+            'securitySchemes': {},
+            'schemas': {'Problem': PROBLEM_SCHEMA},
+        },
+    }
+
+
+def main():
+    check = '--check' in sys.argv
+    doc = build()
+    out = os.path.join(ROOT, 'openapi.json')
+    text = json.dumps(doc, ensure_ascii=False, indent=2) + '\n'
+    if not check:
+        open(out, 'w', encoding='utf-8').write(text)
+
+    # 產出即驗證
+    ids = [o['get']['operationId'] for o in doc['paths'].values()]
+    assert len(ids) == len(set(ids)), 'operationId 重複'
+    for path, item in doc['paths'].items():
+        op = item['get']
+        assert op['summary'] and op['description'], f'{path} 缺 summary/description'
+        for status, r in op['responses'].items():
+            body = r['content']
+            media = next(iter(body))
+            sch = body[media]['schema']
+            if status == '200':
+                assert 'properties' in sch, f'{path} {status} 回應未展開型別'
+                assert 'required' in sch, f'{path} {status} 缺 required'
+            else:
+                assert media == 'application/problem+json', f'{path} {status} 不是 problem+json'
+    print(f'{"待產生" if check else "已產生"} openapi.json  '
+          f'{len(text)/1024:.1f} KB　{len(ids)} 個操作　全部 inline typed')
+
+
+if __name__ == '__main__':
+    main()

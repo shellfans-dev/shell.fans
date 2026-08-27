@@ -49,7 +49,7 @@ def page_url(rel):
 
 
 def md_url(rel):
-    """
+    r"""
     Markdown alternate 的網址。
 
     不能用 page_url() 直接接 '.md'：首頁的 page_url 是 SITE + '/'，接起來

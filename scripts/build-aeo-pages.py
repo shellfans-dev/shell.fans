@@ -170,7 +170,10 @@ def render_main(page):
            '      </div>', '    </div>', '  </section>', '']
 
     for sec in page['sections']:
-        out += ['  <section>', '    <div class="container">',
+        # sec['id'] 讓區段可被片段網址錨定（例如 /developers#auth）。
+        # 沒有 id 的區段維持原樣，不影響既有頁面。
+        _sid = (' id="%s"' % esc(sec['id'])) if sec.get('id') else ''
+        out += ['  <section%s>' % _sid, '    <div class="container">',
                 '      <span class="section-eyebrow">%s</span>' % esc(sec['eyebrow']),
                 '      <h2>%s</h2>' % esc(sec['h2'])]
         for b in sec['blocks']:

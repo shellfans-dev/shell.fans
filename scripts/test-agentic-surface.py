@@ -141,52 +141,83 @@ _, h, _ = get(BASE + '/product', accept='text/markdown')
 check('無 .md 的頁面回退 HTML', h.get('Content-Type', ''), 'text/html; charset=utf-8')
 
 # --------------------------------------------------------------------------
-print('\n### 4. OpenAPI 與實際回應一致')
+print('\n### 4. OpenAPI 與 /api/v1 實際回應一致')
 st, h, body = get(BASE + '/openapi.json')
 check('openapi.json 可取得', st, 200)
 spec = json.loads(body)
 check('OpenAPI 版本', spec['openapi'], '3.1.0')
+check('只有一個 server（工具鏈只會用 servers[0]）', len(spec['servers']), 1)
+check('server 是 shell.fans', spec['servers'][0]['url'], BASE)
 
 ops = [(p, m, o) for p, ms in spec['paths'].items() for m, o in ms.items()]
 ids = [o['operationId'] for _, _, o in ops]
 check('operationId 唯一', len(ids), len(set(ids)))
+check_true('operationId 為簡短識別字（函式呼叫相容）',
+           all(re.fullmatch(r'[a-z][A-Za-z0-9]{2,39}', i) for i in ids), ids)
 check_true('每個 operation 有 summary 與 description',
            all(o.get('summary') and o.get('description') for _, _, o in ops))
-check_true('operationId 皆為簡短識別字（函式呼叫相容）',
-           all(re.fullmatch(r'[a-z][A-Za-z0-9]{2,39}', i) for i in ids), ids)
 check_true('公開端點不需授權', all(o.get('security') == [] for _, _, o in ops))
 check_true('沒有任何寫入操作', all(m == 'get' for _, m, _ in ops))
+check_true('沒有 operation-level servers 覆寫', all('servers' not in o for _, _, o in ops))
 
-for path, _, op in ops:
-    server = op['servers'][0]['url']
-    st, h, body = get(server + path)
+# typed schema：不解 $ref 也必須看得到型別
+untyped = []
+for p, _, o in ops:
+    sc = o['responses']['200']['content']['application/json']['schema']
+    if not ('properties' in sc and 'required' in sc and sc.get('additionalProperties') is False):
+        untyped.append(p)
+check('200 回應全部 inline typed', untyped, [])
+
+# 錯誤一律 problem+json 且引用同一個 schema
+bad_err = []
+for p, _, o in ops:
+    for status, r in o['responses'].items():
+        if status == '200':
+            continue
+        media = list(r['content'])
+        if media != ['application/problem+json']:
+            bad_err.append((p, status, media))
+        elif r['content'][media[0]]['schema'].get('$ref') != '#/components/schemas/Problem':
+            bad_err.append((p, status, 'not shared Problem schema'))
+check('4xx/5xx 全部 problem+json 且共用同一 schema', bad_err, [])
+
+# 每個 operation 實際呼叫
+for p, _, o in ops:
+    st, h, body = get(BASE + p)
     ctype = h.get('Content-Type', '').split(';')[0]
-    ok = st == 200 and ctype == 'application/json'
-    try:
-        doc = json.loads(body)
-    except Exception:
-        ok = False
-        doc = None
-    check(f'{op["operationId"]} 實際回應 200 JSON', ok, True)
-    # 宣告 required 的頂層欄位必須真的存在
-    schema = op['responses']['200']['content']['application/json']['schema']
-    ref = schema.get('$ref', '').split('/')[-1]
-    resolved = spec['components']['schemas'].get(ref, {})
-    req = resolved.get('required', [])
-    if doc is not None and req:
-        missing = [k for k in req if k not in doc]
-        check(f'{op["operationId"]} required 欄位齊全', missing, [])
+    check(f'{o["operationId"]} 200 JSON', (st, ctype), (200, 'application/json'))
+    doc = json.loads(body)
+    sc = o['responses']['200']['content']['application/json']['schema']
+    missing = [k for k in sc.get('required', []) if k not in doc]
+    check(f'{o["operationId"]} required 欄位齊全', missing, [])
+    extra = [k for k in doc if k not in sc.get('properties', {})]
+    check(f'{o["operationId"]} 無 schema 外的欄位', extra, [])
+    for hdr in ('RateLimit-Limit', 'RateLimit-Remaining', 'RateLimit-Reset', 'RateLimit-Policy'):
+        check_true(f'{o["operationId"]} 帶 {hdr}', hdr in h or hdr.lower() in
+                   {k.lower() for k in h})
 
-# --------------------------------------------------------------------------
-print('\n### 5. 公開 API 的錯誤是結構化 JSON')
-st, h, body = get(BASE + '/api/dify/definitely-not-a-route')
-check('未知 API 路徑 404', st, 404)
-check('錯誤型別為 JSON', h.get('Content-Type', '').split(';')[0], 'application/json')
+print('\n### 5. 公開 API 的錯誤行為')
+st, h, body = get(BASE + '/api/v1/definitely-not-a-route')
+check('未知 v1 路徑 404', st, 404)
+check('錯誤型別為 problem+json', h.get('Content-Type', '').split(';')[0], 'application/problem+json')
 doc = json.loads(body)
-check('錯誤 code', doc['error']['code'], 'RESOURCE_NOT_FOUND')
-check_true('錯誤含 hint', bool(doc['error'].get('hint')))
+for k in ('type', 'title', 'status', 'detail', 'code'):
+    check(f'problem 有 {k}', k in doc, True)
+check('problem.code', doc['code'], 'RESOURCE_NOT_FOUND')
+check('problem.status 與 HTTP 狀態一致', doc['status'], 404)
+check_true('problem.type 是絕對 URI', str(doc['type']).startswith('https://'))
+check_true('404 列出可用操作', isinstance(doc.get('available_operations'), list))
 
-# --------------------------------------------------------------------------
+st, h, body = get(BASE + '/api/v1/services', method='POST')
+check('POST 到唯讀端點 → 405', st, 405)
+check('405 為 problem+json', h.get('Content-Type', '').split(';')[0], 'application/problem+json')
+check('405 code', json.loads(body)['code'], 'METHOD_NOT_ALLOWED')
+
+# 舊的 /api/dify 錯誤也已統一
+st, h, body = get(BASE + '/api/dify/definitely-not-a-route')
+check('舊 API 路徑 404 也是 problem+json',
+      (st, h.get('Content-Type', '').split(';')[0]), (404, 'application/problem+json'))
+
 print('\n### 6. 非公開端點仍然關閉')
 for path, want in [('/api/dify/cache/stats', 401), ('/api/dify/admin/audit-log', 401)]:
     st, h, body = get(BASE + path)

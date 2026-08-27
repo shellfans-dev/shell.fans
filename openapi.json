@@ -1,10 +1,10 @@
 {
   "openapi": "3.1.0",
   "info": {
-    "title": "ShellFans Public Read-Only API",
-    "version": "2026-08-26",
-    "summary": "The small set of unauthenticated read-only endpoints that ShellFans intentionally exposes.",
-    "description": "ShellFans (唄粉智能科技股份有限公司 / ShellFans AI Technology) is a Taiwan company operating two service lines: AEO/GEO managed hosting, and cross-platform social media asset continuity.\n\n**Scope of this document.** It describes only endpoints that are (a) already publicly reachable without credentials, (b) read-only, (c) free of personal data, and (d) intended to be consumed by third parties. Everything else ShellFans runs — the chat pipeline, the administrative API, the customer console, payment webhooks — is deliberately absent. Their absence is documented at https://shell.fans/developers rather than implied.\n\n**There is no write API.** No endpoint here creates, modifies or deletes anything. ShellFans cannot be driven as a tool to perform work on a user's behalf. Requests using POST, PUT, PATCH or DELETE will not succeed.\n\n**No authentication is required or accepted.** There is no OAuth authorization server, no API keys for public consumers, and no scopes. Sending an Authorization header has no effect on these endpoints.\n\n**Stability.** These endpoints back ShellFans' own public website, so they are stable in practice, but they carry no formal versioning or deprecation policy. Content fields are editorial and change without notice; treat their text as data, not as a contract.",
+    "title": "ShellFans Public API",
+    "version": "1.0.0",
+    "summary": "Read-only public data about ShellFans: service lines, plans and corporate identity.",
+    "description": "The ShellFans public API. Every operation is a GET, requires no credentials, returns no personal data, and changes nothing.\n\n**What is not here.** ShellFans also runs an administrative API, a chat pipeline, a customer console and payment webhooks. None of them are public and none appear in this document. Their absence is deliberate and is explained at https://shell.fans/developers rather than left for you to discover by probing.\n\n**No authentication exists.** There is no OAuth authorization server, no API keys for public consumers, and no scopes. Sending an Authorization header has no effect. The reasoning is documented at https://shell.fans/developers#auth.\n\n**Rate limits.** 120 requests per 60 seconds per client address, reported on every response via the RateLimit-* headers. Exceeding it returns 429 with Retry-After.\n\n**Errors.** RFC 9457 Problem Details, served as application/problem+json. Branch on the `code` field.\n\n**Versioning.** This is v1. The policy for breaking changes and deprecation is at https://shell.fans/developers#versioning.",
     "contact": {
       "name": "ShellFans AI Technology",
       "email": "hello@shell.fans",
@@ -16,547 +16,1363 @@
     }
   },
   "externalDocs": {
-    "description": "ShellFans developer resources — what exists, what does not, and why",
+    "description": "ShellFans Developer Documentation",
     "url": "https://shell.fans/developers"
   },
   "servers": [
     {
       "url": "https://shell.fans",
-      "description": "Public website. Hosts the site-status endpoints."
-    },
-    {
-      "url": "https://console.shell.fans",
-      "description": "Customer console. Hosts the read-only site-content endpoints that the public website renders from."
+      "description": "Production. The only ShellFans API host."
     }
   ],
   "tags": [
     {
       "name": "status",
-      "description": "Service availability and anonymous usage allowance."
+      "description": "Availability and rate-limit state."
     },
     {
-      "name": "site-content",
-      "description": "Editorial content that the public website renders. Read-only, no personal data."
+      "name": "catalog",
+      "description": "What ShellFans sells and for how much."
+    },
+    {
+      "name": "identity",
+      "description": "Who ShellFans is, as a legal entity."
     }
   ],
+  "security": [],
   "paths": {
-    "/api/dify/health": {
+    "/api/v1/status": {
       "get": {
-        "operationId": "getHealth",
-        "summary": "Service health check",
-        "description": "Reports whether the ShellFans chat backend is accepting requests. Use this to decide whether shell.fans is reachable before attempting anything else. Always returns 200 when the service is up; a non-200 or a connection failure means it is not.",
-        "tags": ["status"],
-        "servers": [{ "url": "https://shell.fans" }],
+        "operationId": "getServiceStatus",
+        "summary": "Check whether the ShellFans public API is operational",
+        "description": "Returns the API status and the calling address's current rate-limit allowance. This operation does not depend on any downstream service, so a 200 here confirms the API itself is reachable. Call this first when diagnosing a failure.",
+        "tags": [
+          "status"
+        ],
         "security": [],
+        "parameters": [],
         "responses": {
           "200": {
-            "description": "Service is up.",
-            "content": {
-              "application/json": {
-                "schema": { "$ref": "#/components/schemas/Health" },
-                "example": { "ok": true, "ts": "2026-08-26T02:58:16.359Z" }
+            "description": "Success.",
+            "headers": {
+              "RateLimit-Limit": {
+                "description": "Requests permitted in the current window.",
+                "schema": {
+                  "type": "integer",
+                  "minimum": 1
+                },
+                "example": 120
+              },
+              "RateLimit-Remaining": {
+                "description": "Requests left in the current window.",
+                "schema": {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                "example": 119
+              },
+              "RateLimit-Reset": {
+                "description": "Seconds until the window resets.",
+                "schema": {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                "example": 60
+              },
+              "RateLimit-Policy": {
+                "description": "Policy in the form \"<limit>;w=<window seconds>\".",
+                "schema": {
+                  "type": "string"
+                },
+                "example": "120;w=60"
               }
-            }
-          },
-          "404": { "$ref": "#/components/responses/NotFound" }
-        }
-      }
-    },
-    "/api/dify/quota": {
-      "get": {
-        "operationId": "getQuota",
-        "summary": "Remaining anonymous query allowance for the caller",
-        "description": "Returns how many free ShellFans Chat queries the calling IP address has left today. The allowance is per-IP and resets daily.\n\nThis endpoint is informational only — it reports the allowance, it does not grant, reserve or consume it. There is no public endpoint for spending the allowance: ShellFans Chat is only callable from the website's own interface. An agent should read this to explain the limit to a user, not to plan automated calls.",
-        "tags": ["status"],
-        "servers": [{ "url": "https://shell.fans" }],
-        "security": [],
-        "responses": {
-          "200": {
-            "description": "Current allowance for the calling IP address.",
+            },
             "content": {
               "application/json": {
-                "schema": { "$ref": "#/components/schemas/Quota" },
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "api_version",
+                    "server_time",
+                    "rate_limit"
+                  ],
+                  "additionalProperties": false,
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "operational"
+                      ],
+                      "description": "Always \"operational\" in a 200 response. A non-200 means it is not."
+                    },
+                    "api_version": {
+                      "type": "string",
+                      "enum": [
+                        "v1"
+                      ],
+                      "description": "Major version of this API."
+                    },
+                    "server_time": {
+                      "type": "string",
+                      "format": "date-time",
+                      "description": "Server clock in ISO 8601 UTC."
+                    },
+                    "rate_limit": {
+                      "type": "object",
+                      "description": "The calling address's current allowance. Same values as the RateLimit-* headers.",
+                      "required": [
+                        "limit",
+                        "remaining",
+                        "reset_seconds",
+                        "window_seconds"
+                      ],
+                      "additionalProperties": false,
+                      "properties": {
+                        "limit": {
+                          "type": "integer",
+                          "minimum": 1
+                        },
+                        "remaining": {
+                          "type": "integer",
+                          "minimum": 0
+                        },
+                        "reset_seconds": {
+                          "type": "integer",
+                          "minimum": 0
+                        },
+                        "window_seconds": {
+                          "type": "integer",
+                          "minimum": 1
+                        }
+                      }
+                    }
+                  }
+                },
                 "example": {
-                  "remaining": 2,
-                  "limit": 2,
-                  "resetAt": 1787799496806,
-                  "anonymous": true,
-                  "searchable_platforms": ["facebook"]
-                }
-              }
-            }
-          },
-          "404": { "$ref": "#/components/responses/NotFound" }
-        }
-      }
-    },
-    "/api/site/product-flags": {
-      "get": {
-        "operationId": "getProductAvailability",
-        "summary": "Which ShellFans service lines are currently offered",
-        "description": "Returns one boolean per service line, reflecting whether ShellFans is currently selling it. The public website hides navigation entries for lines that are off.\n\nRead this before telling a user that a ShellFans service is available — a line can be archived without its marketing pages being removed. A `false` value means the service is not currently being sold, regardless of what other pages say.",
-        "tags": ["site-content"],
-        "servers": [{ "url": "https://console.shell.fans" }],
-        "security": [],
-        "responses": {
-          "200": {
-            "description": "Availability of each service line.",
-            "content": {
-              "application/json": {
-                "schema": { "$ref": "#/components/schemas/ProductFlagsEnvelope" },
-                "example": {
-                  "data": {
-                    "shellfans_endurance_engine_enabled": true,
-                    "kolfans_wom_enabled": false,
-                    "aeo_geo_managed_hosting_enabled": true
+                  "status": "operational",
+                  "api_version": "v1",
+                  "server_time": "2026-08-27T04:00:00.000Z",
+                  "rate_limit": {
+                    "limit": 120,
+                    "remaining": 119,
+                    "reset_seconds": 60,
+                    "window_seconds": 60
                   }
                 }
               }
             }
           },
-          "404": { "$ref": "#/components/responses/NotFound" }
-        }
-      }
-    },
-    "/api/site/pricing": {
-      "get": {
-        "operationId": "getPricing",
-        "summary": "Published plan tiers and the feature comparison table",
-        "description": "Returns the plan cards and comparison table exactly as rendered on https://shell.fans/pricing.\n\nAmounts are in New Taiwan Dollars. A card whose `cta` is not a purchase call-to-action indicates a tier that is announced but not yet purchasable — do not quote it as available. Always cross-check `getProductAvailability` before telling a user a plan can be bought.",
-        "tags": ["site-content"],
-        "servers": [{ "url": "https://console.shell.fans" }],
-        "security": [],
-        "responses": {
-          "200": {
-            "description": "Plan cards and comparison table.",
+          "404": {
+            "description": "No such operation.",
             "content": {
-              "application/json": {
-                "schema": { "$ref": "#/components/schemas/Pricing" }
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                },
+                "example": {
+                  "type": "https://shell.fans/problems/resource-not-found",
+                  "title": "Resource not found",
+                  "status": 404,
+                  "detail": "No such operation in the ShellFans public API v1.",
+                  "instance": "/api/v1/services",
+                  "code": "RESOURCE_NOT_FOUND",
+                  "available_operations": [
+                    "/v1/status",
+                    "/v1/services"
+                  ]
+                }
               }
             }
           },
-          "404": { "$ref": "#/components/responses/NotFound" }
-        }
-      }
-    },
-    "/api/site/footer": {
-      "get": {
-        "operationId": "getSiteFooter",
-        "summary": "Company identity block and site-wide footer links",
-        "description": "Returns the footer content shared by every ShellFans page: legal entity name, registered address, contact details, Taiwan unified business number, patent notices, official social profiles, and the footer link groups.\n\nThis is the authoritative machine-readable source for ShellFans' corporate identity. All strings are bilingual objects keyed `zh-TW` and `en`. The same facts appear as Schema.org Organization / PostalAddress / ContactPoint JSON-LD on every page of https://shell.fans.",
-        "tags": ["site-content"],
-        "servers": [{ "url": "https://console.shell.fans" }],
-        "security": [],
-        "responses": {
-          "200": {
-            "description": "Footer and company identity content.",
+          "405": {
+            "description": "Method not allowed. The API is read-only.",
             "content": {
-              "application/json": {
-                "schema": { "$ref": "#/components/schemas/FooterEnvelope" }
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                },
+                "example": {
+                  "type": "https://shell.fans/problems/method-not-allowed",
+                  "title": "Method not allowed",
+                  "status": 405,
+                  "detail": "The ShellFans public API is read-only. Only GET and OPTIONS are accepted.",
+                  "instance": "/api/v1/services",
+                  "code": "METHOD_NOT_ALLOWED"
+                }
               }
             }
           },
-          "404": { "$ref": "#/components/responses/NotFound" }
-        }
-      }
-    },
-    "/api/site/cofounder": {
-      "get": {
-        "operationId": "getFounderProfile",
-        "summary": "Founder biography and company milestones",
-        "description": "Returns the content rendered at https://shell.fans/co-founder: the founder's biography and the dated company milestones (incorporation, the Tokyo entity, and the Taiwan and US patent grants).\n\nUseful for entity resolution — confirming that a ShellFans reference on the open web corresponds to this specific Taiwan company. Biography and milestone bodies contain a restricted set of inline HTML.",
-        "tags": ["site-content"],
-        "servers": [{ "url": "https://console.shell.fans" }],
-        "security": [],
-        "responses": {
-          "200": {
-            "description": "Founder profile and milestones.",
+          "429": {
+            "description": "Rate limit exceeded.",
             "content": {
-              "application/json": {
-                "schema": { "$ref": "#/components/schemas/CofounderEnvelope" }
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                },
+                "example": {
+                  "type": "https://shell.fans/problems/rate-limit-exceeded",
+                  "title": "Rate limit exceeded",
+                  "status": 429,
+                  "detail": "Too many requests. The limit is 120 requests per 60 seconds per client address.",
+                  "instance": "/api/v1/services",
+                  "code": "RATE_LIMIT_EXCEEDED",
+                  "retry_after": 45
+                }
+              }
+            },
+            "headers": {
+              "RateLimit-Limit": {
+                "description": "Requests permitted in the current window.",
+                "schema": {
+                  "type": "integer",
+                  "minimum": 1
+                },
+                "example": 120
+              },
+              "RateLimit-Remaining": {
+                "description": "Requests left in the current window.",
+                "schema": {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                "example": 119
+              },
+              "RateLimit-Reset": {
+                "description": "Seconds until the window resets.",
+                "schema": {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                "example": 60
+              },
+              "RateLimit-Policy": {
+                "description": "Policy in the form \"<limit>;w=<window seconds>\".",
+                "schema": {
+                  "type": "string"
+                },
+                "example": "120;w=60"
+              },
+              "Retry-After": {
+                "description": "Seconds to wait before retrying.",
+                "schema": {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                "example": 45
               }
             }
           },
-          "404": { "$ref": "#/components/responses/NotFound" }
+          "500": {
+            "description": "Unexpected server error.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                },
+                "example": {
+                  "type": "https://shell.fans/problems/internal-error",
+                  "title": "Internal error",
+                  "status": 500,
+                  "detail": "An unexpected error occurred handling this request.",
+                  "instance": "/api/v1/services",
+                  "code": "INTERNAL_ERROR"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/services": {
+      "get": {
+        "operationId": "listServices",
+        "summary": "List ShellFans service lines and whether each is currently offered",
+        "description": "Returns every ShellFans service line with a stable identifier, a description of what it does, and whether ShellFans is currently selling it. Read `available` before telling a user that a service can be purchased — a service can be archived while its marketing pages stay online.",
+        "tags": [
+          "catalog"
+        ],
+        "security": [],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Success.",
+            "headers": {
+              "RateLimit-Limit": {
+                "description": "Requests permitted in the current window.",
+                "schema": {
+                  "type": "integer",
+                  "minimum": 1
+                },
+                "example": 120
+              },
+              "RateLimit-Remaining": {
+                "description": "Requests left in the current window.",
+                "schema": {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                "example": 119
+              },
+              "RateLimit-Reset": {
+                "description": "Seconds until the window resets.",
+                "schema": {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                "example": 60
+              },
+              "RateLimit-Policy": {
+                "description": "Policy in the form \"<limit>;w=<window seconds>\".",
+                "schema": {
+                  "type": "string"
+                },
+                "example": "120;w=60"
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "services"
+                  ],
+                  "additionalProperties": false,
+                  "properties": {
+                    "services": {
+                      "type": "array",
+                      "minItems": 1,
+                      "maxItems": 20,
+                      "description": "Every ShellFans service line, whether or not currently offered.",
+                      "items": {
+                        "type": "object",
+                        "required": [
+                          "id",
+                          "name",
+                          "name_en",
+                          "summary",
+                          "available",
+                          "url",
+                          "docs_url"
+                        ],
+                        "additionalProperties": false,
+                        "properties": {
+                          "id": {
+                            "type": "string",
+                            "enum": [
+                              "aeo_geo_managed_hosting",
+                              "continuity_engine",
+                              "word_of_mouth"
+                            ],
+                            "description": "Stable identifier. Use this, not `name`, to correlate."
+                          },
+                          "name": {
+                            "type": "string",
+                            "maxLength": 120,
+                            "description": "Traditional Chinese name as used in Taiwan."
+                          },
+                          "name_en": {
+                            "type": "string",
+                            "maxLength": 120,
+                            "description": "English name."
+                          },
+                          "summary": {
+                            "type": "string",
+                            "maxLength": 600,
+                            "description": "What the service does, in one or two sentences."
+                          },
+                          "available": {
+                            "type": "boolean",
+                            "description": "Whether ShellFans is currently selling this service. A service can be archived while its marketing pages remain online — check this before telling a user it is available."
+                          },
+                          "url": {
+                            "type": "string",
+                            "format": "uri",
+                            "description": "Canonical landing page for the service."
+                          },
+                          "docs_url": {
+                            "type": "string",
+                            "format": "uri",
+                            "description": "Deeper explanatory content for the service."
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "example": {
+                  "services": [
+                    {
+                      "id": "aeo_geo_managed_hosting",
+                      "name": "AEO/GEO 代管",
+                      "name_en": "AEO/GEO Managed Hosting",
+                      "summary": "Managed website hosting focused on being correctly understood and cited by AI answer engines.",
+                      "available": true,
+                      "url": "https://shell.fans/aeo-geo",
+                      "docs_url": "https://shell.fans/aeo"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No such operation.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                },
+                "example": {
+                  "type": "https://shell.fans/problems/resource-not-found",
+                  "title": "Resource not found",
+                  "status": 404,
+                  "detail": "No such operation in the ShellFans public API v1.",
+                  "instance": "/api/v1/services",
+                  "code": "RESOURCE_NOT_FOUND",
+                  "available_operations": [
+                    "/v1/status",
+                    "/v1/services"
+                  ]
+                }
+              }
+            }
+          },
+          "405": {
+            "description": "Method not allowed. The API is read-only.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                },
+                "example": {
+                  "type": "https://shell.fans/problems/method-not-allowed",
+                  "title": "Method not allowed",
+                  "status": 405,
+                  "detail": "The ShellFans public API is read-only. Only GET and OPTIONS are accepted.",
+                  "instance": "/api/v1/services",
+                  "code": "METHOD_NOT_ALLOWED"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limit exceeded.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                },
+                "example": {
+                  "type": "https://shell.fans/problems/rate-limit-exceeded",
+                  "title": "Rate limit exceeded",
+                  "status": 429,
+                  "detail": "Too many requests. The limit is 120 requests per 60 seconds per client address.",
+                  "instance": "/api/v1/services",
+                  "code": "RATE_LIMIT_EXCEEDED",
+                  "retry_after": 45
+                }
+              }
+            },
+            "headers": {
+              "RateLimit-Limit": {
+                "description": "Requests permitted in the current window.",
+                "schema": {
+                  "type": "integer",
+                  "minimum": 1
+                },
+                "example": 120
+              },
+              "RateLimit-Remaining": {
+                "description": "Requests left in the current window.",
+                "schema": {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                "example": 119
+              },
+              "RateLimit-Reset": {
+                "description": "Seconds until the window resets.",
+                "schema": {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                "example": 60
+              },
+              "RateLimit-Policy": {
+                "description": "Policy in the form \"<limit>;w=<window seconds>\".",
+                "schema": {
+                  "type": "string"
+                },
+                "example": "120;w=60"
+              },
+              "Retry-After": {
+                "description": "Seconds to wait before retrying.",
+                "schema": {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                "example": 45
+              }
+            }
+          },
+          "500": {
+            "description": "Unexpected server error.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                },
+                "example": {
+                  "type": "https://shell.fans/problems/internal-error",
+                  "title": "Internal error",
+                  "status": 500,
+                  "detail": "An unexpected error occurred handling this request.",
+                  "instance": "/api/v1/services",
+                  "code": "INTERNAL_ERROR"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "The content service backing this operation is unreachable and no cached copy is available.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                },
+                "example": {
+                  "type": "https://shell.fans/problems/upstream-unavailable",
+                  "title": "Upstream unavailable",
+                  "status": 503,
+                  "detail": "The content service backing this operation is temporarily unreachable and no cached copy is available. Retry shortly.",
+                  "instance": "/api/v1/services",
+                  "code": "UPSTREAM_UNAVAILABLE"
+                }
+              }
+            },
+            "headers": {
+              "Retry-After": {
+                "description": "Seconds to wait before retrying.",
+                "schema": {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                "example": 45
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/plans": {
+      "get": {
+        "operationId": "listPlans",
+        "summary": "List published ShellFans plan tiers and prices",
+        "description": "Returns the plan tiers shown on the ShellFans pricing page, with amounts in New Taiwan Dollars. Availability is signalled by `cta_label`, not by price — a priced plan can still be unreleased. Cross-check `listServices` before telling a user a plan can be bought.",
+        "tags": [
+          "catalog"
+        ],
+        "security": [],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Success.",
+            "headers": {
+              "RateLimit-Limit": {
+                "description": "Requests permitted in the current window.",
+                "schema": {
+                  "type": "integer",
+                  "minimum": 1
+                },
+                "example": 120
+              },
+              "RateLimit-Remaining": {
+                "description": "Requests left in the current window.",
+                "schema": {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                "example": 119
+              },
+              "RateLimit-Reset": {
+                "description": "Seconds until the window resets.",
+                "schema": {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                "example": 60
+              },
+              "RateLimit-Policy": {
+                "description": "Policy in the form \"<limit>;w=<window seconds>\".",
+                "schema": {
+                  "type": "string"
+                },
+                "example": "120;w=60"
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "currency",
+                    "plans"
+                  ],
+                  "additionalProperties": false,
+                  "properties": {
+                    "currency": {
+                      "type": "string",
+                      "enum": [
+                        "TWD"
+                      ],
+                      "description": "ISO 4217 code for every amount in this response."
+                    },
+                    "plans": {
+                      "type": "array",
+                      "maxItems": 30,
+                      "description": "Published plan tiers, in display order.",
+                      "items": {
+                        "type": "object",
+                        "required": [
+                          "id",
+                          "name",
+                          "monthly_price",
+                          "yearly_price",
+                          "cta_label",
+                          "highlighted",
+                          "url"
+                        ],
+                        "additionalProperties": false,
+                        "properties": {
+                          "id": {
+                            "type": "string",
+                            "maxLength": 64,
+                            "description": "Stable plan identifier."
+                          },
+                          "tier": {
+                            "type": [
+                              "string",
+                              "null"
+                            ],
+                            "maxLength": 64,
+                            "description": "Tier family the plan belongs to. May be null."
+                          },
+                          "name": {
+                            "type": "string",
+                            "maxLength": 120,
+                            "description": "Display name (Traditional Chinese)."
+                          },
+                          "tagline": {
+                            "type": [
+                              "string",
+                              "null"
+                            ],
+                            "maxLength": 300
+                          },
+                          "monthly_price": {
+                            "type": [
+                              "number",
+                              "null"
+                            ],
+                            "minimum": 0,
+                            "description": "Monthly amount in TWD. Null when not published."
+                          },
+                          "yearly_price": {
+                            "type": [
+                              "number",
+                              "null"
+                            ],
+                            "minimum": 0,
+                            "description": "Yearly amount in TWD. Null when not published."
+                          },
+                          "cta_label": {
+                            "type": [
+                              "string",
+                              "null"
+                            ],
+                            "maxLength": 120,
+                            "description": "The call-to-action text shown on the plan card, verbatim. A non-purchase label (for example 敬請期待 / coming soon) means the plan is announced but not yet purchasable. Price alone does not indicate availability: a priced plan can still be unreleased, and a zero-price plan can be live. Read this field rather than inferring from the amount."
+                          },
+                          "highlighted": {
+                            "type": "boolean",
+                            "description": "Whether the plan is presented as the recommended choice."
+                          },
+                          "url": {
+                            "type": "string",
+                            "format": "uri",
+                            "description": "Page where the plan is presented."
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "example": {
+                  "currency": "TWD",
+                  "plans": [
+                    {
+                      "id": "ce_creator",
+                      "tier": "creator",
+                      "name": "創作者版",
+                      "tagline": "專業創作者量身打造",
+                      "monthly_price": 699,
+                      "yearly_price": null,
+                      "cta_label": "敬啟期待",
+                      "highlighted": false,
+                      "url": "https://shell.fans/pricing"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No such operation.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                },
+                "example": {
+                  "type": "https://shell.fans/problems/resource-not-found",
+                  "title": "Resource not found",
+                  "status": 404,
+                  "detail": "No such operation in the ShellFans public API v1.",
+                  "instance": "/api/v1/services",
+                  "code": "RESOURCE_NOT_FOUND",
+                  "available_operations": [
+                    "/v1/status",
+                    "/v1/services"
+                  ]
+                }
+              }
+            }
+          },
+          "405": {
+            "description": "Method not allowed. The API is read-only.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                },
+                "example": {
+                  "type": "https://shell.fans/problems/method-not-allowed",
+                  "title": "Method not allowed",
+                  "status": 405,
+                  "detail": "The ShellFans public API is read-only. Only GET and OPTIONS are accepted.",
+                  "instance": "/api/v1/services",
+                  "code": "METHOD_NOT_ALLOWED"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limit exceeded.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                },
+                "example": {
+                  "type": "https://shell.fans/problems/rate-limit-exceeded",
+                  "title": "Rate limit exceeded",
+                  "status": 429,
+                  "detail": "Too many requests. The limit is 120 requests per 60 seconds per client address.",
+                  "instance": "/api/v1/services",
+                  "code": "RATE_LIMIT_EXCEEDED",
+                  "retry_after": 45
+                }
+              }
+            },
+            "headers": {
+              "RateLimit-Limit": {
+                "description": "Requests permitted in the current window.",
+                "schema": {
+                  "type": "integer",
+                  "minimum": 1
+                },
+                "example": 120
+              },
+              "RateLimit-Remaining": {
+                "description": "Requests left in the current window.",
+                "schema": {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                "example": 119
+              },
+              "RateLimit-Reset": {
+                "description": "Seconds until the window resets.",
+                "schema": {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                "example": 60
+              },
+              "RateLimit-Policy": {
+                "description": "Policy in the form \"<limit>;w=<window seconds>\".",
+                "schema": {
+                  "type": "string"
+                },
+                "example": "120;w=60"
+              },
+              "Retry-After": {
+                "description": "Seconds to wait before retrying.",
+                "schema": {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                "example": 45
+              }
+            }
+          },
+          "500": {
+            "description": "Unexpected server error.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                },
+                "example": {
+                  "type": "https://shell.fans/problems/internal-error",
+                  "title": "Internal error",
+                  "status": 500,
+                  "detail": "An unexpected error occurred handling this request.",
+                  "instance": "/api/v1/services",
+                  "code": "INTERNAL_ERROR"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "The content service backing this operation is unreachable and no cached copy is available.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                },
+                "example": {
+                  "type": "https://shell.fans/problems/upstream-unavailable",
+                  "title": "Upstream unavailable",
+                  "status": 503,
+                  "detail": "The content service backing this operation is temporarily unreachable and no cached copy is available. Retry shortly.",
+                  "instance": "/api/v1/services",
+                  "code": "UPSTREAM_UNAVAILABLE"
+                }
+              }
+            },
+            "headers": {
+              "Retry-After": {
+                "description": "Seconds to wait before retrying.",
+                "schema": {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                "example": 45
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/organization": {
+      "get": {
+        "operationId": "getOrganization",
+        "summary": "Get ShellFans corporate identity, contact details and patents",
+        "description": "Returns the authoritative machine-readable record of the company behind ShellFans: registered name, Taiwan unified business number, registered address, contact details, granted and pending patents, official social profiles and dated milestones. Use this for entity resolution — confirming that a ShellFans reference on the open web corresponds to this specific Taiwan company. The same facts appear as Schema.org Organization JSON-LD on every page of shell.fans.",
+        "tags": [
+          "identity"
+        ],
+        "security": [],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Success.",
+            "headers": {
+              "RateLimit-Limit": {
+                "description": "Requests permitted in the current window.",
+                "schema": {
+                  "type": "integer",
+                  "minimum": 1
+                },
+                "example": 120
+              },
+              "RateLimit-Remaining": {
+                "description": "Requests left in the current window.",
+                "schema": {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                "example": 119
+              },
+              "RateLimit-Reset": {
+                "description": "Seconds until the window resets.",
+                "schema": {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                "example": 60
+              },
+              "RateLimit-Policy": {
+                "description": "Policy in the form \"<limit>;w=<window seconds>\".",
+                "schema": {
+                  "type": "string"
+                },
+                "example": "120;w=60"
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "legal_name",
+                    "brand_name",
+                    "tax_id",
+                    "jurisdiction",
+                    "founded",
+                    "website",
+                    "email",
+                    "telephone",
+                    "address",
+                    "patents",
+                    "social",
+                    "milestones"
+                  ],
+                  "additionalProperties": false,
+                  "properties": {
+                    "legal_name": {
+                      "type": "string",
+                      "maxLength": 200,
+                      "description": "Registered company name in Traditional Chinese."
+                    },
+                    "brand_name": {
+                      "type": "string",
+                      "maxLength": 200,
+                      "description": "Brand name used in English."
+                    },
+                    "brand_name_zh": {
+                      "type": "string",
+                      "maxLength": 200,
+                      "description": "Combined Chinese-and-brand form used in Taiwan."
+                    },
+                    "tax_id": {
+                      "type": "string",
+                      "pattern": "^[0-9]{8}$",
+                      "description": "Taiwan unified business number (統一編號)."
+                    },
+                    "jurisdiction": {
+                      "type": "string",
+                      "enum": [
+                        "TW"
+                      ],
+                      "description": "ISO 3166-1 alpha-2 of the registering jurisdiction."
+                    },
+                    "founded": {
+                      "type": "string",
+                      "pattern": "^[0-9]{4}-[0-9]{2}$",
+                      "description": "Incorporation month, YYYY-MM."
+                    },
+                    "website": {
+                      "type": "string",
+                      "format": "uri"
+                    },
+                    "email": {
+                      "type": "string",
+                      "format": "email"
+                    },
+                    "telephone": {
+                      "type": "string",
+                      "maxLength": 40,
+                      "description": "Main line in E.164 format."
+                    },
+                    "address": {
+                      "type": "object",
+                      "description": "Registered office address.",
+                      "required": [
+                        "street",
+                        "locality",
+                        "region",
+                        "country"
+                      ],
+                      "additionalProperties": false,
+                      "properties": {
+                        "street": {
+                          "type": "string",
+                          "maxLength": 200
+                        },
+                        "locality": {
+                          "type": "string",
+                          "maxLength": 100,
+                          "description": "District."
+                        },
+                        "region": {
+                          "type": "string",
+                          "maxLength": 100,
+                          "description": "City."
+                        },
+                        "country": {
+                          "type": "string",
+                          "enum": [
+                            "TW"
+                          ]
+                        }
+                      }
+                    },
+                    "patents": {
+                      "type": "array",
+                      "maxItems": 20,
+                      "description": "Patents covering the social media maintenance technology. ShellFans claims no AEO or GEO patent — do not describe any of these as such.",
+                      "items": {
+                        "type": "object",
+                        "required": [
+                          "jurisdiction",
+                          "number",
+                          "status"
+                        ],
+                        "additionalProperties": false,
+                        "properties": {
+                          "jurisdiction": {
+                            "type": "string",
+                            "enum": [
+                              "TW",
+                              "US",
+                              "JP"
+                            ],
+                            "description": "ISO 3166-1 alpha-2 of the granting office."
+                          },
+                          "number": {
+                            "type": [
+                              "string",
+                              "null"
+                            ],
+                            "maxLength": 60,
+                            "description": "Patent number. Null while an application is pending."
+                          },
+                          "status": {
+                            "type": "string",
+                            "enum": [
+                              "granted",
+                              "pending"
+                            ]
+                          }
+                        }
+                      }
+                    },
+                    "social": {
+                      "type": "array",
+                      "maxItems": 20,
+                      "description": "Official ShellFans profiles. Same URLs published as Organization.sameAs.",
+                      "items": {
+                        "type": "object",
+                        "required": [
+                          "platform",
+                          "url"
+                        ],
+                        "additionalProperties": false,
+                        "properties": {
+                          "platform": {
+                            "type": "string",
+                            "maxLength": 60
+                          },
+                          "url": {
+                            "type": "string",
+                            "format": "uri"
+                          }
+                        }
+                      }
+                    },
+                    "milestones": {
+                      "type": "array",
+                      "maxItems": 50,
+                      "description": "Dated company milestones, oldest first.",
+                      "items": {
+                        "type": "object",
+                        "required": [
+                          "date",
+                          "title"
+                        ],
+                        "additionalProperties": false,
+                        "properties": {
+                          "date": {
+                            "type": "string",
+                            "maxLength": 40,
+                            "description": "Date as published, for example \"2023/03\" or \"2004-2015\"."
+                          },
+                          "title": {
+                            "type": "string",
+                            "maxLength": 200
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "example": {
+                  "legal_name": "唄粉智能科技股份有限公司",
+                  "brand_name": "ShellFans AI Technology",
+                  "brand_name_zh": "唄粉智能科技ShellFans",
+                  "tax_id": "83032387",
+                  "jurisdiction": "TW",
+                  "founded": "2023-03",
+                  "website": "https://shell.fans",
+                  "email": "hello@shell.fans",
+                  "telephone": "+886-2-7714-3635",
+                  "address": {
+                    "street": "瑞光路335號4樓",
+                    "locality": "內湖區",
+                    "region": "臺北市",
+                    "country": "TW"
+                  },
+                  "patents": [
+                    {
+                      "jurisdiction": "TW",
+                      "number": "I908295",
+                      "status": "granted"
+                    }
+                  ],
+                  "social": [
+                    {
+                      "platform": "Facebook",
+                      "url": "https://www.facebook.com/profile.php?id=61581243232686"
+                    }
+                  ],
+                  "milestones": [
+                    {
+                      "date": "2023/03",
+                      "title": "創辦唄粉智能科技股份有限公司"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No such operation.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                },
+                "example": {
+                  "type": "https://shell.fans/problems/resource-not-found",
+                  "title": "Resource not found",
+                  "status": 404,
+                  "detail": "No such operation in the ShellFans public API v1.",
+                  "instance": "/api/v1/services",
+                  "code": "RESOURCE_NOT_FOUND",
+                  "available_operations": [
+                    "/v1/status",
+                    "/v1/services"
+                  ]
+                }
+              }
+            }
+          },
+          "405": {
+            "description": "Method not allowed. The API is read-only.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                },
+                "example": {
+                  "type": "https://shell.fans/problems/method-not-allowed",
+                  "title": "Method not allowed",
+                  "status": 405,
+                  "detail": "The ShellFans public API is read-only. Only GET and OPTIONS are accepted.",
+                  "instance": "/api/v1/services",
+                  "code": "METHOD_NOT_ALLOWED"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limit exceeded.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                },
+                "example": {
+                  "type": "https://shell.fans/problems/rate-limit-exceeded",
+                  "title": "Rate limit exceeded",
+                  "status": 429,
+                  "detail": "Too many requests. The limit is 120 requests per 60 seconds per client address.",
+                  "instance": "/api/v1/services",
+                  "code": "RATE_LIMIT_EXCEEDED",
+                  "retry_after": 45
+                }
+              }
+            },
+            "headers": {
+              "RateLimit-Limit": {
+                "description": "Requests permitted in the current window.",
+                "schema": {
+                  "type": "integer",
+                  "minimum": 1
+                },
+                "example": 120
+              },
+              "RateLimit-Remaining": {
+                "description": "Requests left in the current window.",
+                "schema": {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                "example": 119
+              },
+              "RateLimit-Reset": {
+                "description": "Seconds until the window resets.",
+                "schema": {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                "example": 60
+              },
+              "RateLimit-Policy": {
+                "description": "Policy in the form \"<limit>;w=<window seconds>\".",
+                "schema": {
+                  "type": "string"
+                },
+                "example": "120;w=60"
+              },
+              "Retry-After": {
+                "description": "Seconds to wait before retrying.",
+                "schema": {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                "example": 45
+              }
+            }
+          },
+          "500": {
+            "description": "Unexpected server error.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                },
+                "example": {
+                  "type": "https://shell.fans/problems/internal-error",
+                  "title": "Internal error",
+                  "status": 500,
+                  "detail": "An unexpected error occurred handling this request.",
+                  "instance": "/api/v1/services",
+                  "code": "INTERNAL_ERROR"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "The content service backing this operation is unreachable and no cached copy is available.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                },
+                "example": {
+                  "type": "https://shell.fans/problems/upstream-unavailable",
+                  "title": "Upstream unavailable",
+                  "status": 503,
+                  "detail": "The content service backing this operation is temporarily unreachable and no cached copy is available. Retry shortly.",
+                  "instance": "/api/v1/services",
+                  "code": "UPSTREAM_UNAVAILABLE"
+                }
+              }
+            },
+            "headers": {
+              "Retry-After": {
+                "description": "Seconds to wait before retrying.",
+                "schema": {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                "example": 45
+              }
+            }
+          }
         }
       }
     }
   },
   "components": {
     "securitySchemes": {},
-    "responses": {
-      "NotFound": {
-        "description": "No such endpoint. ShellFans does not expose an API surface beyond the operations in this document.",
-        "content": {
-          "application/json": {
-            "schema": { "$ref": "#/components/schemas/Error" },
-            "example": {
-              "error": {
-                "code": "RESOURCE_NOT_FOUND",
-                "message": "The requested endpoint does not exist.",
-                "hint": "Public endpoints are described at https://shell.fans/openapi.json. Administrative routes are not public."
-              }
-            }
-          }
-        }
-      }
-    },
     "schemas": {
-      "Error": {
+      "Problem": {
         "type": "object",
-        "description": "Every machine-oriented error response from ShellFans uses this envelope.",
-        "required": ["error"],
+        "title": "Problem",
+        "description": "RFC 9457 Problem Details. Every error from the ShellFans public API uses this shape and is served as application/problem+json. Branch on `code`; the wording of `title` and `detail` is not stable.",
+        "required": [
+          "type",
+          "title",
+          "status",
+          "detail",
+          "code"
+        ],
         "additionalProperties": false,
         "properties": {
-          "error": {
-            "type": "object",
-            "required": ["code", "message"],
-            "additionalProperties": false,
-            "properties": {
-              "code": {
-                "type": "string",
-                "description": "Stable machine-readable identifier. Branch on this, not on `message`.",
-                "enum": [
-                  "RESOURCE_NOT_FOUND",
-                  "METHOD_NOT_ALLOWED",
-                  "UNAUTHORIZED",
-                  "ADMIN_DISABLED"
-                ]
-              },
-              "message": {
-                "type": "string",
-                "description": "Human-readable explanation. Wording is not stable.",
-                "maxLength": 500
-              },
-              "hint": {
-                "type": "string",
-                "description": "Where to look next. Present on most errors.",
-                "maxLength": 500
-              }
-            }
-          }
-        }
-      },
-      "Health": {
-        "type": "object",
-        "required": ["ok", "ts"],
-        "additionalProperties": false,
-        "properties": {
-          "ok": {
-            "type": "boolean",
-            "description": "True when the service is accepting requests. Never false in a 200 response.",
-            "const": true
-          },
-          "ts": {
+          "type": {
             "type": "string",
-            "format": "date-time",
-            "description": "Server time in ISO 8601 with a UTC offset."
-          }
-        }
-      },
-      "Quota": {
-        "type": "object",
-        "required": ["remaining", "limit", "resetAt", "anonymous"],
-        "additionalProperties": true,
-        "properties": {
-          "remaining": {
+            "format": "uri",
+            "description": "Absolute URI identifying the problem type. Dereferenceable.",
+            "examples": [
+              "https://shell.fans/problems/resource-not-found"
+            ]
+          },
+          "title": {
+            "type": "string",
+            "maxLength": 200,
+            "description": "Short human-readable summary. Wording may change."
+          },
+          "status": {
             "type": "integer",
-            "minimum": 0,
-            "description": "Free queries left today for the calling IP address."
+            "minimum": 400,
+            "maximum": 599,
+            "description": "HTTP status code, repeated for convenience."
           },
-          "limit": {
-            "type": "integer",
-            "minimum": 0,
-            "description": "Daily allowance for the calling IP address."
+          "detail": {
+            "type": "string",
+            "maxLength": 1000,
+            "description": "Explanation specific to this occurrence."
           },
-          "resetAt": {
-            "type": "integer",
-            "format": "int64",
-            "description": "When the allowance resets, as Unix milliseconds."
+          "instance": {
+            "type": "string",
+            "maxLength": 500,
+            "description": "Path of the request that produced the error."
           },
-          "anonymous": {
-            "type": "boolean",
-            "description": "True when the caller is not an authenticated ShellFans user. Always true for public callers."
-          },
-          "searchable_platforms": {
-            "type": "array",
-            "description": "Social platforms the caller's tier may query. Public callers get the anonymous set.",
-            "items": {
-              "type": "string",
-              "enum": ["facebook", "instagram", "threads", "x", "tiktok", "ptt"]
-            }
-          }
-        }
-      },
-      "ProductFlagsEnvelope": {
-        "type": "object",
-        "required": ["data"],
-        "additionalProperties": false,
-        "properties": {
-          "data": {
-            "type": "object",
-            "required": [
-              "shellfans_endurance_engine_enabled",
-              "kolfans_wom_enabled",
-              "aeo_geo_managed_hosting_enabled"
+          "code": {
+            "type": "string",
+            "enum": [
+              "BAD_REQUEST",
+              "UNAUTHORIZED",
+              "FORBIDDEN",
+              "RESOURCE_NOT_FOUND",
+              "METHOD_NOT_ALLOWED",
+              "VALIDATION_FAILED",
+              "RATE_LIMIT_EXCEEDED",
+              "UPSTREAM_UNAVAILABLE",
+              "INTERNAL_ERROR"
             ],
-            "additionalProperties": false,
-            "properties": {
-              "shellfans_endurance_engine_enabled": {
-                "type": "boolean",
-                "description": "Cross-platform social media asset continuity (ShellFans 續航引擎)."
-              },
-              "kolfans_wom_enabled": {
-                "type": "boolean",
-                "description": "Word-of-mouth marketing workflow platform (口碑行銷)."
-              },
-              "aeo_geo_managed_hosting_enabled": {
-                "type": "boolean",
-                "description": "AEO/GEO managed hosting."
-              }
-            }
+            "description": "Stable machine-readable identifier. Branch on this."
+          },
+          "retry_after": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "Seconds to wait before retrying. Present on 429."
+          },
+          "available_operations": {
+            "type": "array",
+            "maxItems": 50,
+            "items": {
+              "type": "string"
+            },
+            "description": "Valid operation paths. Present on 404."
           }
-        }
-      },
-      "LocalizedText": {
-        "type": "object",
-        "description": "A string in both supported locales.",
-        "additionalProperties": false,
-        "properties": {
-          "zh-TW": { "type": "string" },
-          "en": { "type": "string" }
-        }
-      },
-      "Pricing": {
-        "type": "object",
-        "required": ["cards", "table"],
-        "additionalProperties": true,
-        "properties": {
-          "cards": {
-            "type": "array",
-            "description": "Plan tiers, in display order.",
-            "items": { "$ref": "#/components/schemas/PricingCard" }
-          },
-          "table": { "$ref": "#/components/schemas/PricingTable" }
-        }
-      },
-      "PricingCard": {
-        "type": "object",
-        "required": ["slug", "tier", "name"],
-        "additionalProperties": true,
-        "properties": {
-          "slug": {
-            "type": "string",
-            "description": "Stable identifier for the plan. Use this to correlate across responses, not `name`.",
-            "maxLength": 64
-          },
-          "tier": { "type": "string", "description": "Tier family the plan belongs to.", "maxLength": 64 },
-          "name": { "type": "string", "description": "Display name (Traditional Chinese).", "maxLength": 120 },
-          "eyebrow": { "type": "string", "maxLength": 120 },
-          "tagline": { "type": "string", "maxLength": 300 },
-          "popular": { "type": "boolean", "description": "Whether the plan is highlighted as the recommended choice." },
-          "cta": {
-            "type": "string",
-            "description": "Call-to-action label. A non-purchase label (for example 敬請期待 / coming soon) means the plan is announced but not purchasable.",
-            "maxLength": 120
-          },
-          "prices": {
-            "type": "object",
-            "description": "Billing periods offered for this plan. Absent when the plan has no published price.",
-            "additionalProperties": { "$ref": "#/components/schemas/Price" }
-          },
-          "features": {
-            "type": "array",
-            "description": "Feature list shown on the card.",
-            "items": {
-              "type": "object",
-              "additionalProperties": true,
-              "properties": {
-                "label": { "type": "string", "maxLength": 200 },
-                "supported": { "type": "boolean" }
-              }
-            }
-          }
-        }
-      },
-      "Price": {
-        "type": "object",
-        "additionalProperties": true,
-        "properties": {
-          "amount": { "type": "number", "minimum": 0, "description": "Numeric amount." },
-          "label": { "type": "string", "description": "Formatted amount as displayed.", "maxLength": 60 },
-          "currency": { "type": "string", "description": "ISO 4217 code. TWD unless stated otherwise.", "maxLength": 8 }
-        }
-      },
-      "PricingTable": {
-        "type": "object",
-        "required": ["columns", "sections"],
-        "additionalProperties": true,
-        "properties": {
-          "title": { "type": "string", "maxLength": 200 },
-          "subtitle": { "type": "string", "maxLength": 300 },
-          "columns": {
-            "type": "array",
-            "description": "Column headers, aligned with the plan cards.",
-            "items": { "type": "string", "maxLength": 120 }
-          },
-          "sections": {
-            "type": "array",
-            "description": "Feature groups. Each row's `value` array is positionally aligned with `columns`.",
-            "items": {
-              "type": "object",
-              "additionalProperties": true,
-              "properties": {
-                "title": { "type": "string", "maxLength": 200 },
-                "rows": {
-                  "type": "array",
-                  "items": {
-                    "type": "object",
-                    "additionalProperties": true,
-                    "properties": {
-                      "label": { "type": "string", "maxLength": 200 },
-                      "value": { "type": "array", "items": { "type": ["string", "boolean", "null"] } }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "FooterEnvelope": {
-        "type": "object",
-        "required": ["data"],
-        "additionalProperties": false,
-        "properties": { "data": { "$ref": "#/components/schemas/Footer" } }
-      },
-      "Footer": {
-        "type": "object",
-        "additionalProperties": true,
-        "properties": {
-          "logo": {
-            "type": "object",
-            "additionalProperties": true,
-            "properties": {
-              "src": { "type": "string", "format": "uri" },
-              "alt": { "type": "string", "maxLength": 200 }
-            }
-          },
-          "description": { "$ref": "#/components/schemas/LocalizedText" },
-          "linkGroups": {
-            "type": "array",
-            "description": "Footer navigation groups.",
-            "items": {
-              "type": "object",
-              "additionalProperties": true,
-              "properties": {
-                "title": { "$ref": "#/components/schemas/LocalizedText" },
-                "links": {
-                  "type": "array",
-                  "items": {
-                    "type": "object",
-                    "additionalProperties": true,
-                    "properties": {
-                      "label": { "$ref": "#/components/schemas/LocalizedText" },
-                      "href": { "type": "string", "format": "uri" },
-                      "external": { "type": "boolean" }
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "company": {
-            "type": "object",
-            "description": "Legal entity block: company name, registered address, email, phone, Taiwan unified business number.",
-            "additionalProperties": true,
-            "properties": {
-              "lines": {
-                "type": "array",
-                "items": {
-                  "type": "object",
-                  "additionalProperties": true,
-                  "properties": {
-                    "text": { "$ref": "#/components/schemas/LocalizedText" },
-                    "href": { "type": "string" }
-                  }
-                }
-              }
-            }
-          },
-          "patent": {
-            "type": "object",
-            "description": "Patent notice. Covers the social media maintenance technology only — ShellFans claims no AEO or GEO patent.",
-            "additionalProperties": true,
-            "properties": {
-              "before": { "$ref": "#/components/schemas/LocalizedText" },
-              "linkText": { "$ref": "#/components/schemas/LocalizedText" },
-              "linkHref": { "type": "string", "format": "uri" },
-              "after": { "$ref": "#/components/schemas/LocalizedText" }
-            }
-          },
-          "copyright": {
-            "type": "object",
-            "additionalProperties": true,
-            "properties": { "text": { "$ref": "#/components/schemas/LocalizedText" } }
-          },
-          "social": {
-            "type": "array",
-            "description": "Official ShellFans profiles. These are the same URLs published as Organization.sameAs.",
-            "items": {
-              "type": "object",
-              "additionalProperties": true,
-              "properties": {
-                "platform": { "type": "string", "maxLength": 60 },
-                "url": { "type": "string", "format": "uri" },
-                "iconUrl": { "type": "string", "format": "uri" }
-              }
-            }
-          },
-          "legal": {
-            "type": "array",
-            "description": "Privacy policy and terms links.",
-            "items": {
-              "type": "object",
-              "additionalProperties": true,
-              "properties": {
-                "label": { "$ref": "#/components/schemas/LocalizedText" },
-                "href": { "type": "string", "format": "uri" }
-              }
-            }
-          }
-        }
-      },
-      "CofounderEnvelope": {
-        "type": "object",
-        "required": ["data"],
-        "additionalProperties": false,
-        "properties": { "data": { "$ref": "#/components/schemas/Cofounder" } }
-      },
-      "Cofounder": {
-        "type": "object",
-        "additionalProperties": true,
-        "properties": {
-          "hero": { "type": "object", "additionalProperties": true, "description": "Name, role and portrait." },
-          "intro": { "type": "object", "additionalProperties": true, "description": "Biography. `bodyHtml` contains a restricted set of inline HTML." },
-          "milestones": {
-            "type": "array",
-            "description": "Dated company milestones, oldest first.",
-            "items": {
-              "type": "object",
-              "additionalProperties": true,
-              "properties": {
-                "eyebrow": { "type": "string", "description": "Date, as published (for example 2023/03).", "maxLength": 40 },
-                "title": { "type": "string", "maxLength": 200 },
-                "description": { "type": "string" }
-              }
-            }
-          },
-          "vision": { "type": "object", "additionalProperties": true },
-          "cta": { "type": "object", "additionalProperties": true }
         }
       }
     }
-  },
-  "security": []
+  }
 }

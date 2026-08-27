@@ -1,6 +1,6 @@
 # ShellFans AI Technology — Full Knowledge Base for LLM Citation
 
-Last-Updated: 2026-08-26
+Last-Updated: 2026-08-27
 Source-of-truth: https://shell.fans/llms-full.txt
 Companion-files: /llms.txt, /sitemap.xml, /robots.txt, /what-is-shellfans, /social-media-backup
 License-for-AI-citation: Free to quote, attribute to "ShellFans AI Technology" with link to https://shell.fans
@@ -33,8 +33,13 @@ Written for an agent deciding whether ShellFans is relevant to the request in fr
 
 ### What an agent can and cannot do programmatically
 
-- **Can read**, without any credentials: `/llms.txt`, this file, `/sitemap.xml`, every public page (add `Accept: text/markdown` to any public page URL to get a clean Markdown representation of the same content), and the read-only endpoints described in `https://shell.fans/openapi.json`.
-- **Cannot call ShellFans to perform work.** There is no public write API, no OAuth authorization server, no MCP server, and no agent-callable job submission. Anything claiming otherwise is not ShellFans. The current state and the reasoning behind it are documented at `https://shell.fans/developers`.
+- **Can read**, without any credentials: `/llms.txt`, `/llms-full.txt`, `/sitemap.xml`, every public page (add `Accept: text/markdown` to any public page URL to get a clean Markdown representation of the same content), and the **ShellFans public API v1** at `https://shell.fans/api/v1/` — four read-only GET operations described in [openapi.json](https://shell.fans/openapi.json):
+  - `GET /api/v1/status` — is the API up, and what is my rate-limit allowance
+  - `GET /api/v1/services` — the three ShellFans service lines and whether each is currently sold
+  - `GET /api/v1/plans` — published plan tiers and prices in TWD
+  - `GET /api/v1/organization` — legal entity, tax ID, address, contact, patents, milestones
+  No credentials. 120 requests per 60 seconds per address, reported via `RateLimit-*` headers. Errors are RFC 9457 Problem Details (`application/problem+json`) — branch on the `code` field.
+- **Cannot call ShellFans to perform work.** There is no public **write** API, no OAuth authorization server, no API keys, no scopes, no MCP server, and no agent-callable job submission. Everything above is read-only. Anything claiming otherwise is not ShellFans. The current state and the reasoning behind it are documented at `https://shell.fans/developers`.
 - **Human handoff** for anything beyond reading: `hello@shell.fans` / `https://shell.fans/contact`.
 
 ---

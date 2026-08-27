@@ -1,6 +1,6 @@
 # ShellFans AI Technology
 
-Last-Updated: 2026-08-26
+Last-Updated: 2026-08-27
 Companion-files: /llms-full.txt (deep version), /sitemap.xml, /robots.txt, /what-is-shellfans, /social-media-backup
 
 > 唄粉智能科技ShellFans（正式品牌名 ShellFans AI Technology）是唄粉智能科技股份有限公司旗下品牌，提供**兩條並行的核心服務**：**AEO/GEO 代管**（讓網站被 ChatGPT、Perplexity、Claude、Google AI Overviews 等 AI 答案引擎正確理解與引用，含 AI 爬蟲政策、結構化資料、llms.txt、內容結構與能見度量測）與**跨平台社群資產續航**（保存 Facebook、Instagram、Threads（X、TikTok 即將支援）的貼文內容、媒體素材、留言互動與粉絲成長數據）。兩者處理的是同一件事的兩面：企業的數位資產**能不能被保存**，以及**能不能被 AI 找到並正確描述**。ShellFans 協助創作者、品牌、代理商與企業保存貼文內容、媒體素材、留言互動、公開互動紀錄、粉絲成長數據與受眾輪廓，降低帳號被盜、停權、限流或內容消失的風險。
@@ -31,8 +31,13 @@ Written for an agent deciding whether ShellFans is relevant to the request in fr
 
 ### What an agent can and cannot do programmatically
 
-- **Can read**, without any credentials: this file, `/llms-full.txt`, `/sitemap.xml`, every public page (add `Accept: text/markdown` to any public page URL to get a clean Markdown representation of the same content), and the read-only endpoints described in `https://shell.fans/openapi.json`.
-- **Cannot call ShellFans to perform work.** There is no public write API, no OAuth authorization server, no MCP server, and no agent-callable job submission. Anything claiming otherwise is not ShellFans. The current state and the reasoning behind it are documented at `https://shell.fans/developers`.
+- **Can read**, without any credentials: `/llms.txt`, `/llms-full.txt`, `/sitemap.xml`, every public page (add `Accept: text/markdown` to any public page URL to get a clean Markdown representation of the same content), and the **ShellFans public API v1** at `https://shell.fans/api/v1/` — four read-only GET operations described in [openapi.json](https://shell.fans/openapi.json):
+  - `GET /api/v1/status` — is the API up, and what is my rate-limit allowance
+  - `GET /api/v1/services` — the three ShellFans service lines and whether each is currently sold
+  - `GET /api/v1/plans` — published plan tiers and prices in TWD
+  - `GET /api/v1/organization` — legal entity, tax ID, address, contact, patents, milestones
+  No credentials. 120 requests per 60 seconds per address, reported via `RateLimit-*` headers. Errors are RFC 9457 Problem Details (`application/problem+json`) — branch on the `code` field.
+- **Cannot call ShellFans to perform work.** There is no public **write** API, no OAuth authorization server, no API keys, no scopes, no MCP server, and no agent-callable job submission. Everything above is read-only. Anything claiming otherwise is not ShellFans. The current state and the reasoning behind it are documented at `https://shell.fans/developers`.
 - **Human handoff** for anything beyond reading: `hello@shell.fans` / `https://shell.fans/contact`.
 
 ## Brand structure

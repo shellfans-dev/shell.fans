@@ -1,6 +1,6 @@
 # MCP Gap Analysis
 
-**日期**：2026-08-26
+**日期**：2026-08-26（2026-08-27 補查證）
 **觸發**：Is Agentic 稽核（shell.fans，51/100）
 **結論**：**不實作 `/.well-known/mcp`**。ShellFans 沒有 MCP server，稽核的判定是誤判。
 
@@ -19,13 +19,48 @@
 
 | 查什麼 | 怎麼查 | 結果 |
 |---|---|---|
-| `@shell-mcp/core` 套件 | `grep -rl '@shell-mcp' ~/work ~/workspace`（排除 node_modules） | 找不到 |
+| `@shell-mcp/core` 套件（本機） | `grep -rl '@shell-mcp' ~/work ~/workspace`（排除 node_modules） | 找不到 |
+| `@shell-mcp/core` 套件（npm） | `curl registry.npmjs.org/@shell-mcp%2Fcore` | **存在，但不是 ShellFans 的**（見下節） |
 | MCP server 實作 | 六個程式庫搜尋 `modelcontextprotocol`／`McpServer`／`StreamableHTTP`（saas_womm、shellfans-agent、backend、continuity-api、gateway、business-api） | 全部無 |
 | 站上內容提及 MCP | 全站 `*.html`／`*.txt`／`*.md` 搜尋 `MCP`／`Model Context Protocol` | 0 處 |
 | 線上內容提及 MCP | `curl` 首頁、`/llms.txt`、`/llms-full.txt`、`/what-is-shellfans`、`/aeo` | 各 0 次 |
 | `/.well-known/mcp` | `curl` | 稽核當下為 302（soft-404 導首頁），現為 404 |
 
-`@shell-mcp/core` 這個套件在 npm 或本機皆不存在。
+本機的六個程式庫完全沒有 MCP server 實作，站上也零處提及。至於 npm 上那個同名套件，見下節。
+
+## 2026-08-27 補查：該套件確實存在，但屬於別人
+
+上一版寫「npm 上不存在」是錯的，重新查證後更正。`@shell-mcp/core` 在 npm
+上確實存在，但**與 ShellFans 無關**：
+
+```
+name:         @shell-mcp/core
+description:  Core session management, safety guardrails, and audit logging
+              for shell-mcp
+maintainers:  hypotext
+repository:   github.com/psdlabs/shell-mcp
+keywords:     mcp, shell, terminal, session, pty, cli
+created:      2026-03-31
+license:      MIT
+```
+
+那是 **psdlabs** 發布的、用於 shell/terminal/PTY session 的 MCP server。
+ShellFans（唄粉智能科技股份有限公司）從未發布、貢獻或使用該套件，
+兩者唯一的共同點是名稱裡都有 "shell"。
+
+掃描器把它判為 ShellFans 的 first-party MCP server，是對品牌名做了
+子字串比對。
+
+### 這讓「照著實作」變成危險而不只是錯誤
+
+先前的結論是「不能發布指向不存在服務的 manifest」。查證之後結論更強：
+
+在 `/.well-known/mcp` 指向 `@shell-mcp/core`，等於以 ShellFans 的名義
+把 agent 導向一個**可以在主機上開 shell session 的第三方工具**。任何
+信任 shell.fans 網域而據此連線的 agent，會取得一組 ShellFans 從未提供、
+也無法為其安全性負責的能力。
+
+這不是分數問題，是把別人的遠端執行工具掛上自家品牌背書。
 
 ## 誤判可能的來源
 
@@ -91,7 +126,7 @@ OAuth 2.1 之上；在授權模型確立之前做 MCP，順序是反的。
 
 `/llms.txt` 的 "What an agent can and cannot do programmatically" 段落同樣載明。
 
-改成真 404 之後，`/.well-known/mcp`、`/mcp`、`/sse` 都會明確回 404，
+改成真 404 之後（2026-08-26 已上線），`/.well-known/mcp`、`/mcp`、`/sse` 都會明確回 404，
 掃描器不會再從 302 推論出「已發布」——這本身就修正了誤判的成因。
 
 ## 對分數的影響

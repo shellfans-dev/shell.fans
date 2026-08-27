@@ -92,7 +92,7 @@ ShellFans 的社群資產維護技術已在臺灣與美國取得發明專利，�
 **Canonical:** https://shell.fans/about
 **Brand:** ShellFans AI Technology（唄粉智能科技ShellFans）
 **Publisher:** 唄粉智能科技股份有限公司（Taiwan, 統一編號 83032387）
-**Last-Updated:** 2026-08-26
+**Last-Updated:** 2026-08-27
 
 本檔是 https://shell.fans/about 的 Markdown 等價版本，供 AI agent 讀取。HTML 版為 canonical，本檔不參與搜尋索引。
 
