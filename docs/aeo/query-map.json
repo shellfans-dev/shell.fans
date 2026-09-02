@@ -1,0 +1,214 @@
+{
+  "_meta": {
+    "purpose": "把能見度探測實際使用的問句對應到負責回答它的頁面，讓報告能回答『這一題該由哪一頁贏、實際被引用的是不是它』。",
+    "baseline_date": "2026-09-02",
+    "baseline": {
+      "unbranded_mention_rate": 0,
+      "unbranded_citation_rate": 3,
+      "branded_mention_rate": 100,
+      "technical_cluster_attribution_gap": 10,
+      "note": "0% 提及率但 3% 引用率——AI 已在讀與引用，只是不知道內容屬於誰。這不是內容缺口，是實體歸因缺口。"
+    },
+    "not_public": "本檔在 docs/ 之下，部署時由 rsync --exclude='docs' 排除，不會出現在 shell.fans 上。",
+    "source_of_truth": "問句以 ai_visibility_questions（site_key=shellfans, enabled=true）為準；此檔為對照關係，不是問句來源。",
+    "coverage_finding": "18 個 unbranded 問句全部已有對應頁面，其中 6 題的頁面 H1 幾乎逐字命中。因此本輪不新建 /aeo-guide、/aeo-tools、/aeo/pricing-guide——那會與既有頁面自我競爭。"
+  },
+
+  "clusters": {
+    "service_recommendation": {
+      "intent": "commercial",
+      "description": "使用者要找『誰能做這件事』。這是最難贏的一類：AI 傾向推薦已被第三方來源反覆提及的品牌，自家網站說自己好沒有用。",
+      "primary_target": "/aeo/taiwan-companies",
+      "blocker": "第三方佐證不足。單靠自有頁面難以進入推薦名單，需要可被驗證的外部提及。"
+    },
+    "aeo_geo_knowledge": {
+      "intent": "informational",
+      "description": "概念定義類。這一類最有機會靠內容品質贏，因為答案本身可從單一頁面擷取。",
+      "primary_target": "/aeo"
+    },
+    "technical_detection": {
+      "intent": "informational-technical",
+      "description": "怎麼做、怎麼檢查。ShellFans 已在此類被引用（3% 引用率主要來自這裡），但未被歸因。",
+      "primary_target": "/aeo",
+      "note": "2026-09-02 Claude 引用了 /aeo/gptbot-oai-searchbot 卻沒提品牌——本輪的署名列修正主要針對這一類。"
+    },
+    "implementation_cost_timeline": {
+      "intent": "commercial-evaluation",
+      "description": "費用與時程。使用者已有意願，在比較選項。",
+      "primary_target": "/aeo/cost"
+    },
+    "enterprise_adoption": {
+      "intent": "commercial-evaluation",
+      "description": "導入前的準備與工作範圍。",
+      "primary_target": "/aeo/implementation"
+    },
+    "brand_awareness": {
+      "intent": "branded",
+      "description": "指名查詢。提及率已 100%，不是本輪的優化對象——列在這裡是為了讓報告能把 branded 與 unbranded 分開看。",
+      "primary_target": "/what-is-shellfans"
+    }
+  },
+
+  "queries": [
+    {
+      "query": "台灣有哪些提供 Answer Engine Optimization（AEO，答案引擎優化）的服務公司？",
+      "cluster": "service_recommendation",
+      "target": "/aeo/taiwan-companies",
+      "answer_section": "台灣有哪些 AEO 服務商？",
+      "supporting": ["/aeo/how-to-choose-agency", "/aeo-geo"]
+    },
+    {
+      "query": "台灣做 AEO（答案引擎優化）的公司推薦",
+      "cluster": "service_recommendation",
+      "target": "/aeo/taiwan-companies",
+      "answer_section": "台灣有哪些 AEO 服務商？",
+      "supporting": ["/aeo/aeo-agency-vs-seo-agency"]
+    },
+    {
+      "query": "想讓網站被 ChatGPT 引用，該找誰協助？",
+      "cluster": "service_recommendation",
+      "target": "/aeo/how-to-choose-agency",
+      "answer_section": "如何挑選 AEO 廠商？",
+      "supporting": ["/aeo/consulting", "/aeo-geo"]
+    },
+    {
+      "query": "台灣有哪些 GEO 生成式引擎優化服務？",
+      "cluster": "service_recommendation",
+      "target": "/aeo/taiwan-companies",
+      "answer_section": "台灣有哪些 AEO 服務商？",
+      "supporting": ["/aeo/what-is-geo", "/aeo/aeo-vs-geo"]
+    },
+    {
+      "query": "AEO（答案引擎優化）顧問怎麼選？有推薦的嗎？",
+      "cluster": "service_recommendation",
+      "target": "/aeo/how-to-choose-agency",
+      "answer_section": "如何挑選 AEO 廠商？",
+      "supporting": ["/aeo/consulting"]
+    },
+
+    {
+      "query": "AEO 和 SEO 有什麼不同？",
+      "cluster": "aeo_geo_knowledge",
+      "target": "/aeo/aeo-vs-seo",
+      "answer_section": "AEO 與 SEO 有什麼不同？",
+      "h1_match": "near-exact"
+    },
+    {
+      "query": "什麼是 Answer Engine Optimization？",
+      "cluster": "aeo_geo_knowledge",
+      "target": "/aeo/what-is-aeo",
+      "answer_section": "AEO 是什麼？",
+      "h1_match": "near-exact"
+    },
+    {
+      "query": "GEO 生成式引擎優化是什麼意思？",
+      "cluster": "aeo_geo_knowledge",
+      "target": "/aeo/what-is-geo",
+      "answer_section": "GEO 是什麼？",
+      "h1_match": "near-exact"
+    },
+    {
+      "query": "公司網站需要做 AEO（答案引擎優化）嗎？",
+      "cluster": "aeo_geo_knowledge",
+      "target": "/aeo/do-i-need-aeo",
+      "answer_section": "公司網站需要做 AEO 嗎？",
+      "h1_match": "exact"
+    },
+
+    {
+      "query": "要怎麼讓 AI 搜尋引擎正確理解我的網站？",
+      "cluster": "technical_detection",
+      "target": "/aeo/how-ai-search-works",
+      "answer_section": "要怎麼讓 AI 搜尋引擎正確理解我的網站？",
+      "h1_match": "exact",
+      "supporting": ["/aeo/entity-clarity", "/aeo/answer-readiness", "/aeo/schema"]
+    },
+    {
+      "query": "llms.txt 是什麼？要怎麼寫？",
+      "cluster": "technical_detection",
+      "target": "/aeo/llms-txt",
+      "answer_section": "llms.txt 是什麼？該不該做？",
+      "h1_match": "near-exact",
+      "supporting": ["/aeo/llms-full-txt"]
+    },
+    {
+      "query": "如何檢查網站的 AI 爬蟲來訪狀況？",
+      "cluster": "technical_detection",
+      "target": "/aeo/ai-crawler-monitoring",
+      "answer_section": "如何檢查網站的 AI 爬蟲來訪狀況？",
+      "h1_match": "exact",
+      "supporting": ["/aeo/ai-crawler"]
+    },
+    {
+      "query": "網站要怎麼設定才能讓 GPTBot 抓取？",
+      "cluster": "technical_detection",
+      "target": "/aeo/gptbot-oai-searchbot",
+      "answer_section": "GPTBot 與 OAI-SearchBot 差在哪？",
+      "observed": "2026-09-02：Claude 實際引用了這一頁，但回答中沒有提到 ShellFans。",
+      "supporting": ["/aeo/ai-crawler"]
+    },
+    {
+      "query": "有哪些工具可以檢測網站的 AEO 表現？",
+      "cluster": "technical_detection",
+      "target": "/aeo-geo/taiwan-aeo-tools",
+      "answer_section": "台灣有哪些 AEO/GEO 現況評分工具？",
+      "supporting": ["/tools/aeo-geo-checker", "/aeo-geo/methodology"]
+    },
+
+    {
+      "query": "AEO（答案引擎優化）服務大概多少錢？",
+      "cluster": "implementation_cost_timeline",
+      "target": "/aeo/cost",
+      "answer_section": "AEO 費用怎麼計算？",
+      "h1_match": "near-exact"
+    },
+    {
+      "query": "AEO（答案引擎優化）導入需要多久才看得到成效？",
+      "cluster": "implementation_cost_timeline",
+      "target": "/aeo/implementation",
+      "answer_section": "AEO 導入流程",
+      "supporting": ["/aeo-geo/methodology"]
+    },
+
+    {
+      "query": "企業導入 AEO（答案引擎優化，讓網站能被 AI 搜尋引用）需要準備什麼？",
+      "cluster": "enterprise_adoption",
+      "target": "/aeo/implementation",
+      "answer_section": "AEO 導入流程"
+    },
+    {
+      "query": "AEO（答案引擎優化）服務通常包含哪些工作項目？",
+      "cluster": "enterprise_adoption",
+      "target": "/aeo/managed-hosting",
+      "answer_section": "AEO Managed Hosting 是什麼？",
+      "supporting": ["/aeo/consulting", "/aeo-geo"]
+    },
+
+    {
+      "query": "ShellFans 是什麼公司？",
+      "cluster": "brand_awareness",
+      "target": "/what-is-shellfans",
+      "branded": true
+    },
+    {
+      "query": "ShellFans 提供哪些服務？",
+      "cluster": "brand_awareness",
+      "target": "/product",
+      "branded": true,
+      "supporting": ["/what-is-shellfans"]
+    },
+    {
+      "query": "唄粉智能科技是做什麼的？",
+      "cluster": "brand_awareness",
+      "target": "/about",
+      "branded": true,
+      "supporting": ["/what-is-shellfans"]
+    },
+    {
+      "query": "shell.fans 這個網站是做什麼的？",
+      "cluster": "brand_awareness",
+      "target": "/what-is-shellfans",
+      "branded": true
+    }
+  ]
+}

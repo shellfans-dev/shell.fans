@@ -45,6 +45,9 @@ SITE = 'https://shell.fans'
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from aeo_pages_content import PAGES, ORG_NAME, ORG_LOGO  # noqa: E402
 
+# 法人名稱。署名列要同時帶品牌名與法人名，AI 才能把兩者連到同一個實體。
+LEGAL_NAME = '唄粉智能科技股份有限公司'
+
 
 # ---------------------------------------------------------------------------
 # 外殼抽取
@@ -156,12 +159,78 @@ def render_block(b):
     raise ValueError('未知的內容區塊型別：%s' % kind)
 
 
+def content_last_modified(source_rel='scripts/aeo_pages_content.py'):
+    """
+    指定內容來源檔在 git 中的最後修改日。
+
+    source_rel 必須指向**該頁內容實際所在的檔案**。/aeo 那 26 頁的內容在
+    aeo_pages_content.py，但 /about 與 /developers 的內容在各自的
+    build-*-page.py 裡——若一律用 aeo_pages_content.py 的日期，那兩頁會顯示
+    一個與自身內容無關的更新日。署名列的更新日若不準，比不顯示更糟。
+
+    用內容的實際修改日而不是 build timestamp——後者會讓每次部署都產生假的
+    freshness，AI 看到「今天更新」但內容其實三個月沒動，反而降低可信度。
+    與 build-markdown-alternates.py 的 git_last_modified() 同一套邏輯。
+    """
+    import datetime
+    import subprocess
+    path = os.path.join(ROOT, source_rel)
+    try:
+        out = subprocess.run(['git', 'log', '-1', '--format=%cs', '--', path],
+                             cwd=ROOT, capture_output=True, text=True, timeout=10).stdout.strip()
+        if re.fullmatch(r'\d{4}-\d{2}-\d{2}', out):
+            return out
+    except Exception:
+        pass
+    try:
+        return datetime.date.fromtimestamp(os.path.getmtime(path)).isoformat()
+    except OSError:
+        return ''
+
+
+BYLINE_STYLE = ('font-size:0.85rem;line-height:1.9;color:var(--text-secondary);'
+                'margin:-16px 0 28px;max-width:780px')
+
+
+def render_byline(updated):
+    """
+    署名列 —— 放在 H1 與導言之間。
+
+    ## 為什麼一定要在這個位置
+
+    2026-09-02 的能見度探測：unbranded 品牌提及率 0%（0/36），但官方引用率
+    3%——AI **已經在讀也在引用**這些頁面，只是不知道是誰寫的。
+
+    實測被 Claude 引用的 /aeo/gptbot-oai-searchbot：正文 1419 字，「ShellFans」
+    只出現 1 次，在 88% 處的免責聲明裡。AI 擷取答案看的是前段，那個區間完全
+    沒有實體訊號，因此它有內容可用、有網址可引，卻沒有任何文字依據能說出
+    「根據 ShellFans」。其餘技術頁同樣：what-is-aeo 91%、implementation 89%。
+
+    JSON-LD 的 author/publisher 早就有了，但那是給搜尋引擎建索引用的；
+    生成式回答是從**可見文字**組出來的，結構化資料不會自動變成句子。
+
+    ## 為什麼不用長版宣傳句
+
+    刻意只寫「整理者＋法人名＋更新日」，不列服務項目。每頁都塞一段服務介紹
+    會變成樣板噪音，對讀者沒有價值，也容易被判為填充內容。需要的只是讓
+    「這份內容屬於誰」出現在可擷取的位置一次。
+
+    同時滿足 answer-first 對「應顯示更新日與發布者」的要求。
+    """
+    parts = ['整理者：<strong>%s</strong>（%s）' % (ORG_NAME, LEGAL_NAME)]
+    if updated:
+        parts.append('更新於 %s' % updated)
+    return '      <p class="page-byline" style="%s">%s</p>' % (BYLINE_STYLE, '　·　'.join(parts))
+
+
 def render_main(page):
     out = ['<main style="padding-top:72px">', '',
            '  <section class="hero">', '    <div class="container">',
            '      <span class="hero-eyebrow">%s</span>' % esc(page['eyebrow']),
            '      <h1>%s</h1>' % esc(page['h1']),
            '      <p class="hero-lead">%s</p>' % page['lede'],
+           render_byline(content_last_modified(
+               page.get('content_source', 'scripts/aeo_pages_content.py'))),
            '      <div class="hero-cta">',
            '        <a href="%s%s" class="btn-primary">%s</a>'
            % (SITE, page['cta']['href'], esc(page['cta']['label'])),

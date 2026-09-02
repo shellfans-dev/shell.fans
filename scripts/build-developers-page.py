@@ -47,6 +47,8 @@ def code(s):
 
 PAGE = {
     'url': '/developers',
+    # 這一頁的內容在本檔，不在 aeo_pages_content.py——署名列的更新日要跟著它。
+    'content_source': 'scripts/build-developers-page.py',
     'title': 'ShellFans Developer Documentation | ShellFans AI Technology',
     'h1': 'ShellFans Developer Documentation',
     'eyebrow': 'For developers and AI agents',

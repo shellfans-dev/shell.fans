@@ -60,6 +60,8 @@ def ext(url, text):
 
 PAGE = {
     'url': '/about',
+    # 這一頁的內容在本檔，不在 aeo_pages_content.py——署名列的更新日要跟著它。
+    'content_source': 'scripts/build-about-page.py',
     'title': f'關於 ShellFans｜{LEGAL_NAME}公司資訊與聯絡方式',
     'h1': f'關於 ShellFans（{BRAND_TW}）',
     'eyebrow': 'About',
