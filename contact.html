@@ -384,7 +384,7 @@ nav.nav-menu .link-block-4.ssp_01:hover {
           <div class="container-large con_momo_0003 con_lap_005">
             <div data-w-id="ccf68e15-6256-e990-d21d-7c2e37d24ec6" style="opacity:0" class="contact-component">
               <div class="contact-form-block w-form">
-                <form id="email-form-2" name="email-form-2" data-name="Email Form 2" method="get" class="contact-form" onsubmit="alert('感謝您的訊息！此功能即將開放，請透過 Email 聯繫我們。'); return false;">
+                <form id="email-form-2" name="email-form-2" data-name="Email Form 2" method="get" class="contact-form"><div aria-hidden="true" style="position:absolute;left:-9999px;top:-9999px;height:0;width:0;overflow:hidden"><label for="sf-website">請勿填寫此欄</label><input type="text" id="sf-website" name="website" tabindex="-1" autocomplete="off"></div>
                   <div id="w-node-_3ff810a5-5992-1751-ed39-54d1192c1706-b6753b9a" class="contact-input-field-wrapper"><label for="name" class="text-size-regular text-color-black-800">姓</label><input class="contact-input w-input" maxlength="256" name="name" data-name="Name" placeholder="" type="text" id="name" required=""></div>
                   <div id="w-node-cf887fd2-647b-6deb-a2bb-0f604f31f6f7-b6753b9a" class="contact-input-field-wrapper"><label for="Name" class="text-size-regular text-color-black-800">名</label><input class="contact-input w-input" maxlength="256" name="Name" data-name="Name" placeholder="" type="text" id="Name" required=""></div>
                   <div id="w-node-_44d224e5-81d4-1bc6-91fc-0a4ed01d3f03-b6753b9a" class="contact-input-field-wrapper"><label for="Phone-number" class="text-size-regular text-color-black-800">聯繫電話</label><input class="contact-input w-input" maxlength="256" name="Phone-number" data-name="Phone number" placeholder="" type="tel" id="Phone-number"></div>
@@ -525,5 +525,63 @@ nav.nav-menu .link-block-4.ssp_01:hover {
 <!-- ===== /shellfans unified mobile nav ===== -->
 <script src="/js/sf-footer.js?v=20260729a" defer></script>
 <script src="https://shell.fans/js/aeo-chat.js" defer></script>
+<script data-sf-contact-wired="1">
+(function () {
+  'use strict';
+  var form = document.getElementById('email-form-2');
+  if (!form) return;
+  var btn = form.querySelector('input[type="submit"], button[type="submit"]');
+  var note = document.createElement('p');
+  note.setAttribute('role', 'status');
+  note.style.cssText = 'margin-top:14px;font-size:0.95rem;line-height:1.8;display:none';
+  form.appendChild(note);
+
+  function say(msg, ok) {
+    note.textContent = msg;
+    note.style.color = ok ? '#2C9A8A' : '#C2503A';
+    note.style.display = 'block';
+  }
+  function busy(on) {
+    if (!btn) return;
+    btn.disabled = on;
+    if (btn.tagName === 'INPUT') {
+      if (on) { btn.dataset.sfLabel = btn.value; btn.value = btn.dataset.wait || '寄送中...'; }
+      else if (btn.dataset.sfLabel) { btn.value = btn.dataset.sfLabel; }
+    }
+  }
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    note.style.display = 'none';
+    var fd = new FormData(form);
+    var payload = {};
+    fd.forEach(function (v, k) { payload[k] = typeof v === 'string' ? v : ''; });
+    busy(true);
+    fetch('https://shell.fans/api/contact', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+      credentials: 'omit'
+    })
+      .then(function (r) { return r.json().then(function (j) { return { ok: r.ok, body: j }; }); })
+      .then(function (o) {
+        if (o.ok && o.body && o.body.ok) {
+          say('已送出，我們會盡快與您聯繫。', true);
+          form.reset();
+          // 表單送出是真實的商業意圖，值得記錄。AI 推薦歸因會由
+          // sf-analytics.js 自動附上，這裡不必重複帶。
+          try { window.sfAnalytics && window.sfAnalytics.track('contact_submit', {}); } catch (e) {}
+        } else {
+          // 後端回的是 RFC 9457 problem+json，detail 已是可直接顯示的中文
+          say((o.body && o.body.detail) || '送出失敗，請稍後再試，或直接來信 cs@shell.fans。', false);
+        }
+      })
+      .catch(function () {
+        say('連線異常，請稍後再試，或直接來信 cs@shell.fans。', false);
+      })
+      .finally(function () { busy(false); });
+  });
+})();
+</script>
 </body>
 </html>
