@@ -437,6 +437,9 @@ HEAD_TMPL = """<!DOCTYPE html>
 
 {style}
   <link rel="stylesheet" href="/css/sf-footer.css">
+<script async data-shellfans-ga="1" src="https://www.googletagmanager.com/gtag/js?id=G-NE4639EL2B"></script>
+<script data-shellfans-ga="1">window.dataLayer=window.dataLayer||[];function gtag(){{dataLayer.push(arguments);}}gtag("js",new Date());gtag("config","G-NE4639EL2B");</script>
+<script defer data-shellfans-ga="1" src="https://shell.fans/js/sf-analytics.js"></script>
 </head>
 <body>
 

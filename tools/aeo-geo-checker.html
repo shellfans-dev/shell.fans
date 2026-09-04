@@ -448,7 +448,7 @@ footer small{color:rgba(255,255,255,0.45);display:block;margin-top:14px;font-siz
 </style>
 <link rel="preload" href="https://shell.fans/images/nav_logo.svg" as="image" type="image/svg+xml">
   <link rel="stylesheet" href="/css/sf-footer.css">
-</head>
+<script async data-shellfans-ga="1" src="https://www.googletagmanager.com/gtag/js?id=G-NE4639EL2B"></script><script data-shellfans-ga="1">window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag("js",new Date());gtag("config","G-NE4639EL2B");</script><script defer data-shellfans-ga="1" src="https://shell.fans/js/sf-analytics.js"></script></head>
 <body>
 
 <!-- ===== NAV ===== -->
@@ -1043,7 +1043,7 @@ footer small{color:rgba(255,255,255,0.45);display:block;margin-top:14px;font-siz
     clearError();
     var url = input.value.trim();
     if (!url) return;
-    setBtn(true);
+    setBtn(true);/*sf_scan_events*/try{window.sfAnalytics&&window.sfAnalytics.track('aeo_scan_start',{scan_source:location.pathname});}catch(e){}
     fetch('https://console.shell.fans/api/site/aeo-geo/scan', {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
@@ -1056,7 +1056,7 @@ footer small{color:rgba(255,255,255,0.45);display:block;margin-top:14px;font-siz
           showError((o.body && o.body.error && o.body.error.message) || '掃描失敗，請稍後再試');
           return;
         }
-        render(o.body.data);
+        /*sf_scan_events*/try{window.sfAnalytics&&window.sfAnalytics.track('aeo_scan_complete',{scan_score:(o.body.data&&typeof o.body.data.score==='number')?o.body.data.score:null,scan_grade:(o.body.data&&o.body.data.grade)?String(o.body.data.grade):null,scan_source:location.pathname});}catch(e){}render(o.body.data);
       })
       .catch(function(){ showError('連線異常，請稍後再試'); })
       .finally(function(){ setBtn(false); });
