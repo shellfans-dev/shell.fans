@@ -68,6 +68,11 @@ def fix_summary(html):
         attrs, inner = m.group(1), m.group(2)
         if '<h3' in inner:
             return m.group(0)                      # 冪等
+        # data-not-heading：這個 <summary> 是「展開更多」的操作標籤，不是內容標題。
+        # 案例頁用 <details> 收納技術細節與模型版本表，那些 summary 若被包成 h3，
+        # 文件大綱裡就會多出兩個不存在的章節，反而破壞它原本要修的東西。
+        if 'data-not-heading' in attrs:
+            return m.group(0)
         # data-i18n 系列屬性要移到 h3；其餘（如 class）留在 summary
         moved = re.findall(r'\s(data-i18n(?:-attr|-html)?(?:="[^"]*")?)', attrs)
         rest = re.sub(r'\s(data-i18n(?:-attr|-html)?(?:="[^"]*")?)', '', attrs)

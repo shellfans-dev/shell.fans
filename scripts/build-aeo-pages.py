@@ -156,6 +156,10 @@ def render_block(b):
         return render_table(b[1])
     if kind == 'note':
         return '<div class="disclaimer"><p>%s</p></div>' % b[1]
+    if kind == 'html':
+        # 原樣輸出。只用於指標卡片、<details> 這類既有區塊型別表達不了的結構，
+        # 內容一律由本專案自己組出，不接受外部輸入。
+        return b[1]
     raise ValueError('未知的內容區塊型別：%s' % kind)
 
 
@@ -242,17 +246,26 @@ def render_main(page):
         # sec['id'] 讓區段可被片段網址錨定（例如 /developers#auth）。
         # 沒有 id 的區段維持原樣，不影響既有頁面。
         _sid = (' id="%s"' % esc(sec['id'])) if sec.get('id') else ''
-        out += ['  <section%s>' % _sid, '    <div class="container">',
-                '      <span class="section-eyebrow">%s</span>' % esc(sec['eyebrow']),
-                '      <h2>%s</h2>' % esc(sec['h2'])]
+        # eyebrow 可省略。知識叢集頁用它做視覺節奏，但案例頁是敘事文章，
+        # 每節上面掛一個英文標籤會打斷閱讀，且對非工程讀者沒有意義。
+        _eye = ('      <span class="section-eyebrow">%s</span>' % esc(sec['eyebrow'])
+                ) if sec.get('eyebrow') else None
+        out += ['  <section%s>' % _sid, '    <div class="container">']
+        if _eye:
+            out.append(_eye)
+        out.append('      <h2>%s</h2>' % esc(sec['h2']))
         for b in sec['blocks']:
             out.append('      ' + render_block(b))
         out += ['    </div>', '  </section>', '']
 
     if page.get('faq'):
-        out += ['  <section>', '    <div class="container">',
-                '      <span class="section-eyebrow">FAQ</span>',
-                '      <h2>常見問題</h2>',
+        # FAQ 的英文標籤同樣可關閉。知識叢集頁保留（視覺節奏一致），
+        # 敘事型頁面關掉——「FAQ」與下一行的「常見問題」是同一件事，重複無益。
+        out += ['  <section>', '    <div class="container">']
+        if page.get('faq_eyebrow', 'FAQ'):
+            out.append('      <span class="section-eyebrow">%s</span>'
+                       % esc(page.get('faq_eyebrow', 'FAQ')))
+        out += ['      <h2>常見問題</h2>',
                 '      <div class="faq" style="margin-top:32px">']
         for q, a in page['faq']:
             # 問句包成 h3：折疊狀態下 <summary> 的文字不是標題，整個 FAQ 區

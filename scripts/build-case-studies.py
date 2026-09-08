@@ -133,21 +133,74 @@ INDEX = {
 
 # ---------------------------------------------------------------------------
 # CET 案例頁
+#
+# 敘事順序刻意不是「技術報告」的順序。主要讀者是企業主與行銷負責人，
+# 不是 AEO 工程師：先講背景與做了什麼，再講 AI 的行為出現什麼變化，
+# 最後才是方法與判讀方式。精確的技術數值仍然保留，但收進「技術驗證」
+# 的可摺疊區塊，不打斷主線。
 # ---------------------------------------------------------------------------
+
+CARDS = '''<div class="sf-obs-cards" style="display:grid;gap:16px;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));margin:8px 0 20px">
+  <div style="border:1px solid var(--border,#E8E5DE);border-radius:12px;padding:20px">
+    <p style="margin:0;font-size:0.85rem;color:var(--text-secondary)">AI 回答提到品牌</p>
+    <p style="margin:6px 0 0;font-size:1.6rem;font-weight:600;line-height:1.3">13%<span style="opacity:.45;margin:0 6px">→</span>19%</p>
+    <p style="margin:4px 0 0;font-size:0.8rem;color:var(--text-secondary)">8/27 → 9/7</p>
+  </div>
+  <div style="border:1px solid var(--border,#E8E5DE);border-radius:12px;padding:20px">
+    <p style="margin:0;font-size:0.85rem;color:var(--text-secondary)">AI 引用官方網站</p>
+    <p style="margin:6px 0 0;font-size:1.6rem;font-weight:600;line-height:1.3">16%<span style="opacity:.45;margin:0 6px">→</span>28%</p>
+    <p style="margin:4px 0 0;font-size:0.8rem;color:var(--text-secondary)">8/27 → 9/7</p>
+  </div>
+  <div style="border:1px solid var(--border,#E8E5DE);border-radius:12px;padding:20px">
+    <p style="margin:0;font-size:0.85rem;color:var(--text-secondary)">AI 爬蟲抓取</p>
+    <p style="margin:6px 0 0;font-size:1.15rem;font-weight:600;line-height:1.5">四個核心頁<br>皆已被多種 AI 爬蟲抓取</p>
+    <p style="margin:4px 0 0;font-size:0.8rem;color:var(--text-secondary)">8/28 起</p>
+  </div>
+</div>'''
+
+MODEL_DETAILS = '''<details style="margin:14px 0;border:1px solid var(--border,#E8E5DE);border-radius:10px;padding:14px 18px">
+  <summary data-not-heading="1" style="cursor:pointer;font-weight:600">查看量測條件與模型版本</summary>
+  <div style="margin-top:12px">
+    <table class="sf-dim-table"><caption>本專案期間的量測條件</caption>
+      <thead><tr><th scope="col">量測日</th><th scope="col">Claude 側</th><th scope="col">ChatGPT 側</th></tr></thead>
+      <tbody>
+        <tr><th scope="row">2026-08-07</th><td>claude-sonnet-5</td><td>gpt-4o-mini-search-preview</td></tr>
+        <tr><th scope="row">2026-08-12 ~ 08-24</th><td>claude-haiku-4-5</td><td>gpt-4o-mini-search-preview</td></tr>
+        <tr><th scope="row">2026-08-27 起</th><td>claude-haiku-4-5</td><td>gpt-5-search-api</td></tr>
+      </tbody>
+    </table>
+    <p style="margin-top:12px;font-size:0.92rem;line-height:1.9">兩次調整的原因不同：Claude 側是執行頻率與成本的取捨；ChatGPT 側則是 OpenAI 於八月下架了原本使用的模型（8 月 24 日該平台整輪 38 題全部失敗，已在紀錄中標記）。本頁比較的 8/27、8/31、9/7 三次量測，使用的是同一組模型與同一份題組。</p>
+  </div>
+</details>'''
+
+TECH_DETAILS = '''<details style="margin:14px 0;border:1px solid var(--border,#E8E5DE);border-radius:10px;padding:14px 18px">
+  <summary data-not-heading="1" style="cursor:pointer;font-weight:600">查看技術驗證細節</summary>
+  <div style="margin-top:12px">
+    <table class="sf-dim-table"><caption>四個核心頁的實測結果（2026-09-08）</caption>
+      <thead><tr><th scope="col">頁面</th><th scope="col">標題結構</th><th scope="col">結構化資料</th><th scope="col">canonical</th></tr></thead>
+      <tbody>
+        <tr><th scope="row"><a href="https://www.cet-taiwan.com/about-cet-kite" target="_blank" rel="noopener">/about-cet-kite</a></th><td>h1×1、h2×8、h3×9</td><td>JSON-LD 6 節點</td><td>自我指向</td></tr>
+        <tr><th scope="row"><a href="https://www.cet-taiwan.com/about-cet-style-jet" target="_blank" rel="noopener">/about-cet-style-jet</a></th><td>h1×1、h2×9、h3×11</td><td>JSON-LD 6 節點</td><td>自我指向</td></tr>
+        <tr><th scope="row"><a href="https://www.cet-taiwan.com/kids-english-test-comparison" target="_blank" rel="noopener">/kids-english-test-comparison</a></th><td>h1×1、h2×9、h3×9</td><td>JSON-LD 6 節點</td><td>自我指向</td></tr>
+        <tr><th scope="row"><a href="https://www.cet-taiwan.com/kids-english-exam" target="_blank" rel="noopener">/kids-english-exam</a></th><td>h1×1、h2×10、h3×11</td><td>JSON-LD 6 節點</td><td>自我指向</td></tr>
+      </tbody>
+    </table>
+    <p style="margin-top:12px;font-size:0.92rem;line-height:1.9">結構化資料涵蓋 Organization、WebSite、WebPage、BreadcrumbList 與 FAQPage。站台層的 robots.txt、sitemap.xml、llms.txt、llms-full.txt 四份檔案於同日實測皆正常回應。</p>
+  </div>
+</details>'''
 
 CET_PAGE = {
     'url': '/aeo/case-studies/cet-taiwan',
     'content_source': 'scripts/build-case-studies.py',
-    'title': '師德文教 CET AEO 專案進度紀錄｜ShellFans AI Technology',
-    'h1': 'AEO 專案進度紀錄：師德文教 CET 的 AI 可讀性重構',
-    'eyebrow': 'Case study · 進行中',
-    'desc': ('師德文教 CET（cet-taiwan.com）AEO/GEO 專案的公開進度紀錄。'
-             '涵蓋四個目標頁的 AI 可讀性重構、站台層 AEO 檔案、AI 爬蟲觀測與'
-             '能見度量測，並標明量測條件的變更。'),
-    'lede': ('這是一份<strong>進行中專案的進度紀錄</strong>，不是成效案例。'
-             '專案自 2026 年 8 月 5 日開始，至本頁撰寫時約一個月。'
-             '期間量測工具變更過兩次，因此本頁不做跨期比較，只呈現同一量測'
-             '條件下的觀測。'),
+    'title': '師德文教 CET：從 AI 可讀性整備到 AI 引用｜ShellFans AEO 案例',
+    'h1': '師德文教 CET：從 AI 可讀性整備到 AI 引用的 AEO 專案紀錄',
+    'eyebrow': 'AEO 案例 · 進行中',
+    'desc': ('師德文教 CET 自 2026 年 8 月起進行 AEO 優化，重構四個兒童英語檢定核心頁面。'
+             '本頁記錄技術整備完成後，AI 爬蟲、官網引用與品牌提及三種訊號的階段性觀測。'),
+    'lede': ('師德文教自 2026 年 8 月開始進行 AEO 優化，第一階段聚焦於讓兒童英語檢定'
+             '相關內容更容易被 AI 搜尋系統讀取、理解與引用。技術整備完成後，'
+             '我們開始分別觀察 AI 爬蟲、官方網站引用與品牌提及三種訊號。'
+             '專案仍在進行中，以下是階段性觀測。'),
     'schema': 'TechArticle',
     'breadcrumb': [('AEO/GEO 知識中心', '/aeo'), ('實作案例', '/aeo/case-studies'),
                    ('師德文教 CET', '/aeo/case-studies/cet-taiwan')],
@@ -163,150 +216,133 @@ CET_PAGE = {
     'cta2': {'href': '/aeo/implementation', 'label': '了解導入流程'},
     'sections': [
         {
-            'eyebrow': 'Summary',
-            'id': 'summary',
-            'h2': '一分鐘摘要',
+            'eyebrow': None,
+            'id': 'observation',
+            'h2': '目前觀察到的變化',
             'blocks': [
-                ('table', {
-                    'caption': '專案概況',
-                    'cols': ['項目', '內容'],
-                    'rows': [
-                        ['客戶', '師德文教 CET（' + ext(CET + '/', 'cet-taiwan.com') + '）'],
-                        ['產業', '兒童英語檢定、英語教學專業服務'],
-                        ['專案起始', '2026 年 8 月 5 日'],
-                        ['本頁資料截止', '2026 年 9 月 7 日（最近一次能見度量測）'],
-                        ['狀態', '<strong>進行中</strong>——尚未進入成效驗收階段'],
-                        ['服務範圍', 'AI 可讀性重構、站台層 AEO 檔案、AI 爬蟲監測、能見度量測'],
-                    ],
-                }),
+                ('html', CARDS),
+                ('p', '以上為<strong>相同模型、相同題組、相同量測方式</strong>下的三次觀測結果，'
+                      '不代表最終專案成效。三個指標的定義如下：'),
+                ('ul', [
+                    '<strong>品牌提及率</strong>——AI 回答中是否主動出現「師德文教」或「CET」等品牌名稱',
+                    '<strong>官方引用率</strong>——AI 回答的引用來源中是否包含 cet-taiwan.com',
+                    '<strong>歸因落差</strong>——AI 用了官方資料、卻沒有同時說出品牌名稱的差距',
+                ]),
+                ('p', '提問時<strong>不含品牌名</strong>，用意是檢驗「使用者沒有指名師德時，'
+                      'AI 會不會主動提到或引用」——那才是新客戶真正會問的方式。'),
             ],
         },
         {
-            'eyebrow': 'Client',
-            'id': 'client',
-            'h2': '客戶背景',
+            'eyebrow': None,
+            'id': 'background',
+            'h2': '專案背景',
             'blocks': [
                 ('p', '師德文教（CET Taiwan）是台灣的兒童英語檢定與英語教學專業服務機構，'
-                      '網站內容涵蓋檢定說明、教學資源與教師專業發展。'),
-                ('h3', '為什麼這類網站需要 AEO'),
-                ('p', '家長與教師在選擇兒童英檢時，大量問題屬於「比較與選擇」——'
+                      '網站內容涵蓋檢定說明、教學資源與教師專業發展。'
+                      '專案自 2026 年 8 月 5 日啟動，本頁資料截至 9 月 7 日的最近一次量測。'),
+                ('h3', '為什麼兒童英語檢定網站需要 AEO'),
+                ('p', '家長與教師在選擇兒童英檢時，問的多半是比較與選擇型的問題——'
                       '「幼兒適合哪一種英文檢定」「STYLE/JET 和劍橋 YLE 有什麼不同」'
                       '「國小英文檢定該怎麼選」。這類問題現在很常直接問 AI，'
                       '而不是逐一開啟搜尋結果比對。'),
-                ('p', '若官方網站的內容無法被 AI 正確讀取與歸因，'
-                      '使用者得到的答案就會來自二手整理、討論區或競品內容——'
+                ('p', '如果官方網站的內容無法被 AI 正確讀取與歸因，'
+                      '使用者拿到的答案就會來自二手整理、討論區或同業內容——'
                       '即使官方網站上有更完整、更正確的資訊。'),
             ],
         },
         {
-            'eyebrow': 'Scope',
-            'id': 'scope',
-            'h2': '實作範圍',
+            'eyebrow': None,
+            'id': 'what-we-did',
+            'h2': '我們實際做了什麼',
             'blocks': [
-                ('p', '以下為本專案已完成並可由讀者自行查證的項目。'),
-                ('h3', '四個目標頁的 AI 可讀性重構'),
-                ('table', {
-                    'caption': '目標頁與現況（2026-09-08 線上實測）',
-                    'cols': ['頁面', '標題結構', '結構化資料', 'canonical'],
-                    'rows': [
-                        [ext(CET + '/about-cet-kite', '/about-cet-kite'),
-                         'h1×1、h2×8、h3×9', 'JSON-LD 6 節點', '自我指向'],
-                        [ext(CET + '/about-cet-style-jet', '/about-cet-style-jet'),
-                         'h1×1、h2×9、h3×11', 'JSON-LD 6 節點', '自我指向'],
-                        [ext(CET + '/kids-english-test-comparison', '/kids-english-test-comparison'),
-                         'h1×1、h2×9、h3×9', 'JSON-LD 6 節點', '自我指向'],
-                        [ext(CET + '/kids-english-exam', '/kids-english-exam'),
-                         'h1×1、h2×10、h3×11', 'JSON-LD 6 節點', '自我指向'],
-                    ],
-                }),
-                ('p', '結構化資料涵蓋 Organization、WebSite、WebPage、BreadcrumbList 與 FAQPage。'
-                      '每頁採用「問題作為標題、答案緊接在下」的結構，讓 AI 能擷取到'
-                      '獨立成立的答案段落，而不是必須讀完整頁才能推論。'),
-                ('h3', '站台層 AEO 檔案'),
+                ('p', '我們不是大量新增文章，而是先針對家長與教師實際會詢問的主題，'
+                      '重構四個核心頁面，讓每個重要問題都有清楚、可獨立擷取的答案。'),
                 ('ul', [
-                    ext(CET + '/robots.txt', 'robots.txt') + '　AI 爬蟲存取政策',
-                    ext(CET + '/sitemap.xml', 'sitemap.xml') + '　可索引網址清單',
-                    ext(CET + '/llms.txt', 'llms.txt') + '　站台導覽與品牌實體說明',
-                    ext(CET + '/llms-full.txt', 'llms-full.txt') + '　展開版',
+                    '<strong>問題式標題</strong>——把使用者會問的問題直接寫成標題，'
+                    '而不是用行銷標語',
+                    '<strong>答案緊接在下</strong>——每個問題下方先給一段可獨立成立的答案，'
+                    '讀者與 AI 都不必讀完整頁才能得到結論',
+                    '<strong>純 HTML 可讀</strong>——主要內容存在於原始 HTML 中，'
+                    '不依賴 JavaScript 才顯示',
+                    '<strong>結構化資料</strong>——讓 AI 能確定這頁在講什麼、由誰發布',
+                    '<strong>canonical 與內部連結</strong>——避免同一份內容有多個網址競爭',
+                    '<strong>站台層檔案</strong>——robots.txt、sitemap.xml、llms.txt、llms-full.txt',
                 ]),
+                ('html', TECH_DETAILS),
             ],
         },
         {
-            'eyebrow': 'Crawler',
-            'id': 'crawler',
-            'h2': 'AI 爬蟲觀測',
+            'eyebrow': None,
+            'id': 'ai-behaviour',
+            'h2': '一個月後，AI 的行為出現哪些變化',
             'blocks': [
-                ('p', '<strong>爬蟲造訪不等於被引用。</strong>爬蟲到站只代表內容已被取得，'
-                      '不代表 AI 一定會在回答中使用它、更不代表會提到品牌名稱。'
-                      '因此本專案把爬蟲、引用、品牌提及三者分開觀測，不合併計算，'
-                      '也不用其中一項推論另一項。'),
-                ('h3', '目標頁的爬蟲活動'),
-                ('p', '四個目標頁自 <strong>2026 年 8 月 28 日</strong>起開始被 AI 爬蟲抓取，'
-                      '至 9 月 7 日止，每頁各被 <strong>6 至 7 種</strong>不同的 AI 爬蟲'
-                      '抓取 <strong>9 至 12 次</strong>。'),
-                ('p', '站台整體共觀察到 <strong>13 種</strong> AI 爬蟲身分：'
-                      'GPTBot、OAI-SearchBot、ChatGPT-User、ClaudeBot、Claude-User、'
-                      'Claude-SearchBot、PerplexityBot、Google-Extended、'
-                      'Meta-ExternalAgent、Amazonbot、Bytespider、CCBot 與 cohere-ai。'),
-            ],
-        },
-        {
-            'eyebrow': 'Measurement',
-            'id': 'measurement',
-            'h2': '量測條件（為什麼本頁不做跨期比較）',
-            'blocks': [
-                ('p', 'AI 能見度是用固定題組向各 AI 平台提問、再分析回答內容測得的。'
-                      '這個方法有一個必須誠實面對的限制：'
-                      '<strong>當量測用的模型或平台組合改變時，前後數字就不可比較。</strong>'),
+                ('h3', 'AI 爬蟲開始抓取新的核心頁'),
+                ('p', '自 8 月 28 日起，四個核心頁面都開始出現 AI 爬蟲的實際抓取紀錄。'
+                      '依頁面不同，目前各頁可觀察到 6 至 7 種 AI 爬蟲，累計抓取約 9 至 12 次。'
+                      '站台整體共觀察到 13 種 AI 爬蟲身分，包含 GPTBot、OAI-SearchBot、'
+                      'ChatGPT-User、ClaudeBot、Claude-User、Claude-SearchBot、PerplexityBot、'
+                      'Google-Extended、Meta-ExternalAgent、Amazonbot、Bytespider、CCBot 與 cohere-ai。'),
+                ('p', '不過<strong>爬蟲來過不等於會被引用</strong>。爬蟲到站只代表內容被取得，'
+                      'AI 是否在回答中使用它、是否說出來源，是另外兩件事。'
+                      '因此我們把三者分開觀測，不用其中一項推論另一項。'),
+                ('h3', '被引用的比例上升，但提及品牌的比例上升得比較慢'),
                 ('table', {
-                    'caption': '本專案期間的量測條件變更',
-                    'cols': ['量測日', 'Claude 側模型', 'ChatGPT 側模型'],
-                    'rows': [
-                        ['2026-08-07', 'claude-sonnet-5', 'gpt-4o-mini-search-preview'],
-                        ['2026-08-12 ~ 08-24', 'claude-haiku-4-5', 'gpt-4o-mini-search-preview'],
-                        ['2026-08-27 起', 'claude-haiku-4-5', 'gpt-5-search-api'],
-                    ],
-                }),
-                ('p', '兩次變更的原因不同：Claude 側是成本與執行頻率的調整；'
-                      'ChatGPT 側則是 OpenAI 於 8 月下架了原本使用的模型'
-                      '（8 月 24 日該平台整輪 38 題全部失敗，已在紀錄中標記）。'),
-                ('p', '因此「8 月 7 日 vs 9 月 7 日」的差異裡同時包含網站實際改善、'
-                      '模型換代與平台組合變動。這三者無法拆解，'
-                      '<strong>所以本頁不使用該對比作為成效宣稱</strong>。'),
-            ],
-        },
-        {
-            'eyebrow': 'Observation',
-            'id': 'visibility',
-            'h2': '同一量測條件下的觀測',
-            'blocks': [
-                ('p', '以下三次量測共用同一組條件（claude-haiku-4-5 + gpt-5-search-api、'
-                      '同一題組、同一平台組合），彼此之間可以比較。'
-                      '題目為不含品牌名的一般性問題，用以檢驗「使用者沒有指名品牌時，'
-                      'AI 會不會主動提到或引用」。'),
-                ('table', {
-                    'caption': '不含品牌名問題的觀測結果（同一量測條件）',
-                    'cols': ['量測日', 'AI 回答提到品牌', 'AI 引用官網', '歸因落差'],
+                    'caption': '同一量測條件下的三次觀測（不含品牌名的提問）',
+                    'cols': ['量測日', 'AI 回答提到品牌', 'AI 引用官方網站', '歸因落差'],
                     'rows': [
                         ['2026-08-27', '13%', '16%', '3%'],
                         ['2026-08-31', '16%', '22%', '6%'],
                         ['2026-09-07', '19%', '28%', '9%'],
                     ],
                 }),
-                ('h3', '兩個平台的問題方向相反'),
-                ('p', '同一次量測（2026-09-07）中：'),
-                ('ul', [
-                    '<strong>ChatGPT</strong>　提到品牌 37%、引用官網 24%'
-                    '——提及多於引用，歸因落差為負',
-                    '<strong>Claude</strong>　提到品牌 18%、引用官網 50%'
-                    '——大量引用官網內容卻不說明來自誰，歸因落差 +32%',
-                ]),
-                ('p', '把兩者平均會得到一個對任何一邊都不成立的數字，'
-                      '因此必須分平台呈現。這兩種情況需要的處理方式也不同。'),
-                ('h3', '主題分類表現'),
+                ('p', '引用率從 16% 上升到 28%，提及率從 13% 上升到 19%——'
+                      '兩者都往上，但引用跑得比提及快，因此歸因落差也跟著從 3% 擴大到 9%。'
+                      '這個現象在下一節會更明顯。'),
+                ('p', '專案早期曾調整 AI 能見度的量測模型，因此八月初與現在的結果'
+                      '不適合直接當作 Before / After。本頁只比較 8/27、8/31、9/7 這三次'
+                      '使用相同模型、相同題組與相同量測方式的結果。'),
+                ('html', MODEL_DETAILS),
+            ],
+        },
+        {
+            'eyebrow': None,
+            'id': 'platforms',
+            'h2': 'ChatGPT 與 Claude 呈現不同的品牌歸因模式',
+            'blocks': [
+                ('p', '同一次量測（2026-09-07）中，兩個平台的表現差異很明顯：'),
+                ('table', {
+                    'caption': '2026-09-07 各平台觀測',
+                    'cols': ['平台', 'AI 回答提到品牌', 'AI 引用官方網站', '歸因落差'],
+                    'rows': [
+                        ['ChatGPT', '37%', '24%', '−13%'],
+                        ['Claude', '18%', '50%', '+32%'],
+                    ],
+                }),
+                ('p', '<strong>ChatGPT</strong> 提到品牌的比例較高，但引用官網的比例較低——'
+                      '它比較常憑既有知識回答，較少附上來源連結。'),
+                ('p', '<strong>Claude</strong> 剛好相反：一半的回答引用了師德官網作為來源，'
+                      '但只有 18% 的回答提到師德這個品牌名稱。'
+                      '這代表 Claude 已經大量使用師德官網內容作為回答依據，'
+                      '但仍有不少回答沒有明確說出資訊來自師德。'),
+                ('p', '兩者的差異很大，因此分平台解讀比直接平均更有意義——'
+                      '平均之後得到的數字，對哪一邊都不準確。'),
+            ],
+        },
+        {
+            'eyebrow': None,
+            'id': 'cited',
+            'h2': 'AI 已經引用哪些師德內容',
+            'blocks': [
+                ('p', '2026-09-07 的量測中，AI 回答引用了師德官網的多個網址，'
+                      '包含首頁、檢定說明、關於我們、教學資源，'
+                      '以及本專案優化的目標頁之一 '
+                      + code('/kids-english-test-comparison') + '。'),
+                ('p', '目標頁進入 AI 的引用來源，代表新的 AEO 內容已經被實際採用，'
+                      '而不只是被抓取而已。'),
+                ('h3', '主題別的表現差異很大'),
                 ('table', {
                     'caption': '各主題的觀測結果（2026-09-07 單次量測）',
-                    'cols': ['主題分類', 'AI 提到品牌', 'AI 引用官網'],
+                    'cols': ['主題', 'AI 提到品牌', 'AI 引用官網'],
                     'rows': [
                         ['檢定資訊查詢型', '33%', '58%'],
                         ['推薦與比較型', '33%', '33%'],
@@ -316,85 +352,113 @@ CET_PAGE = {
                         ['學校與機構合作型', '0%', '0%'],
                     ],
                 }),
-                ('p', '「檢定資訊查詢型」與「英語檢定選擇型」的引用率明顯高於提及率'
-                      '——AI 已在使用官網內容作答，但沒有說明來源是師德文教。'
-                      '這類情況通常比「完全沒有能見度」更容易改善。'),
+                ('p', '「檢定資訊查詢型」與「英語檢定選擇型」的引用率明顯高於提及率——'
+                      'AI 已經在用官網內容作答，只是沒說是誰提供的。'
+                      '這種情況通常比「完全沒有能見度」更容易改善。'
+                      '「學校與機構合作型」目前兩項都是 0%，這一類問題還沒有對應的內容落點。'),
             ],
         },
         {
-            'eyebrow': 'Evidence',
-            'id': 'evidence',
-            'h2': '實際被引用的內容',
+            'eyebrow': None,
+            'id': 'crawler-health',
+            'h2': '爬蟲健康度：AI 要的東西，有沒有拿到',
             'blocks': [
-                ('p', '2026-09-07 的量測中，AI 回答引用了師德文教官網的多個網址，'
-                      '包含首頁、檢定說明、關於我們、教學資源，以及本專案新建的'
-                      + code('/kids-english-test-comparison') + '。'),
-                ('p', '同一輪中有 <strong>11 題</strong>屬於「引用了官網內容、'
-                      '但回答中沒有提到師德文教」——全部來自 Claude。'
-                      '典型的題目包括「幼兒適合參加哪種英文檢定」「兒童英檢有哪些種類」'
-                      '「STYLE/JET、KITE 和劍橋 YLE 有什麼不同」。'),
+                ('p', '除了「有沒有來」，也要看「來了有沒有拿到東西」。'),
+                ('p', '<strong>四個核心頁的表現是乾淨的</strong>：至今累計 40 次 AI 爬蟲抓取，'
+                      '全部正常回應，沒有任何一次失敗。'),
+                ('p', '整站層面則有一個待處理的項目：約 <strong>15%</strong> 的 AI 爬蟲請求'
+                      '指向已經下架的舊網址——主要是舊版 '
+                      + code('.asp') + ' 頁面與早期的電子報 PDF。'
+                      '那些網址還留在 AI 的既有知識或外部連結中，但網站早已改版。'),
+                ('p', '處理方向是為仍有外部連結的舊網址建立對應的轉址，'
+                      '把這部分抓取量導回現有內容，而不是讓它繼續落空。'),
+                ('note', '另有一部分請求是掃描常見敏感路徑的探測行為（例如設定檔、金鑰檔），'
+                         '那不是內容請求，也不影響網站的內容可讀性，因此不列入上述比例。'),
             ],
         },
         {
-            'eyebrow': 'Method',
+            'eyebrow': None,
+            'id': 'next',
+            'h2': '下一階段：從「被引用」走向「被歸因」',
+            'blocks': [
+                ('p', '第一階段要回答的問題是：<strong>AI 能不能取得並理解這些內容？</strong>'
+                      '從爬蟲紀錄與引用率來看，這一段已經在發生。'),
+                ('p', '第二階段的問題不同：<strong>AI 使用這些內容時，'
+                      '會不會把答案正確歸因給師德？</strong>'
+                      'Claude 的 50% 引用率配上 18% 提及率，就是這個問題最清楚的例子。'),
+                ('p', '因此下一階段的重點不再是增加爬蟲造訪，而是：'),
+                ('ul', [
+                    '強化「師德文教 / CET」的品牌實體訊號，讓 AI 更容易確定內容出自誰',
+                    '針對引用率高於提及率的主題，調整答案段落中的來源標示方式',
+                    '補強站內的實體關聯，讓品牌名與檢定名之間的關係更明確',
+                    '累積可被驗證的第三方提及——推薦類問題特別依賴這一項，'
+                    '單靠自有網站的內容品質有其上限',
+                    '為「學校與機構合作型」等目前無覆蓋的主題建立內容落點',
+                    '持續以相同條件量測，累積足夠的觀測點',
+                ]),
+                ('p', '這些做法能提高被正確理解與歸因的機會，但不保證特定的結果——'
+                      '最終是否引用、是否提及品牌，由各 AI 平台決定。'),
+            ],
+        },
+        {
+            'eyebrow': None,
             'id': 'method',
-            'h2': '執行方法',
+            'h2': 'ShellFans 的執行方法',
             'blocks': [
                 ('ol', [
                     '<strong>建立基準</strong>——啟用 AI 爬蟲監測，記錄哪些 AI 系統來過、'
-                    '抓了什麼、拿到什麼狀態碼',
+                    '抓了什麼、拿到什麼',
                     '<strong>問題對應</strong>——把使用者實際會問的問題分類，'
                     '對應到應該回答它的頁面',
-                    '<strong>技術整備</strong>——標題結構、結構化資料、canonical、'
-                    '站台層 AEO 檔案',
-                    '<strong>內容重構</strong>——問題作為標題、答案緊接在下，'
-                    '讓答案能獨立被擷取',
+                    '<strong>技術整備</strong>——標題結構、結構化資料、canonical、站台層檔案',
+                    '<strong>內容重構</strong>——問題作為標題、答案緊接在下',
                     '<strong>實體建立</strong>——讓 AI 能確定內容屬於哪一個組織',
                     '<strong>能見度量測</strong>——用固定題組定期向各 AI 平台提問並分析回答',
-                    '<strong>迭代</strong>——依量測結果調整，而不是依猜測',
+                    '<strong>依結果迭代</strong>——調整依據是量測結果，不是猜測',
                 ]),
-                ('p', '各階段的速度不同：爬取權限的改變可在數日內生效，'
-                      '而實體識別與引用習慣的改變需要更長時間，且不由網站單方面決定。'
-                      '完整說明見' + a('/aeo/implementation', 'AEO 導入流程')
+                ('p', '各階段的速度差很多：爬取權限的改變可在數日內生效，'
+                      '內容被擷取通常要數週，而 AI 是否主動提到品牌牽涉實體識別與外部佐證，'
+                      '時間更長。完整說明見' + a('/aeo/implementation', 'AEO 導入流程')
                       + '，評分方式見' + a('/aeo-geo/methodology', 'AI Readiness Score 方法論') + '。'),
             ],
         },
         {
-            'eyebrow': 'Limitations',
-            'id': 'limitations',
-            'h2': '本頁數據的限制',
+            'eyebrow': None,
+            'id': 'how-to-read',
+            'h2': '怎麼解讀這些數據',
             'blocks': [
+                ('p', '這是進行中專案的階段性紀錄，不是最終成效驗收。'
+                      '判讀時有幾點需要留意：'),
                 ('ul', [
-                    'AI 平台的回答是動態生成的，同一個問題在不同時間可能得到不同答案',
-                    '爬蟲造訪不保證被引用；被引用不保證會提到品牌名稱',
-                    'AI 能見度會隨平台、時間、問題措辭、地區與使用者的搜尋行為變動',
-                    '本頁的觀測結果僅適用於所述的量測條件，不可外推到其他模型或平台組合',
-                    '跨時間比較必須使用相同或等價的題組與模型，否則差異無法解讀',
-                    '本專案未量測招生、詢問量、營收或任何商業成果，本頁亦不作此類宣稱',
+                    '<strong>三個訊號要分開看。</strong>爬蟲造訪不等於被引用，'
+                    '被引用也不等於會提到品牌名稱。三者的變化速度不同。',
+                    '<strong>量測條件必須一致才能比較。</strong>本頁只比較使用相同模型與'
+                    '相同題組的三次觀測；跨模型的數字差異無法單獨歸因於網站優化。',
+                    '<strong>AI 的回答是動態的。</strong>同一個問題在不同時間、'
+                    '不同措辭、不同地區都可能得到不同答案。',
+                    '<strong>目前的觀測點還不多。</strong>三次量測、跨 11 天，'
+                    '足以看出方向，但要判定為穩定趨勢仍需持續累積。',
+                    '<strong>本案例沒有追蹤招生或營收成效。</strong>那些指標本專案未量測，'
+                    '因此頁面上不會出現相關數字。',
                 ]),
-                ('note', 'ShellFans 不保證任何 AI 平台一定引用、提及或推薦特定網站。'
-                         '技術整備能提高被正確理解與引用的機會，但最終決定權在各 AI 平台。'),
+                ('p', 'ShellFans 不保證任何 AI 平台一定引用、提及或推薦特定網站。'
+                      '技術整備能提高被正確理解與引用的機會，最終決定權在各 AI 平台。'),
             ],
         },
     ],
+    'faq_eyebrow': None,
     'faq': [
-        ('這個案例算成功嗎？',
-         '目前還不能這樣說。專案進行約一個月，技術整備已完成並可查證，'
-         'AI 爬蟲確實在抓取新建的頁面，同一量測條件下的三次觀測也呈上升——'
-         '但資料點太少、期間太短，不足以判定為穩定趨勢。這是進度紀錄，不是成效驗收。'),
-        ('為什麼不用「導入前 vs 現在」的對比？',
-         '因為專案期間 AI 能見度的量測模型變更過兩次（Claude 側與 ChatGPT 側各一次）。'
-         '跨變更點的數字差異同時包含網站改善與量測工具改變，無法拆解。'
-         '用那個差值宣稱成效在方法上是不成立的。'),
-        ('AI 爬蟲來得多，是不是就代表 AEO 有效？',
-         '不是。爬蟲造訪只代表內容被取得。本專案的資料就是一個例子：'
-         '爬蟲活動持續，但約三分之一的請求打到 404，而歸因落差在 Claude 上仍達 +32%。'
-         '爬蟲、引用、品牌提及必須分開看。'),
-        ('多久才會看到成效？',
-         '各階段速度不同。爬取權限的改變可在數日內生效；'
-         '內容被擷取與引用通常需要數週；而 AI 是否主動提到品牌，'
-         '牽涉實體識別與外部佐證，時間更長且不由網站單方面決定。'
-         'ShellFans 不對特定時程內的引用或推薦作保證。'),
+        ('AI 爬蟲來得多，就代表 AEO 有效嗎？',
+         '不是。爬蟲造訪只代表內容被取得，不代表 AI 會在回答中使用它，'
+         '更不代表會提到品牌名稱。本專案就把三者分開觀測——'
+         '同一時間點，爬蟲活動穩定、引用率 28%、提及率 19%，三個數字並不同步。'),
+        ('為什麼不能直接比較導入第一天與現在？',
+         '因為專案早期調整過 AI 能見度的量測模型。跨模型的數字差異裡同時包含'
+         '網站優化與量測工具改變，無法把差異單獨歸因於網站優化。'
+         '本頁只比較使用相同模型與相同題組的三次觀測。'),
+        ('AEO 通常要觀察多久？',
+         '各階段速度不同。爬取權限的改變可在數日內生效；內容被擷取與引用通常需要數週；'
+         '而 AI 是否主動提到品牌，牽涉實體識別與外部佐證，時間更長且不由網站單方面決定。'),
     ],
     'related': [
         ('/aeo/case-studies', '其他實作案例'),
@@ -405,8 +469,8 @@ CET_PAGE = {
     ],
     'disclaimer': ('本頁經師德文教同意公開品牌名稱與公開網址。所有數據為 ShellFans 在'
                    '所述量測條件下的觀測結果，不代表對其他網站、其他時間點或其他 AI 平台的'
-                   '預測。ShellFans 不保證任何 AI 平台一定引用、提及或推薦特定網站。'),
-    'disclaimer_short': ('數據為特定量測條件下的觀測結果，不保證任何 AI 平台的引用或推薦。'),
+                   '預測。'),
+    'disclaimer_short': '數據為特定量測條件下的階段性觀測。',
 }
 
 
