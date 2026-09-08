@@ -2,7 +2,7 @@
 
 ShellFans 是內容與服務網站，不是 API 平台。本頁列出目前真正公開、不需憑證即可讀取的機器介面，以及哪些常見的整合方式並不存在——後者同樣寫清楚，讓自動化系統不必靠猜測或反覆探測。
 
-整理者：**ShellFans AI Technology**（唄粉智能科技股份有限公司）　·　更新於 2026-08-27
+整理者：**ShellFans AI Technology**（唄粉智能科技股份有限公司）　·　更新於 2026-09-02
 
 
 ## 公開 API（v1）
@@ -171,7 +171,7 @@ npm 上的 `@shell-mcp/core` **不是 ShellFans 的套件**。它屬於 psdlabs�
 **Canonical:** https://shell.fans/developers
 **Brand:** ShellFans AI Technology（唄粉智能科技ShellFans）
 **Publisher:** 唄粉智能科技股份有限公司（Taiwan, 統一編號 83032387）
-**Last-Updated:** 2026-08-27
+**Last-Updated:** 2026-09-04
 
 本檔是 https://shell.fans/developers 的 Markdown 等價版本，供 AI agent 讀取。HTML 版為 canonical，本檔不參與搜尋索引。
 

@@ -83,7 +83,7 @@ robots.txt 的 AI 爬蟲規則、結構化資料、llms.txt、sitemap、canonica
 - [AEO 費用怎麼計算](https://shell.fans/aeo/cost.md)
 - [AEO Managed Hosting](https://shell.fans/aeo/managed-hosting.md)
 - [AI 爬蟲總覽](https://shell.fans/aeo/ai-crawler.md)
-- [免費檢測工具](https://shell.fans/tools/aeo-geo-checker)
+- [實作案例：師德文教 CET](https://shell.fans/aeo/case-studies/cet-taiwan.md)
 ---
 
 **Canonical:** https://shell.fans/aeo/implementation

@@ -189,7 +189,7 @@ AI 多層審核機制（output audit reactor）確保 AI 回傳的 KOL 名單品
 **Canonical:** https://shell.fans/what-is-shellfans
 **Brand:** ShellFans AI Technology（唄粉智能科技ShellFans）
 **Publisher:** 唄粉智能科技股份有限公司（Taiwan, 統一編號 83032387）
-**Last-Updated:** 2026-08-27
+**Last-Updated:** 2026-09-04
 
 本檔是 https://shell.fans/what-is-shellfans 的 Markdown 等價版本，供 AI agent 讀取。HTML 版為 canonical，本檔不參與搜尋索引。
 

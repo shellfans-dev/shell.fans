@@ -50,6 +50,12 @@ AEO（Answer Engine Optimization，答案引擎最佳化）是讓網站內容能
 
 各面向的判定細節與評級對照，見 [AI Readiness Score 方法論](https://shell.fans/aeo-geo/methodology)。
 
+## 實際做起來是什麼樣子
+
+概念與方法之外，實際專案的樣貌通常更有參考價值——包含哪些做得到、哪些做不到、以及多久才看得出變化。[AEO/GEO 實作案例](https://shell.fans/aeo/case-studies.md) 收錄 ShellFans 執行中與已完成的專案紀錄。
+
+目前已發布：[師德文教 CET 專案進度紀錄](https://shell.fans/aeo/case-studies/cet-taiwan.md)——兒童英語檢定機構的 AI 可讀性重構，含量測條件變更的處理方式與尚未改善的部分。
+
 ## 這個知識中心不涵蓋什麼
 
 把邊界講清楚，比多寫幾頁有用。

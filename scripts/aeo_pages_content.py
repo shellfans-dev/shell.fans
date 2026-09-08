@@ -153,6 +153,15 @@ PAGES.append(page(
             SCORE_TABLE,
             ('p', '各面向的判定細節與評級對照，見 %s。' % a(METHOD, 'AI Readiness Score 方法論')),
         ]),
+        sec('Case studies', '實際做起來是什麼樣子', [
+            ('p', '概念與方法之外，實際專案的樣貌通常更有參考價值——包含哪些'
+                  '做得到、哪些做不到、以及多久才看得出變化。'
+                  '%s 收錄 ShellFans 執行中與已完成的專案紀錄。'
+                  % a('/aeo/case-studies', 'AEO/GEO 實作案例')),
+            ('p', '目前已發布：%s——兒童英語檢定機構的 AI 可讀性重構，'
+                  '含量測條件變更的處理方式與尚未改善的部分。'
+                  % a('/aeo/case-studies/cet-taiwan', '師德文教 CET 專案進度紀錄')),
+        ]),
         sec('Scope', '這個知識中心不涵蓋什麼', [
             ('p', '把邊界講清楚，比多寫幾頁有用。'),
             ('ul', [
@@ -1427,7 +1436,8 @@ PAGES.append(page(
          '需要重新驗證，但通常不必重做。重點是確認改版有沒有覆蓋既有的結構化資料、robots.txt 或內容結構。把檢測納入改版後的例行檢查，是成本最低的做法。'),
     ],
     related=[('/aeo/cost', 'AEO 費用怎麼計算'), ('/aeo/managed-hosting', 'AEO Managed Hosting'),
-             ('/aeo/ai-crawler', 'AI 爬蟲總覽'), (CHECKER, '免費檢測工具')],
+             ('/aeo/ai-crawler', 'AI 爬蟲總覽'),
+             ('/aeo/case-studies/cet-taiwan', '實作案例：師德文教 CET')],
     cta=CTA_CHECK, cta2=CTA_SERVICE,
 ))
 

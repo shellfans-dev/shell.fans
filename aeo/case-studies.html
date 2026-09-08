@@ -2,32 +2,32 @@
 <html lang="zh-Hant">
 <head>
 <meta charset="utf-8">
-<title>AEO 導入流程：實際會經歷哪些階段 - ShellFans</title>
-<meta name="description" content="AEO 導入分為現況評估、技術整備、驗證、內容調整與持續量測五個階段。本頁說明每個階段的工作、產出與常見卡點。">
+<title>AEO/GEO 實作案例｜ShellFans AI Technology</title>
+<meta name="description" content="ShellFans AEO/GEO 專案的公開實作紀錄。每一則都以實測資料為準，分開呈現技術整備、AI 爬蟲活動、引用與品牌提及，並標明量測條件與限制。">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#101214">
-<link rel="canonical" href="https://shell.fans/aeo/implementation">
+<link rel="canonical" href="https://shell.fans/aeo/case-studies">
 
-<link rel="alternate" hreflang="zh-Hant" href="https://shell.fans/aeo/implementation">
-<link rel="alternate" hreflang="x-default" href="https://shell.fans/aeo/implementation">
+<link rel="alternate" hreflang="zh-Hant" href="https://shell.fans/aeo/case-studies">
+<link rel="alternate" hreflang="x-default" href="https://shell.fans/aeo/case-studies">
 
 <meta property="og:type" content="article">
-<meta property="og:url" content="https://shell.fans/aeo/implementation">
-<meta property="og:title" content="AEO 導入流程：實際會經歷哪些階段 - ShellFans">
-<meta property="og:description" content="AEO 導入分為現況評估、技術整備、驗證、內容調整與持續量測五個階段。本頁說明每個階段的工作、產出與常見卡點。">
+<meta property="og:url" content="https://shell.fans/aeo/case-studies">
+<meta property="og:title" content="AEO/GEO 實作案例｜ShellFans AI Technology">
+<meta property="og:description" content="ShellFans AEO/GEO 專案的公開實作紀錄。每一則都以實測資料為準，分開呈現技術整備、AI 爬蟲活動、引用與品牌提及，並標明量測條件與限制。">
 <meta property="og:site_name" content="ShellFans AI Technology">
 <meta property="og:image" content="https://shell.fans/images/nav_logo.svg">
 <meta property="og:locale" content="zh_TW">
 
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="AEO 導入流程：實際會經歷哪些階段 - ShellFans">
-<meta name="twitter:description" content="AEO 導入分為現況評估、技術整備、驗證、內容調整與持續量測五個階段。本頁說明每個階段的工作、產出與常見卡點。">
+<meta name="twitter:title" content="AEO/GEO 實作案例｜ShellFans AI Technology">
+<meta name="twitter:description" content="ShellFans AEO/GEO 專案的公開實作紀錄。每一則都以實測資料為準，分開呈現技術整備、AI 爬蟲活動、引用與品牌提及，並標明量測條件與限制。">
 <meta name="twitter:image" content="https://shell.fans/images/nav_logo.svg">
 
 <!-- AI agent discovery：llms.txt 是站台層的導覽檔，.md 是本頁的乾淨版本。
      兩者都不影響 canonical —— HTML 仍是唯一 canonical。 -->
 <link rel="describedby" href="https://shell.fans/llms.txt">
-<link rel="alternate" type="text/markdown" href="https://shell.fans/aeo/implementation.md" title="Markdown version for AI agents">
+<link rel="alternate" type="text/markdown" href="https://shell.fans/aeo/case-studies.md" title="Markdown version for AI agents">
 
 <link rel="icon" href="https://shell.fans/images/favicon.png">
 <link rel="apple-touch-icon" href="https://shell.fans/images/webclip.png">
@@ -86,12 +86,11 @@
       ]
     },
     {
-      "@type": "TechArticle",
-      "@id": "https://shell.fans/aeo/implementation#main",
-      "headline": "AEO 導入流程",
-      "name": "AEO 導入流程",
-      "description": "AEO 導入分為現況評估、技術整備、驗證、內容調整與持續量測五個階段。本頁說明每個階段的工作、產出與常見卡點。",
-      "url": "https://shell.fans/aeo/implementation",
+      "@type": "CollectionPage",
+      "@id": "https://shell.fans/aeo/case-studies#main",
+      "name": "AEO/GEO 實作案例",
+      "description": "ShellFans AEO/GEO 專案的公開實作紀錄。每一則都以實測資料為準，分開呈現技術整備、AI 爬蟲活動、引用與品牌提及，並標明量測條件與限制。",
+      "url": "https://shell.fans/aeo/case-studies",
       "inLanguage": "zh-Hant",
       "isPartOf": {
         "@type": "WebSite",
@@ -104,11 +103,11 @@
       "publisher": {
         "@id": "https://shell.fans/#organization"
       },
-      "disclaimer": "技術整備可提升網站被 AI 系統理解與引用的基礎條件，但不構成任何第三方 AI 平台的引用、推薦或排名保證。"
+      "disclaimer": "案例數據為特定量測條件下的觀測，不構成對其他情境的預測。"
     },
     {
       "@type": "BreadcrumbList",
-      "@id": "https://shell.fans/aeo/implementation#breadcrumb",
+      "@id": "https://shell.fans/aeo/case-studies#breadcrumb",
       "itemListElement": [
         {
           "@type": "ListItem",
@@ -125,37 +124,35 @@
         {
           "@type": "ListItem",
           "position": 3,
-          "name": "AEO 導入流程",
-          "item": "https://shell.fans/aeo/implementation"
+          "name": "實作案例",
+          "item": "https://shell.fans/aeo/case-studies"
+        },
+        {
+          "@type": "ListItem",
+          "position": 4,
+          "name": "AEO/GEO 實作案例",
+          "item": "https://shell.fans/aeo/case-studies"
         }
       ]
     },
     {
       "@type": "FAQPage",
-      "@id": "https://shell.fans/aeo/implementation#faq",
+      "@id": "https://shell.fans/aeo/case-studies#faq",
       "mainEntity": [
         {
           "@type": "Question",
-          "name": "可以跳過某些階段嗎？",
+          "name": "案例中的數字可以驗證嗎？",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "評估與驗證不建議跳過。沒有基準就無法判斷成效，沒有驗證則可能整套設定其實沒生效。內容調整可以分批進行，量測可以簡化但不建議完全省略。"
+            "text": "案例中的技術狀態（HTTP 狀態碼、標題結構、結構化資料、canonical、robots.txt/sitemap.xml/llms.txt）皆可由讀者自行對客戶網站查證。AI 爬蟲與能見度數據來自 ShellFans 的監測系統，頁內會標明量測期間與條件。"
           }
         },
         {
           "@type": "Question",
-          "name": "多久會看到效果？",
+          "name": "為什麼案例會寫出還沒改善的部分？",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "技術整備的效果可以立即驗證（爬蟲能否存取、結構化資料能否解析）。但 AI 搜尋能見度的變化需要更長時間，且需累積足夠觀測點才能區分趨勢與雜訊。任何承諾具體天數的說法都應該要求說明依據。"
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "改版後要重做嗎？",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "需要重新驗證，但通常不必重做。重點是確認改版有沒有覆蓋既有的結構化資料、robots.txt 或內容結構。把檢測納入改版後的例行檢查，是成本最低的做法。"
+            "text": "AEO 的成效鏈是「可抓取 → 被讀取 → 被引用 → 被歸因到品牌 → 被推薦」，各段速度不同。只呈現已改善的部分會讓讀者高估短期可得的結果。"
           }
         }
       ]
@@ -472,62 +469,34 @@ footer small{color:rgba(255,255,255,0.45);display:block;margin-top:14px;font-siz
 
   <section class="hero">
     <div class="container">
-      <span class="hero-eyebrow">Process</span>
-      <h1>AEO 導入流程</h1>
-      <p class="hero-lead">AEO 導入通常分五個階段：<strong>現況評估 → 技術整備 → 驗證 → 內容調整 → 持續量測</strong>。前三階段成本相對固定且可快速驗收；第四階段成本最高、變數最大；第五階段是唯一沒有終點的部分——也是最常被省略、然後在改版後付出代價的部分。</p>
-      <p class="page-byline" style="font-size:0.85rem;line-height:1.9;color:var(--text-secondary);margin:-16px 0 28px;max-width:780px">整理者：<strong>ShellFans AI Technology</strong>（唄粉智能科技股份有限公司）　·　更新於 2026-08-25</p>
+      <span class="hero-eyebrow">Case studies</span>
+      <h1>AEO/GEO 實作案例</h1>
+      <p class="hero-lead">這裡收錄 ShellFans 執行中或已完成的 AEO/GEO 專案紀錄。每一則案例都區分「已驗證的事實」「同一量測條件下的觀察」與「證據不足因此不作結論的部分」——把三者混為一談的案例，對讀者判斷沒有幫助。</p>
+      <p class="page-byline" style="font-size:0.85rem;line-height:1.9;color:var(--text-secondary);margin:-16px 0 28px;max-width:780px">整理者：<strong>ShellFans AI Technology</strong>（唄粉智能科技股份有限公司）　·　更新於 2026-09-08</p>
       <div class="hero-cta">
-        <a href="https://shell.fans/tools/aeo-geo-checker" class="btn-primary">免費檢測我的網站</a>
-        <a href="https://shell.fans/aeo-geo" class="btn-secondary">了解 AEO Managed Hosting</a>
+        <a href="https://shell.fans/aeo/case-studies/cet-taiwan" class="btn-primary">看師德文教 CET 案例</a>
+        <a href="https://shell.fans/aeo-geo" class="btn-secondary">AEO/GEO 代管服務</a>
       </div>
     </div>
   </section>
 
   <section>
     <div class="container">
-      <span class="section-eyebrow">Stages</span>
-      <h2>五個階段</h2>
-      <h3>階段一：現況評估</h3>
-      <p>取得基準分數與具體缺口清單。這一步必須在任何施工之前完成——沒有基準，之後就無法判斷改動有沒有效。可用 <a href="https://shell.fans/tools/aeo-geo-checker">免費檢測工具</a> 取得八個面向的分數。</p>
-      <p><strong>產出</strong>：基準分數、缺口清單、優先順序。</p>
-      <h3>階段二：技術整備</h3>
-      <p>robots.txt 的 AI 爬蟲規則、結構化資料、llms.txt、sitemap、canonical。這些項目成本相對固定，且與網站頁數關係不大。</p>
-      <p><strong>產出</strong>：可驗收的技術設定。</p>
-      <h3>階段三：驗證</h3>
-      <p><strong>這一步最常被跳過，但省略的代價最高。</strong>設定寫在檔案裡不等於實際生效——CDN 的 bot 規則、WAF、快取都可能讓 robots.txt 的意圖失效。</p>
-      <p><strong>產出</strong>：以實際 user-agent 測試的回應記錄、access log 佐證。</p>
-      <h3>階段四：內容調整</h3>
-      <p>依 <a href="https://shell.fans/aeo/answer-readiness">答覆整備度</a> 的原則調整內容結構。這是成本最高的階段，且與頁數直接相關。務實的做法是先處理流量或商業價值最高的幾頁，而非全站一次到位。</p>
-      <p><strong>產出</strong>：調整後的頁面。</p>
-      <h3>階段五：持續量測</h3>
-      <p>固定問題、固定平台、定期觀測。這個階段沒有終點，但它是唯一能回答「有沒有用」的方式。</p>
-      <p><strong>產出</strong>：可比較的時間序列。</p>
+      <span class="section-eyebrow">Published</span>
+      <h2>已發布的案例</h2>
+      <h3>師德文教 CET（cet-taiwan.com）— 專案進度紀錄</h3>
+      <p>兒童英語檢定與英語教學專業機構。專案自 2026 年 8 月 5 日開始，內容涵蓋四個目標頁的 AI 可讀性重構、站台層 AEO 檔案建置、AI 爬蟲監測與能見度量測。<a href="https://shell.fans/aeo/case-studies/cet-taiwan">閱讀完整紀錄</a>。</p>
+      <div class="disclaimer"><p>這是<strong>進度紀錄</strong>而非成效案例。專案期間量測工具變更過兩次，跨期數字不可直接比較；頁內只呈現同一量測條件下的觀測，並明列尚未改善的部分。</p></div>
     </div>
   </section>
 
   <section>
     <div class="container">
-      <span class="section-eyebrow">Pitfalls</span>
-      <h2>常見卡點</h2>
-      <div class="sf-table-wrap"><table class="sf-dim-table"><caption>各階段的常見卡點</caption><thead><tr><th scope="col">階段</th><th scope="col">常見卡點</th><th scope="col">處理方式</th></tr></thead><tbody><tr><th scope="row">評估</th><td>沒有先取得基準就開始改</td><td>任何改動前先跑一次檢測並保留結果</td></tr><tr><th scope="row">技術整備</th><td>robots.txt 群組不繼承導致誤擋</td><td>每支爬蟲明確寫出規則，見 <a href="https://shell.fans/aeo/ai-crawler">AI 爬蟲</a></td></tr><tr><th scope="row">驗證</th><td>只看設定檔，沒測實際回應</td><td>以真實 user-agent 測試並核對 access log</td></tr><tr><th scope="row">內容調整</th><td>想一次改完全站</td><td>先做商業價值最高的頁面，驗證有效再擴大</td></tr><tr><th scope="row">量測</th><td>換模型或換問題導致數據不可比</td><td>固定量測條件；條件變更時明確標記為新的基準</td></tr></tbody></table></div>
-    </div>
-  </section>
-
-  <section>
-    <div class="container">
-      <span class="section-eyebrow">Regression</span>
-      <h2>為什麼需要持續維護</h2>
-      <div class="disclaimer"><p><strong>AEO 整備很容易在無人察覺的情況下失效。</strong>網站改版覆蓋了結構化資料、新的 CDN 規則擋掉了爬蟲、內容更新後 llms.txt 沒跟著改——這些都不會報錯，只會安靜地讓分數退回去。</p></div>
-      <p>因此「做完了」是個危險的想法。可行的做法是把檢測納入例行流程：每次改版後重跑一次、定期排程檢查，或直接採用包含持續維護的 <a href="https://shell.fans/aeo/managed-hosting">Managed Hosting</a>。</p>
-    </div>
-  </section>
-
-  <section>
-    <div class="container">
-      <span class="section-eyebrow">Time</span>
-      <h2>需要多久</h2>
-      <p>各階段的時間差異很大，且高度取決於網站規模與內部配合速度，因此本頁<strong>不提供保證天數</strong>。可以說的是相對關係：</p>
-      <ul><li>階段一到三（評估、技術整備、驗證）的工作量相對固定，與頁數關係不大。</li><li>階段四（內容調整）的時間與要處理的頁數成正比，是總時程的主要變數。</li><li>階段五（量測）需要累積足夠的觀測點才能判斷趨勢，這部分無法壓縮——這是資料本身的性質，不是執行速度的問題。</li></ul>
+      <span class="section-eyebrow">How we report</span>
+      <h2>案例怎麼寫</h2>
+      <p>AEO 這個領域很容易寫出看起來很強、但無法查證的案例。ShellFans 的案例頁遵守以下規則：</p>
+      <ul><li>每個數字都可回溯到爬蟲記錄、AI 能見度探測結果或線上 HTML 的實際解析</li><li>量測工具（模型、平台組合、題目）變更時明確標示，不做跨變更點的比較</li><li>爬蟲造訪、AI 引用、品牌提及三者分開呈現，不合併也不相除</li><li>列出仍未改善的部分——只寫成功的案例無法幫讀者判斷風險</li><li>不寫名次、市佔、招生數、營收或詢問量，除非該專案確實量測了它們</li></ul>
+      <p>判定方法見<a href="https://shell.fans/aeo-geo/methodology">ShellFans AI Readiness Score 方法論</a>，服務範圍見<a href="https://shell.fans/aeo-geo">AEO/GEO 代管</a>。</p>
     </div>
   </section>
 
@@ -536,17 +505,16 @@ footer small{color:rgba(255,255,255,0.45);display:block;margin-top:14px;font-siz
       <span class="section-eyebrow">FAQ</span>
       <h2>常見問題</h2>
       <div class="faq" style="margin-top:32px">
-        <details><summary><h3 style="display:inline;font:inherit;margin:0;padding:0;color:inherit">可以跳過某些階段嗎？</h3></summary><p>評估與驗證不建議跳過。沒有基準就無法判斷成效，沒有驗證則可能整套設定其實沒生效。內容調整可以分批進行，量測可以簡化但不建議完全省略。</p></details>
-        <details><summary><h3 style="display:inline;font:inherit;margin:0;padding:0;color:inherit">多久會看到效果？</h3></summary><p>技術整備的效果可以立即驗證（爬蟲能否存取、結構化資料能否解析）。但 AI 搜尋能見度的變化需要更長時間，且需累積足夠觀測點才能區分趨勢與雜訊。任何承諾具體天數的說法都應該要求說明依據。</p></details>
-        <details><summary><h3 style="display:inline;font:inherit;margin:0;padding:0;color:inherit">改版後要重做嗎？</h3></summary><p>需要重新驗證，但通常不必重做。重點是確認改版有沒有覆蓋既有的結構化資料、robots.txt 或內容結構。把檢測納入改版後的例行檢查，是成本最低的做法。</p></details>
+        <details><summary><h3 style="display:inline;font:inherit;margin:0;padding:0;color:inherit">案例中的數字可以驗證嗎？</h3></summary><p>案例中的技術狀態（HTTP 狀態碼、標題結構、結構化資料、canonical、robots.txt/sitemap.xml/llms.txt）皆可由讀者自行對客戶網站查證。AI 爬蟲與能見度數據來自 ShellFans 的監測系統，頁內會標明量測期間與條件。</p></details>
+        <details><summary><h3 style="display:inline;font:inherit;margin:0;padding:0;color:inherit">為什麼案例會寫出還沒改善的部分？</h3></summary><p>AEO 的成效鏈是「可抓取 → 被讀取 → 被引用 → 被歸因到品牌 → 被推薦」，各段速度不同。只呈現已改善的部分會讓讀者高估短期可得的結果。</p></details>
       </div>
     </div>
   </section>
 
   <section>
     <div class="container">
-      <div class="disclaimer"><p><strong>說明：</strong>本頁內容為 ShellFans 依公開技術文件與實務經驗整理，用於協助網站主理解 AI 搜尋的運作方式。各 AI 平台的實際演算法、資料來源策略與引用邏輯由該平台自行決定且可能隨時調整；任何技術整備都無法保證特定 AI 平台的引用、推薦或排名。</p></div>
-      <p class="sf-inline-links">相關頁面：<a href="https://shell.fans/aeo/cost">AEO 費用怎麼計算</a>　·　<a href="https://shell.fans/aeo/managed-hosting">AEO Managed Hosting</a>　·　<a href="https://shell.fans/aeo/ai-crawler">AI 爬蟲總覽</a>　·　<a href="https://shell.fans/aeo/case-studies/cet-taiwan">實作案例：師德文教 CET</a></p>
+      <div class="disclaimer"><p>案例內容經客戶同意公開品牌名稱與公開網址。所有數據為特定量測條件下的觀測結果，不代表對其他網站或其他時間點的預測。</p></div>
+      <p class="sf-inline-links">相關頁面：<a href="https://shell.fans/aeo">AEO/GEO 知識中心</a>　·　<a href="https://shell.fans/aeo-geo">AEO/GEO 代管服務</a>　·　<a href="https://shell.fans/aeo-geo/methodology">評分方法論</a>　·　<a href="https://shell.fans/aeo/implementation">AEO 導入流程</a></p>
     </div>
   </section>
 

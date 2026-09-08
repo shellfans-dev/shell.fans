@@ -54,7 +54,10 @@ BRAND_TW = '唄粉智能科技ShellFans'
 # Accept: text/markdown 內容協商最常被打的網址（nginx 把 "/" 映射到
 # /index.md）。少了它，首頁會是全站唯一不支援協商的公開頁面。
 EXTRA_PAGES = ['index.html', 'what-is-shellfans.html', 'aeo-geo.html',
-               'about.html', 'developers.html']
+               'about.html', 'developers.html',
+               # 案例頁：內容在 build-case-studies.py，不在 content module，
+               # 因此走 HTML 抽取路徑。
+               'aeo/case-studies.html', 'aeo/case-studies/cet-taiwan.html']
 
 
 # ---------------------------------------------------------------------------

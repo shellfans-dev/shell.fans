@@ -362,6 +362,21 @@ def build_jsonld(page):
         node.pop('headline', None)
     if page.get('disclaimer_short'):
         node['disclaimer'] = page['disclaimer_short']
+
+    # about_entity：本頁主要在講「哪一個外部實體」。
+    #
+    # 案例頁需要這個——一篇談客戶專案的文章，主體是客戶而非 ShellFans。
+    # 用 about 明確指向該實體，並用獨立節點宣告它（而不是只寫名字），
+    # AI 才能把文章內容連回正確的組織，不會誤判成 ShellFans 自己的事。
+    #
+    # publisher/author 仍指向 ShellFans——內容是誰寫的與內容在講誰是兩件事，
+    # 混在一起正是實體歸因出錯的常見原因。
+    if page.get('about_entity'):
+        ent = dict(page['about_entity'])
+        ent.setdefault('@type', 'Organization')
+        node['about'] = {'@id': ent['@id']}
+        graph.append(ent)
+
     graph.append(node)
 
     crumbs = [('首頁', '/')] + page['breadcrumb'] + [(page['h1'], page['url'])]

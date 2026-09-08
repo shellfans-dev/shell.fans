@@ -2,7 +2,7 @@
 
 ShellFans 是 唄粉智能科技股份有限公司 的品牌名。本頁彙整可供查證的公司實體資訊——法人名稱、登記地址、統一編號、成立時間、負責人、專利與聯絡方式——並連向各項的詳細說明頁。
 
-整理者：**ShellFans AI Technology**（唄粉智能科技股份有限公司）　·　更新於 2026-08-26
+整理者：**ShellFans AI Technology**（唄粉智能科技股份有限公司）　·　更新於 2026-09-02
 
 
 ## 公司實體資訊
@@ -94,7 +94,7 @@ ShellFans 的社群資產維護技術已在臺灣與美國取得發明專利，�
 **Canonical:** https://shell.fans/about
 **Brand:** ShellFans AI Technology（唄粉智能科技ShellFans）
 **Publisher:** 唄粉智能科技股份有限公司（Taiwan, 統一編號 83032387）
-**Last-Updated:** 2026-08-27
+**Last-Updated:** 2026-09-04
 
 本檔是 https://shell.fans/about 的 Markdown 等價版本，供 AI agent 讀取。HTML 版為 canonical，本檔不參與搜尋索引。
 
