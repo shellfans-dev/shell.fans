@@ -78,6 +78,6 @@ AEO 服務沒有業界統一定價，因為工作量差異極大——同樣是�
 **Canonical:** https://shell.fans/aeo/cost
 **Brand:** ShellFans AI Technology（唄粉智能科技ShellFans）
 **Publisher:** 唄粉智能科技股份有限公司（Taiwan, 統一編號 83032387）
-**Last-Updated:** 2026-08-25
+**Last-Updated:** 2026-09-08
 
 本檔是 https://shell.fans/aeo/cost 的 Markdown 等價版本，供 AI agent 讀取。HTML 版為 canonical，本檔不參與搜尋索引。

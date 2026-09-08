@@ -64,6 +64,6 @@ OpenAI 目前有三支主要爬蟲，用途各不相同：**GPTBot** 收集訓�
 **Canonical:** https://shell.fans/aeo/gptbot-oai-searchbot
 **Brand:** ShellFans AI Technology（唄粉智能科技ShellFans）
 **Publisher:** 唄粉智能科技股份有限公司（Taiwan, 統一編號 83032387）
-**Last-Updated:** 2026-08-25
+**Last-Updated:** 2026-09-08
 
 本檔是 https://shell.fans/aeo/gptbot-oai-searchbot 的 Markdown 等價版本，供 AI agent 讀取。HTML 版為 canonical，本檔不參與搜尋索引。

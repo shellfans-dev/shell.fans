@@ -77,6 +77,6 @@ GEO 的難處在於它沒有像排名那樣現成的名次可看。可用的做�
 **Canonical:** https://shell.fans/aeo/what-is-geo
 **Brand:** ShellFans AI Technology（唄粉智能科技ShellFans）
 **Publisher:** 唄粉智能科技股份有限公司（Taiwan, 統一編號 83032387）
-**Last-Updated:** 2026-08-25
+**Last-Updated:** 2026-09-08
 
 本檔是 https://shell.fans/aeo/what-is-geo 的 Markdown 等價版本，供 AI agent 讀取。HTML 版為 canonical，本檔不參與搜尋索引。

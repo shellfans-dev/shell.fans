@@ -70,6 +70,6 @@ AEO 顧問服務提供的是**判斷與方法**，不是代工。適合已有技
 **Canonical:** https://shell.fans/aeo/consulting
 **Brand:** ShellFans AI Technology（唄粉智能科技ShellFans）
 **Publisher:** 唄粉智能科技股份有限公司（Taiwan, 統一編號 83032387）
-**Last-Updated:** 2026-08-25
+**Last-Updated:** 2026-09-08
 
 本檔是 https://shell.fans/aeo/consulting 的 Markdown 等價版本，供 AI agent 讀取。HTML 版為 canonical，本檔不參與搜尋索引。
