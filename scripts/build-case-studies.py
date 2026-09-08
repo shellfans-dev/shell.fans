@@ -197,7 +197,12 @@ CET_PAGE = {
     'eyebrow': 'AEO 案例 · 進行中',
     'desc': ('師德文教 CET 自 2026 年 8 月起進行 AEO 優化，重構四個兒童英語檢定核心頁面。'
              '本頁記錄技術整備完成後，AI 爬蟲、官網引用與品牌提及三種訊號的階段性觀測。'),
-    'lede': ('師德文教自 2026 年 8 月開始進行 AEO 優化，第一階段聚焦於讓兒童英語檢定'
+    # lede 只會進 <p class="hero-lead">，不會進 JSON-LD（那邊用的是 desc），
+    # 所以這裡放 HTML 是安全的。樣式同下方 background 段：
+    # 樣板的 a{color:inherit;text-decoration:none} 會讓沒帶樣式的連結看起來像純文字。
+    'lede': ('<a href="https://www.cet-taiwan.com/" target="_blank" rel="noopener"'
+             ' style="color:var(--data-teal,#2C9A8A);text-decoration:underline">師德文教</a>'
+             '自 2026 年 8 月開始進行 AEO 優化，第一階段聚焦於讓兒童英語檢定'
              '相關內容更容易被 AI 搜尋系統讀取、理解與引用。技術整備完成後，'
              '我們開始分別觀察 AI 爬蟲、官方網站引用與品牌提及三種訊號。'
              '專案仍在進行中，以下是階段性觀測。'),
