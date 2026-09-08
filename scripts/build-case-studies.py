@@ -237,7 +237,11 @@ CET_PAGE = {
             'id': 'background',
             'h2': '專案背景',
             'blocks': [
-                ('p', '<a href="https://www.cet-taiwan.com/" target="_blank" rel="noopener">'
+                # 本站樣板的基礎規則是 a{color:inherit;text-decoration:none}，
+                # 內文連結若不自帶樣式會與純文字完全無法區分。
+                # 沿用站上內文連結的視覺語言：--data-teal + 底線。
+                ('p', '<a href="https://www.cet-taiwan.com/" target="_blank" rel="noopener"'
+                      ' style="color:var(--data-teal,#2C9A8A);text-decoration:underline">'
                       '師德文教（CET Taiwan）</a>是台灣的兒童英語檢定與英語教學專業服務機構，'
                       '網站內容涵蓋檢定說明、教學資源與教師專業發展。'
                       '專案自 2026 年 8 月 5 日啟動，本頁資料截至 9 月 7 日的最近一次量測。'),
