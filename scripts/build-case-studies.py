@@ -49,8 +49,15 @@ def a(url, text):
     return '<a href="https://shell.fans%s">%s</a>' % (url, text)
 
 
+# 本站樣板的基礎規則是 a{color:inherit;text-decoration:none}，
+# 內文連結若不自帶樣式，顏色與底線都與純文字相同，視覺上等於沒有連結。
+# 沿用站上內文連結的視覺語言（.sf-inline-links a）：--data-teal + 底線。
+LINK_STYLE = 'color:var(--data-teal,#2C9A8A);text-decoration:underline'
+
+
 def ext(url, text):
-    return '<a href="%s" target="_blank" rel="noopener">%s</a>' % (url, text)
+    return ('<a href="%s" target="_blank" rel="noopener" style="%s">%s</a>'
+            % (url, LINK_STYLE, text))
 
 
 def code(s):
@@ -173,21 +180,30 @@ MODEL_DETAILS = '''<details style="margin:14px 0;border:1px solid var(--border,#
   </div>
 </details>'''
 
+# 四個核心頁的實測結果。改成資料驅動，四列共用同一個 ext()，
+# 連結樣式因此與頁面其他外部連結一致。
+CORE_PAGE_ROWS = '\n'.join(
+    '        <tr><th scope="row">%s</th><td>%s</td>'
+    '<td>JSON-LD 6 節點</td><td>自我指向</td></tr>' % (ext(CET + path, path), headings)
+    for path, headings in [
+        ('/about-cet-kite', 'h1×1、h2×8、h3×9'),
+        ('/about-cet-style-jet', 'h1×1、h2×9、h3×11'),
+        ('/kids-english-test-comparison', 'h1×1、h2×9、h3×9'),
+        ('/kids-english-exam', 'h1×1、h2×10、h3×11'),
+    ])
+
 TECH_DETAILS = '''<details style="margin:14px 0;border:1px solid var(--border,#E8E5DE);border-radius:10px;padding:14px 18px">
   <summary data-not-heading="1" style="cursor:pointer;font-weight:600">查看技術驗證細節</summary>
   <div style="margin-top:12px">
     <table class="sf-dim-table"><caption>四個核心頁的實測結果（2026-09-08）</caption>
       <thead><tr><th scope="col">頁面</th><th scope="col">標題結構</th><th scope="col">結構化資料</th><th scope="col">canonical</th></tr></thead>
       <tbody>
-        <tr><th scope="row"><a href="https://www.cet-taiwan.com/about-cet-kite" target="_blank" rel="noopener">/about-cet-kite</a></th><td>h1×1、h2×8、h3×9</td><td>JSON-LD 6 節點</td><td>自我指向</td></tr>
-        <tr><th scope="row"><a href="https://www.cet-taiwan.com/about-cet-style-jet" target="_blank" rel="noopener">/about-cet-style-jet</a></th><td>h1×1、h2×9、h3×11</td><td>JSON-LD 6 節點</td><td>自我指向</td></tr>
-        <tr><th scope="row"><a href="https://www.cet-taiwan.com/kids-english-test-comparison" target="_blank" rel="noopener">/kids-english-test-comparison</a></th><td>h1×1、h2×9、h3×9</td><td>JSON-LD 6 節點</td><td>自我指向</td></tr>
-        <tr><th scope="row"><a href="https://www.cet-taiwan.com/kids-english-exam" target="_blank" rel="noopener">/kids-english-exam</a></th><td>h1×1、h2×10、h3×11</td><td>JSON-LD 6 節點</td><td>自我指向</td></tr>
+%(rows)s
       </tbody>
     </table>
     <p style="margin-top:12px;font-size:0.92rem;line-height:1.9">結構化資料涵蓋 Organization、WebSite、WebPage、BreadcrumbList 與 FAQPage。站台層的 robots.txt、sitemap.xml、llms.txt、llms-full.txt 四份檔案於同日實測皆正常回應。</p>
   </div>
-</details>'''
+</details>''' % {'rows': CORE_PAGE_ROWS}
 
 CET_PAGE = {
     'url': '/aeo/case-studies/cet-taiwan',
@@ -198,11 +214,9 @@ CET_PAGE = {
     'desc': ('師德文教 CET 自 2026 年 8 月起進行 AEO 優化，重構四個兒童英語檢定核心頁面。'
              '本頁記錄技術整備完成後，AI 爬蟲、官網引用與品牌提及三種訊號的階段性觀測。'),
     # lede 只會進 <p class="hero-lead">，不會進 JSON-LD（那邊用的是 desc），
-    # 所以這裡放 HTML 是安全的。樣式同下方 background 段：
-    # 樣板的 a{color:inherit;text-decoration:none} 會讓沒帶樣式的連結看起來像純文字。
-    'lede': ('<a href="https://www.cet-taiwan.com/" target="_blank" rel="noopener"'
-             ' style="color:var(--data-teal,#2C9A8A);text-decoration:underline">師德文教</a>'
-             '自 2026 年 8 月開始進行 AEO 優化，第一階段聚焦於讓兒童英語檢定'
+    # 所以這裡放 HTML 是安全的。
+    'lede': (ext(CET + '/', '師德文教')
+             + '自 2026 年 8 月開始進行 AEO 優化，第一階段聚焦於讓兒童英語檢定'
              '相關內容更容易被 AI 搜尋系統讀取、理解與引用。技術整備完成後，'
              '我們開始分別觀察 AI 爬蟲、官方網站引用與品牌提及三種訊號。'
              '專案仍在進行中，以下是階段性觀測。'),
@@ -242,12 +256,8 @@ CET_PAGE = {
             'id': 'background',
             'h2': '專案背景',
             'blocks': [
-                # 本站樣板的基礎規則是 a{color:inherit;text-decoration:none}，
-                # 內文連結若不自帶樣式會與純文字完全無法區分。
-                # 沿用站上內文連結的視覺語言：--data-teal + 底線。
-                ('p', '<a href="https://www.cet-taiwan.com/" target="_blank" rel="noopener"'
-                      ' style="color:var(--data-teal,#2C9A8A);text-decoration:underline">'
-                      '師德文教（CET Taiwan）</a>是台灣的兒童英語檢定與英語教學專業服務機構，'
+                ('p', ext(CET + '/', '師德文教（CET Taiwan）')
+                      + '是台灣的兒童英語檢定與英語教學專業服務機構，'
                       '網站內容涵蓋檢定說明、教學資源與教師專業發展。'
                       '專案自 2026 年 8 月 5 日啟動，本頁資料截至 9 月 7 日的最近一次量測。'),
                 ('h3', '為什麼兒童英語檢定網站需要 AEO'),
