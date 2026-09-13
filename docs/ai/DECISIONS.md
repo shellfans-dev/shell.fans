@@ -61,3 +61,13 @@ Worker `shellfans-product-flags` 依產品開關在邊緣移除 `a[data-sf-produ
 
 ## D-014 協作文件不含 secrets（2026-09-13）
 見 `SHARED-RULES.md` §9。憑證只記來源與名稱。
+
+## D-015 語系決定在伺服器端完成，首屏必須已是正確語系（2026-09-13）
+shell.fans 的語系偏好持久化在 cookie `shellfans_locale`（`en` | `zh-TW`，Path=/，1 年，SameSite=Lax，https 下 Secure，
+非 HttpOnly 以便客戶端切換時更新）。nginx 依該 cookie 對有英文版的頁面直接回預先產生的 `<page>.en.html`（同一網址，
+`map $cookie_shellfans_locale $sf_lang` + `try_files`），沒有 cookie 或值不合法一律回中文；沒有英文版的頁面照舊。
+英文版由 `scripts/build-locale-pages.py` 從同一份中文頁與頁內字典產生（與 runtime `applyTranslations()` 同語義），
+`--check` 可偵測過期。頁內 i18n 引擎以 `<html lang>`（伺服器已決定的語系）初始化，runtime 腳本的語系解析順序一律
+cookie → localStorage → `<html lang>`；localStorage 只是相容用快取，不再決定首次渲染。首次造訪預設 zh-TW（不依 Accept-Language）。
+禁止以 visibility/opacity/overlay/延遲顯示掩蓋語系切換。快取：HTML 本來就 `no-cache` + `CDN-Cache-Control: no-store`
+且兩版 ETag 不同，故不加 `Vary: Cookie`（同一 location 也服務會被 CDN 長期快取的資產）。

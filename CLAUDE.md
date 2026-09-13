@@ -40,8 +40,12 @@ Understand → Implement → Test → Build → Commit → Push → HANDOFF → 
   `/api/site/global-ui?site=shell`。任何 runtime 都必須先渲染內建 baseline，API 逾時／失敗／格式異常一律保留內建（D-009）。
 - **三種既有 nav 標記**：首頁型 `header.nav` + `#mobileMenu`；Webflow 內容頁 `.navbar.w-nav` + `nav.w-nav-menu`；
   由 `scripts/apply-unified-mobile-nav.py` 注入的行動版 `#sfMobMenu`。改共用元件要三種都顧到，禁止為單頁另寫一份。
-- **i18n**：`data-i18n` 字典（頁內 BASE + `/api/site/i18n` 覆寫）、`localStorage.shellfans_locale`、
-  `shellfans-locale-changed` 事件；zh-TW logo `images/nav_logo.svg`、en logo `images/nav_logo_en.png`。純中文頁固定中文。
+- **i18n / 首屏語系（D-015）**：偏好在 cookie `shellfans_locale`；nginx 依 cookie 對 7 個有引擎的頁面回 `<page>.en.html`
+  （`scripts/build-locale-pages.py` 產生；改了那 7 頁或 `js/sf-footer.js` 的 SHELL_BASE 後必須重跑，`--check` 驗證過期）。
+  頁內引擎以 `<html lang>` 初始化（`scripts/apply-locale-bootstrap.py` 冪等修補），runtime 語系解析一律
+  cookie → localStorage → `<html lang>`；`data-i18n` 字典（頁內 BASE + `/api/site/i18n` 覆寫）、`shellfans-locale-changed` 事件；
+  zh-TW logo `images/nav_logo.svg`、en logo `images/nav_logo_en.png`。純中文頁固定中文。zh 的 `<html lang>` 值是 `zh-Hant`。
+  測試：`python3 scripts/test-initial-locale.py`（本機 nginx + raw HTML）、`start` 後 `node scripts/test-initial-locale-browser.cjs`。
 - **AEO/GEO 紅線**：`<a href>` 導覽、canonical、hreflang、JSON-LD、`robots.txt`、`sitemap.xml`、`llms.txt`、`llms-full.txt`
   非任務要求不得變動；diff 中若出現要說明理由。
 - **GitHub**：`shellfans-dev/shell.fans`。215 沒有 `gh`；push 用 `~/.gh-token` 搭配 `git -c credential.helper=<helper>`。
@@ -51,6 +55,8 @@ Understand → Implement → Test → Build → Commit → Push → HANDOFF → 
 
 1. 記錄 rollback target：目前 `git rev-parse HEAD`、`curl -I https://shell.fans/`、要覆蓋的檔案清單。
 2. 逐檔 `cmp` 線上與 HEAD~1，確認無未回寫修改；`install` 覆蓋；`chmod o+r` / 目錄 `o+rx`。
+   若 `deploy/nginx/shell.fans.conf` 有變：`sudo cp` 到 `/etc/nginx/sites-enabled/shell.fans.conf` → `sudo nginx -t` →
+   `sudo systemctl reload nginx`（只 reload nginx，不 restart 其他服務）；先備份原檔到 `~/shell.fans.conf.bak-<ts>`。
 3. Smoke：origin 與經 CF 的 200、新版號資產 200、原始 HTML 仍含 `<a href>` 導覽、robots/sitemap/llms 200、
    headless 三寬度與中英切換無 JS 錯誤。失敗 → 用 `git show <前一 SHA>:<f>` 還原檔案。
 4. 更新 `docs/ai/HANDOFF.md` Deployment Result，`CURRENT-TASK.md` → `DEPLOYED_PENDING_CODEX_VERIFICATION`。

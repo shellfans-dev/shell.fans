@@ -48,9 +48,13 @@
 
   function pageHasI18n() { return !!document.querySelector('[data-i18n]'); }
 
+  // 與頁內 i18n 引擎、sf-footer.js 同一順序：cookie（伺服器也讀這個）→ localStorage → <html lang>
   function locale() {
     if (!pageHasI18n()) return 'zh-TW';
-    try { return localStorage.getItem(STORAGE_KEY) === 'en' ? 'en' : 'zh-TW'; } catch (_) { return 'zh-TW'; }
+    var m = document.cookie.match(/(?:^|;\s*)shellfans_locale=(en|zh-TW)(?:;|$)/);
+    if (m) return m[1];
+    try { var s = localStorage.getItem(STORAGE_KEY); if (s === 'en' || s === 'zh-TW') return s; } catch (_) {}
+    return document.documentElement.lang === 'en' ? 'en' : 'zh-TW';
   }
 
   function loc(ls, l) {

@@ -716,9 +716,35 @@ footer small{color:rgba(255,255,255,0.45);display:block;margin-top:14px;font-siz
     }
   };
 
-  var currentLocale = 'zh-TW';
-  try { currentLocale = localStorage.getItem(STORAGE_KEY) || 'zh-TW'; } catch (_) {}
-  if (currentLocale !== 'zh-TW' && currentLocale !== 'en') currentLocale = 'zh-TW';
+  // --- sf-locale-bootstrap v2 ---
+  // 初始語系以伺服器已決定的 HTML 為準：nginx 依 cookie shellfans_locale 回中文版或 .en 版，
+  // 結果反映在 <html lang>。偏好由同名 cookie 持久化（伺服器讀得到）；localStorage 只是相容用的
+  // 快取，不再決定首次渲染——伺服器在回應前讀不到它。舊使用者只有 localStorage 偏好時，
+  // 這一次在客戶端切換並寫入 cookie，之後首屏就由伺服器直接給對。
+  var COOKIE_KEY = 'shellfans_locale';
+  function readLocaleCookie() {
+    var m = document.cookie.match(/(?:^|;\s*)shellfans_locale=(en|zh-TW)(?:;|$)/);
+    return m ? m[1] : '';
+  }
+  function writeLocaleCookie(l) {
+    try {
+      document.cookie = COOKIE_KEY + '=' + l + '; Path=/; Max-Age=31536000; SameSite=Lax' +
+        (location.protocol === 'https:' ? '; Secure' : '');
+    } catch (_) {}
+  }
+  var servedLocale = document.documentElement.lang === 'en' ? 'en' : 'zh-TW';
+  var cookieLocale = readLocaleCookie();
+  var storedLocale = '';
+  try { storedLocale = localStorage.getItem(STORAGE_KEY) || ''; } catch (_) {}
+  if (storedLocale !== 'zh-TW' && storedLocale !== 'en') storedLocale = '';
+  var preferredLocale = cookieLocale || storedLocale;
+  var currentLocale = servedLocale;
+  // 伺服器已依 cookie 給對語系時這裡不會改變任何東西；只有偏好尚未進 cookie（舊使用者）
+  // 或伺服器端尚未部署時，才退回客戶端切換。
+  if (preferredLocale && preferredLocale !== servedLocale) currentLocale = preferredLocale;
+  if (!cookieLocale && storedLocale) writeLocaleCookie(storedLocale);
+  try { if (storedLocale !== currentLocale) localStorage.setItem(STORAGE_KEY, currentLocale); } catch (_) {}
+  window.__sfWriteLocaleCookie = writeLocaleCookie;
 
   var overrides = {};
 
@@ -746,7 +772,7 @@ footer small{color:rgba(255,255,255,0.45);display:block;margin-top:14px;font-siz
         el.textContent = val;
       }
     }
-    document.documentElement.lang = currentLocale === 'en' ? 'en' : 'zh-TW';
+    document.documentElement.lang = currentLocale === 'en' ? 'en' : 'zh-Hant';
     // Update picker active state
     var pickers = document.querySelectorAll('[data-i18n-picker]');
     for (var j = 0; j < pickers.length; j++) {
@@ -769,6 +795,7 @@ footer small{color:rgba(255,255,255,0.45);display:block;margin-top:14px;font-siz
     if (locale !== 'zh-TW' && locale !== 'en') return;
     currentLocale = locale;
     try { localStorage.setItem(STORAGE_KEY, locale); } catch (_) {}
+    writeLocaleCookie(locale);
     applyTranslations();
     // Notify imperative renderers (chat toggle / quota pill) to re-render.
     document.dispatchEvent(new CustomEvent('shellfans-locale-changed', { detail: { locale: locale } }));
@@ -1008,8 +1035,8 @@ footer small{color:rgba(255,255,255,0.45);display:block;margin-top:14px;font-siz
   }
 })();
 </script>
-<script src="/js/sf-footer.js?v=20260913a" defer></script>
-<script src="/js/sf-global-ui.js?v=20260913a" defer></script>
+<script src="/js/sf-footer.js?v=20260913b" defer></script>
+<script src="/js/sf-global-ui.js?v=20260913b" defer></script>
 <script src="https://shell.fans/js/aeo-chat.js" defer></script>
 </body>
 

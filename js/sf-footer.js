@@ -98,8 +98,25 @@
   var lastCfg = SHELL_BASE;
   var SAFE = /^(https?:\/\/|mailto:|tel:|\/|#)/i;
 
+  // 語系來源與頁內 i18n 引擎一致：cookie（nginx 依它決定首屏語系，伺服器讀得到）→
+  // localStorage（相容用快取）→ <html lang>（伺服器實際回的版本）。
+  function readLocaleCookie() {
+    var m = document.cookie.match(/(?:^|;\s*)shellfans_locale=(en|zh-TW)(?:;|$)/);
+    return m ? m[1] : '';
+  }
   function getLocale() {
-    try { return localStorage.getItem(STORAGE_KEY) === 'en' ? 'en' : 'zh-TW'; } catch (e) { return 'zh-TW'; }
+    var c = readLocaleCookie();
+    if (c) return c;
+    try { var s = localStorage.getItem(STORAGE_KEY); if (s === 'en' || s === 'zh-TW') return s; } catch (e) {}
+    return document.documentElement.lang === 'en' ? 'en' : 'zh-TW';
+  }
+  // 切換語言時同時寫 cookie 與 localStorage；下一次 request 伺服器就能直接回正確語系。
+  function persistLocale(l) {
+    try { localStorage.setItem(STORAGE_KEY, l); } catch (e) {}
+    try {
+      document.cookie = STORAGE_KEY + '=' + l + '; Path=/; Max-Age=31536000; SameSite=Lax' +
+        (location.protocol === 'https:' ? '; Secure' : '');
+    } catch (e) {}
   }
   // 字串（後端 FooterSettings.logo 是單一字串）與 {zh-TW,en} 物件都接受；
   // 雙語 logo 由 sf-global-ui.js 在頁尾重繪後覆寫。
@@ -220,7 +237,7 @@
         if (typeof window.__setLocale === 'function') {
           window.__setLocale(next); // page i18n engine persists + fires the event we listen to
         } else {
-          try { localStorage.setItem(STORAGE_KEY, next); } catch (e) {}
+          persistLocale(next);
           document.dispatchEvent(new CustomEvent('shellfans-locale-changed', { detail: { locale: next } }));
           render(lastCfg, next);
         }
