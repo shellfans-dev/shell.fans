@@ -101,7 +101,12 @@
   function getLocale() {
     try { return localStorage.getItem(STORAGE_KEY) === 'en' ? 'en' : 'zh-TW'; } catch (e) { return 'zh-TW'; }
   }
-  function loc(ls, l) { return ls ? (ls[l] || ls['zh-TW'] || '') : ''; }
+  // 字串（後端 FooterSettings.logo 是單一字串）與 {zh-TW,en} 物件都接受；
+  // 雙語 logo 由 sf-global-ui.js 在頁尾重繪後覆寫。
+  function loc(ls, l) {
+    if (typeof ls === 'string') return ls;
+    return ls ? (ls[l] || ls['zh-TW'] || '') : '';
+  }
   function esc(s) {
     return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
       return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
@@ -221,12 +226,34 @@
         }
       });
     }
+    // 通知 sf-global-ui.js：頁尾已重繪，請補回雙語 logo（重繪會換掉 <img>）
+    try { document.dispatchEvent(new CustomEvent('shellfans-footer-rendered', { detail: { locale: l } })); } catch (e) {}
+  }
+
+  var API_TIMEOUT_MS = 2500;
+  function validCfg(c) { return !!(c && typeof c === 'object' && Array.isArray(c.linkGroups)); }
+
+  // 2026-09-13 起恢復由後台「UIUX Design → Footer 頁尾（shell.fans）」設定驅動
+  // （2026-07-29 因口碑行銷封存而切斷）。先以內建 SHELL_BASE 立即渲染，取得線上已
+  // 儲存的設定後才重繪；逾時／失敗／格式異常一律保留內建版本，頁尾不會消失。
+  function fetchLive() {
+    if (!window.fetch) return;
+    var late = false;
+    var timer = setTimeout(function () { late = true; }, API_TIMEOUT_MS);
+    fetch(API, { credentials: 'omit' })
+      .then(function (r) { return r.ok ? r.json() : null; })
+      .then(function (d) {
+        clearTimeout(timer);
+        if (late || !d || !validCfg(d.data)) return;
+        lastCfg = d.data;
+        render(lastCfg, getLocale());
+      })
+      .catch(function () { clearTimeout(timer); /* 保留內建版本 */ });
   }
 
   function init() {
-    // console.shell.fans 依賴已切斷（口碑行銷封存）— footer 僅由內建 SHELL_BASE 渲染，
-    // 不再 runtime fetch console.shell.fans/api/site/footer。查看方案 = shell.fans/pricing。
     render(SHELL_BASE, getLocale());
+    fetchLive();
     document.addEventListener('shellfans-locale-changed', function (e) {
       var nl = e && e.detail && e.detail.locale === 'en' ? 'en' : (e && e.detail && e.detail.locale ? 'zh-TW' : getLocale());
       render(lastCfg, nl);
