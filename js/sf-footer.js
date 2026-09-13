@@ -20,7 +20,14 @@
 
   // Embedded defaults (mirror of saas_womm DEFAULT_FOOTER_SETTINGS.shell).
   var SHELL_BASE = {
-    logo: { src: 'https://shell.fans/images/nav_logo.svg', alt: 'ShellFans AI' },
+    // logo 依語系切換：中文版含「唄粉智能科技」字樣，英文語系改用英文版。
+    // 兩者比例相差 2.5 個百分點（3.403 vs 3.488），而 CSS 是高度固定、
+    // width:auto，因此實際寬度差約 3px，不會造成版位偏移。
+    logo: {
+      src: { 'zh-TW': 'https://shell.fans/images/nav_logo.svg',
+             en: 'https://shell.fans/images/nav_logo_en.png' },
+      alt: { 'zh-TW': 'ShellFans AI', en: 'ShellFans AI Technology' }
+    },
     description: {
       'zh-TW': '跨平台社群 AI 指揮中心。保存社群資產，看懂粉絲，同步經營與口碑成長。',
       en: 'Cross-platform Social AI Command. Preserve social assets, understand fans, grow engagement and reputation in sync.'
@@ -117,8 +124,8 @@
 
     // top: brand + columns
     h += '<div class="sf-footer-top"><div><div class="sf-footer-brand">';
-    if (d.showLogo !== false && cfg.logo && cfg.logo.src) {
-      h += '<img decoding="async" loading="lazy" src="' + esc(cfg.logo.src) + '" alt="' + esc(cfg.logo.alt || '') + '" width="162" height="32">';
+    if (d.showLogo !== false && cfg.logo && loc(cfg.logo.src, l)) {
+      h += '<img decoding="async" loading="lazy" src="' + esc(loc(cfg.logo.src, l)) + '" alt="' + esc(loc(cfg.logo.alt, l)) + '" width="162" height="32">';
     }
     h += '</div>';
     if (d.showDescription !== false && loc(cfg.description, l)) {
