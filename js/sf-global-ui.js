@@ -77,6 +77,8 @@
   function qsa(sel, root) { return toArray((root || document).querySelectorAll(sel)); }
   function hasClass(el, c) { return !!el && (' ' + (el.className || '') + ' ').indexOf(' ' + c + ' ') !== -1; }
 
+  function byOrder(a, b) { return (a.order || 0) - (b.order || 0); }
+
   function visible(items, device) {
     var out = [];
     for (var i = 0; i < (items || []).length; i++) {
@@ -86,8 +88,47 @@
       if (!safeHref(it.href)) continue;
       out.push(it);
     }
-    out.sort(function (a, b) { return (a.order || 0) - (b.order || 0); });
+    out.sort(byOrder);
     return out;
+  }
+
+  /**
+   * 兩層導覽的「有效可見」樹（與後端 visibleNavTree 同規則）：
+   *   父層停用 → 整組不顯示；子項依自己 enabled + 裝置 + 安全網址過濾、排序；
+   *   純下拉父層（無安全網址）若沒有可見子項 → 不顯示空下拉。
+   * 回傳的父層物件多帶 __kids（可見子項；可能為空陣列，代表「有 href 的一般連結」）。
+   */
+  function visibleTree(items, device) {
+    var out = [];
+    for (var i = 0; i < (items || []).length; i++) {
+      var it = items[i];
+      if (!it || !it.enabled) continue;
+      if (device === 'desktop' ? !it.desktop : !it.mobile) continue;
+      var kids = [];
+      var ch = it.children || [];
+      for (var j = 0; j < ch.length; j++) {
+        var c = ch[j];
+        if (!c || !c.enabled) continue;
+        if (device === 'desktop' ? !c.desktop : !c.mobile) continue;
+        if (!safeHref(c.href)) continue;
+        kids.push(c);
+      }
+      kids.sort(byOrder);
+      if (!safeHref(it.href) && kids.length === 0) continue;   // 空的純下拉 → 略過
+      var copy = {}; for (var key in it) { if (Object.prototype.hasOwnProperty.call(it, key)) copy[key] = it[key]; }
+      copy.__kids = kids;
+      out.push(copy);
+    }
+    out.sort(byOrder);
+    return out;
+  }
+
+  function anyHierarchy(items) {
+    for (var i = 0; i < (items || []).length; i++) {
+      var c = items[i] && items[i].children;
+      if (c && c.length) return true;
+    }
+    return false;
   }
 
   function ensureStyle() {
@@ -102,7 +143,22 @@
       'html.sf-gui-mobile-off #navHamburger,html.sf-gui-mobile-off #mobileMenu,' +
       'html.sf-gui-mobile-off .sf-mob-hamburger,html.sf-gui-mobile-off .sf-mob-menu{display:none !important}' +
       'html.sf-gui-nolang #langSwitcher,html.sf-gui-nolang .lang-switcher,html.sf-gui-nolang .home-header_location{display:none !important}' +
-      '@media (max-width:991px){html.sf-gui-mobile-nolang #langSwitcher,html.sf-gui-mobile-nolang .lang-switcher{display:none !important}}';
+      '@media (max-width:991px){html.sf-gui-mobile-nolang #langSwitcher,html.sf-gui-mobile-nolang .lang-switcher{display:none !important}}' +
+      // --- 兩層導覽：桌機下拉 / 手機手風琴（只在有子選單時才會建立這些節點）---
+      '.sf-gui-group{position:relative;display:inline-flex;align-items:center}' +
+      '.sf-gui-parent{cursor:pointer}' +
+      '.sf-gui-caret{font-size:.72em;margin-left:.15em;opacity:.7}' +
+      '.sf-gui-submenu{display:none;position:absolute;top:100%;left:0;min-width:180px;background:#fff;' +
+      'border:1px solid #e6e6e6;border-radius:10px;box-shadow:0 10px 30px rgba(0,0,0,.10);padding:6px;z-index:1200}' +
+      '.sf-gui-group:hover>.sf-gui-submenu,.sf-gui-group:focus-within>.sf-gui-submenu,' +
+      '.sf-gui-group.sf-gui-open>.sf-gui-submenu{display:block}' +
+      '.sf-gui-submenu>.sf-gui-subitem{display:block;white-space:nowrap;padding:7px 12px;border-radius:6px;color:inherit;text-decoration:none}' +
+      '.sf-gui-submenu>.sf-gui-subitem:hover,.sf-gui-submenu>.sf-gui-subitem:focus{background:#f4f4f5}' +
+      '.sf-gui-toggle{background:none;border:0;padding:4px 10px;cursor:pointer;font:inherit;color:inherit;line-height:1}' +
+      // 手機：手風琴改為 block、submenu 靜態展開
+      '.sf-gui-acc{display:block;position:static;width:100%}' +
+      '.sf-gui-acc>.sf-gui-submenu{position:static;display:none;min-width:0;border:0;box-shadow:none;padding:0 0 4px 16px}' +
+      '.sf-gui-acc.sf-gui-open>.sf-gui-submenu{display:block}';
     document.head.appendChild(s);
   }
 
@@ -178,7 +234,107 @@
    * before：新序列要插在哪個節點之前（null = 尾端）；sep：Webflow 分隔線範本（可為 null）。
    * 設定為空時直接返回、保留靜態版本——避免後台誤存空清單就讓全站無法導航。
    */
-  function syncNav(container, anchors, items, l, before, sep) {
+  // 把先前建立的下拉／手風琴群組還原成扁平錨點，讓每次 apply() 都能重新計算（locale 切換會重跑）。
+  function unwrapGroups(container) {
+    var groups = qsa('.sf-gui-group', container);
+    for (var i = 0; i < groups.length; i++) {
+      var g = groups[i];
+      var parentA = g.querySelector('a.sf-gui-parent') || g.querySelector('a');
+      if (parentA) {
+        var caret = parentA.querySelector('.sf-gui-caret');
+        if (caret) parentA.removeChild(caret);
+        parentA.classList.remove('sf-gui-parent');
+        parentA.removeAttribute('aria-haspopup'); parentA.removeAttribute('aria-expanded');
+        parentA.removeAttribute('role'); parentA.removeAttribute('tabindex');
+        parentA.removeAttribute('data-sf-gui-bound');
+        if (g.parentNode) g.parentNode.insertBefore(parentA, g);   // 移回扁平位置供 href 比對
+      }
+      if (g.parentNode) g.parentNode.removeChild(g);                // 連同 submenu、toggle、複製的子錨點一起丟棄
+    }
+  }
+
+  function buildSubItem(template, kid, l) {
+    var ca = template ? template.cloneNode(false) : document.createElement('a');
+    ca.className = 'sf-gui-subitem';
+    ca.removeAttribute('id'); ca.removeAttribute('data-sf-product'); ca.removeAttribute('data-aeo-geo-link');
+    ca.removeAttribute('data-sf-gui-bound'); ca.removeAttribute('aria-haspopup'); ca.removeAttribute('aria-expanded');
+    setLink(ca, kid);
+    ca.setAttribute('role', 'menuitem');
+    ca.setAttribute('data-sf-nav-item', String(kid.id || ''));
+    setLabel(ca, loc(kid.label, l));
+    setHidden(ca, false);
+    return ca;
+  }
+
+  // 鍵盤 / aria：Escape 收合並回到父層；純下拉父層 Enter/Space 開合；手機 caret 為真正的 toggle 按鈕。
+  function wireGroup(group, mode, parentA, toggleEl) {
+    function open(v) {
+      if (v) group.classList.add('sf-gui-open'); else group.classList.remove('sf-gui-open');
+      parentA.setAttribute('aria-expanded', v ? 'true' : 'false');
+      if (toggleEl && toggleEl !== parentA) toggleEl.setAttribute('aria-expanded', v ? 'true' : 'false');
+    }
+    function toggle() { open(!group.classList.contains('sf-gui-open')); }
+    group.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' || e.keyCode === 27) { open(false); if (parentA.focus) parentA.focus(); }
+    });
+    var noHref = !parentA.getAttribute('href');
+    if (mode === 'mobile') {
+      if (toggleEl) toggleEl.addEventListener('click', function (e) { e.preventDefault(); e.stopPropagation(); toggle(); });
+      if (noHref) parentA.addEventListener('click', function (e) { e.preventDefault(); toggle(); });
+    } else {
+      // 桌機：hover / focus-within 由 CSS 顯示；純下拉父層再加上點擊與鍵盤開合
+      if (noHref) {
+        parentA.addEventListener('click', function (e) { e.preventDefault(); toggle(); });
+        parentA.addEventListener('keydown', function (e) {
+          if (e.key === 'Enter' || e.key === ' ' || e.keyCode === 13 || e.keyCode === 32) { e.preventDefault(); toggle(); }
+        });
+      }
+      group.addEventListener('focusout', function (e) {
+        if (!group.contains(e.relatedTarget)) open(false);
+      });
+    }
+  }
+
+  function makeGroup(a, it, l, mode) {
+    var group = document.createElement('div');
+    group.className = 'sf-gui-group' + (mode === 'mobile' ? ' sf-gui-acc' : '');
+    group.setAttribute('data-sf-nav-group', String(it.id || ''));
+    a.classList.add('sf-gui-parent');
+    a.setAttribute('aria-haspopup', 'true');
+    a.setAttribute('aria-expanded', 'false');
+    if (!safeHref(it.href)) { a.removeAttribute('href'); a.setAttribute('role', 'button'); a.setAttribute('tabindex', '0'); }
+
+    var sub = document.createElement('div');
+    sub.className = 'sf-gui-submenu';
+    sub.setAttribute('role', 'menu');
+    var subId = 'sf-gui-sub-' + String(it.id || Math.random().toString(36).slice(2));
+    sub.id = subId;
+    a.setAttribute('aria-controls', subId);
+    for (var k = 0; k < it.__kids.length; k++) sub.appendChild(buildSubItem(a.cloneNode(false), it.__kids[k], l));
+
+    var toggleEl = null;
+    if (mode === 'mobile') {
+      toggleEl = document.createElement('button');
+      toggleEl.type = 'button';
+      toggleEl.className = 'sf-gui-toggle';
+      toggleEl.setAttribute('aria-expanded', 'false');
+      toggleEl.setAttribute('aria-controls', subId);
+      toggleEl.setAttribute('aria-label', loc(it.label, l) + ' 子選單');
+      toggleEl.textContent = '▾';
+      group.appendChild(a);
+      group.appendChild(toggleEl);
+    } else {
+      var caret = document.createElement('span');
+      caret.className = 'sf-gui-caret'; caret.setAttribute('aria-hidden', 'true'); caret.textContent = '▾';
+      a.appendChild(caret);
+      group.appendChild(a);
+    }
+    group.appendChild(sub);
+    wireGroup(group, mode, a, toggleEl || a);
+    return group;
+  }
+
+  function syncNav(container, anchors, items, l, before, sep, mode) {
     if (!container || items.length === 0) return;
     var byHref = {};
     for (var i = 0; i < anchors.length; i++) {
@@ -191,7 +347,7 @@
 
     for (var j = 0; j < items.length; j++) {
       var it = items[j];
-      var a = byHref[normHref(it.href)];
+      var a = safeHref(it.href) ? byHref[normHref(it.href)] : null;
       if (a && used.indexOf(a) !== -1) a = null;   // 設定裡同一網址出現兩次 → 第二個新建
       if (a) {
         used.push(a);
@@ -205,7 +361,12 @@
       a.setAttribute('data-sf-nav-item', String(it.id || ''));
       setLabel(a, loc(it.label, l));
       setHidden(a, false);
-      frag.appendChild(a);
+      // 有可見子選單 → 包成下拉／手風琴群組；否則維持扁平錨點（扁平資料下與原行為完全相同）
+      if (it.__kids && it.__kids.length) {
+        frag.appendChild(makeGroup(a, it, l, mode || 'desktop'));
+      } else {
+        frag.appendChild(a);
+      }
       if (sep) frag.appendChild(sep.cloneNode(true));
     }
 
@@ -224,10 +385,11 @@
   }
 
   function applyDesktopNav(cfg, l) {
-    var items = visible(cfg.navigation, 'desktop');
+    var items = visibleTree(cfg.navigation, 'desktop');
     var navs = qsa('nav.nav-menu');
     for (var n = 0; n < navs.length; n++) {
       var nav = navs[n];
+      unwrapGroups(nav);                       // 還原上一次建立的群組，讓 re-apply 冪等
       var kids = toArray(nav.children);
       var anchors = [], before = null, sep = null;
       for (var i = 0; i < kids.length; i++) {
@@ -241,7 +403,7 @@
           if (!sep) sep = k;
         }
       }
-      syncNav(nav, anchors, items, l, before, sep);
+      syncNav(nav, anchors, items, l, before, sep, 'desktop');
     }
   }
 
@@ -260,7 +422,7 @@
   }
 
   function applyMobileMenus(cfg, l) {
-    var items = visible(cfg.navigation, 'mobile');
+    var items = visibleTree(cfg.navigation, 'mobile');
     var showLogin = !(cfg.mobile && cfg.mobile.showLogin === false);
     var menus = qsa('#mobileMenu, .mobile-menu, #sfMobMenu, .sf-mob-menu');
     var seen = [];
@@ -268,6 +430,7 @@
       var menu = menus[n];
       if (seen.indexOf(menu) !== -1) continue;
       seen.push(menu);
+      unwrapGroups(menu);                      // re-apply 冪等
       var kids = toArray(menu.children);
       var anchors = [], before = null;
       for (var i = 0; i < kids.length; i++) {
@@ -276,7 +439,7 @@
         if (!isAuthLink(k) && !isCtaEl(k)) anchors.push(k);
         else if (!before) before = k;             // 登入／CTA 區塊：導覽項目插在它之前，本身不動
       }
-      syncNav(menu, anchors, items, l, before, null);
+      syncNav(menu, anchors, items, l, before, null, 'mobile');
       var all = qsa('a', menu);
       for (var j = 0; j < all.length; j++) {
         if (isLoginLink(all[j])) setHidden(all[j], !showLogin);
