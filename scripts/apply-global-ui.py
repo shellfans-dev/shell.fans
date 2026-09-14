@@ -20,7 +20,7 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-ASSET_VER = '20260913b'
+ASSET_VER = '20260914'
 
 FOOTER_TAG_RE = re.compile(r'<script src="/js/sf-footer\.js\?v=([0-9a-z]+)" defer></script>')
 GLOBAL_UI_TAG = f'<script src="/js/sf-global-ui.js?v={ASSET_VER}" defer></script>'
