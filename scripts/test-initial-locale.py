@@ -213,18 +213,38 @@ def get_raw(base: str, path: str, cookie: str | None = None):
         return e.code, e.headers.get('Location')
 
 
-def nav_labels(page: str) -> list[str]:
-    m = re.search(r'<nav class="nav-menu[^>]*>(.*?)</nav>', page, re.S)
+def _container_inner(page: str, open_re: str, tag: str) -> str | None:
+    """Inner HTML of a container delimited by its BALANCED closing tag. The baked Global UI nav
+    (scripts/apply-global-ui-nav.py) wraps dropdowns in nested <div>s, so a non-greedy `.*?</div>`
+    would stop at the first inner </div>; count nesting instead."""
+    m = re.search(open_re, page)
     if not m:
+        return None
+    depth = 1
+    for mm in re.finditer(r'<(/?)' + re.escape(tag) + r'\b[^>]*>', page[m.end():]):
+        if mm.group(1):
+            depth -= 1
+            if depth == 0:
+                return page[m.end():m.end() + mm.start()]
+        else:
+            depth += 1
+    return page[m.end():]
+
+
+def _labels(inner: str | None) -> list[str]:
+    if not inner:
         return []
-    return [re.sub(r'<[^>]+>', '', a).strip() for a in re.findall(r'<a [^>]*>(.*?)</a>', m.group(1), re.S)]
+    # strip inner tags and the dropdown caret glyph so labels are plain text
+    return [re.sub(r'<[^>]+>', '', a).replace('▾', '').strip()
+            for a in re.findall(r'<a [^>]*>(.*?)</a>', inner, re.S)]
+
+
+def nav_labels(page: str) -> list[str]:
+    return _labels(_container_inner(page, r'<nav class="nav-menu[^>]*>', 'nav'))
 
 
 def mobile_labels(page: str) -> list[str]:
-    m = re.search(r'<div class="mobile-menu" id="mobileMenu">(.*?)</div>', page, re.S)
-    if not m:
-        return []
-    return [re.sub(r'<[^>]+>', '', a).strip() for a in re.findall(r'<a [^>]*>(.*?)</a>', m.group(1), re.S)]
+    return _labels(_container_inner(page, r'<div class="mobile-menu" id="mobileMenu">', 'div'))
 
 
 def header_logo(page: str) -> str:
@@ -270,7 +290,7 @@ def run_checks(base: str) -> None:
         st, h, body = get(base, '/', cookie)
         check(f'/ {label}: 200 + lang zh-Hant', st == 200 and lang(body) == 'zh-Hant', f'{st} {lang(body)}')
         check(f'/ {label}: zh title', has_cjk(title(body)), title(body))
-        check(f'/ {label}: zh nav', nav_labels(body)[:1] == ['AEO/GEO 代管'], str(nav_labels(body)))
+        check(f'/ {label}: zh nav', nav_labels(body)[:1] == ['AI 社群方案'], str(nav_labels(body)))
         check(f'/ {label}: zh logo', header_logo(body).endswith('nav_logo.svg'), header_logo(body))
         check(f'/ {label}: zh footer', '隱私權政策' in body and 'Privacy Policy' not in body.split('id="sf-footer-root"')[1][:4000])
 
@@ -284,8 +304,8 @@ def run_checks(base: str) -> None:
     check('/ cookie=en: og:description en', not has_cjk(meta(en, 'property="og:description"')))
     check('/ cookie=en: twitter:title en', not has_cjk(meta(en, 'name="twitter:title"')))
     check('/ cookie=en: og:locale en_US', meta(en, 'property="og:locale"') == 'en_US', meta(en, 'property="og:locale"'))
-    check('/ cookie=en: nav English', nav_labels(en) == ['AEO/GEO Hosting', 'Engagement Engine', 'Fans Analysis', 'Word-of-Mouth', 'Pricing', 'Klog'], str(nav_labels(en)))
-    check('/ cookie=en: mobile menu English', mobile_labels(en)[:3] == ['AEO/GEO Hosting', 'Engagement Engine', 'Fans Analysis'] and 'Get Started' in mobile_labels(en), str(mobile_labels(en)))
+    check('/ cookie=en: nav English', nav_labels(en) == ['AI Social Solutions', 'Engagement Engine', 'Fans Analysis', 'AEO/GEO Hosting', 'AEO / GEO Services', 'AEO/GEO Tech and Methods', 'AEO/GEO Case', 'Pricing', 'Klog'], str(nav_labels(en)))
+    check('/ cookie=en: mobile menu English', mobile_labels(en)[:3] == ['AI Social Solutions', 'Engagement Engine', 'Fans Analysis'] and 'Get Started' in mobile_labels(en), str(mobile_labels(en)))
     check('/ cookie=en: header logo en', header_logo(en).endswith('nav_logo_en.png'), header_logo(en))
     check('/ cookie=en: footer logo en', footer_logo(en).endswith('nav_logo_en.png'), footer_logo(en))
     foot = en.split('id="sf-footer-root"')[1].split('</footer>')[0]
@@ -321,7 +341,7 @@ def run_checks(base: str) -> None:
     for path, name in ENGINE_PAGES.items():
         st, _, body = get(base, path, 'shellfans_locale=en')
         check(f'{path} cookie=en: 200 + lang en', st == 200 and lang(body) == 'en', f'{st} {lang(body)}')
-        check(f'{path} cookie=en: English nav + en logo', nav_labels(body)[:1] == ['AEO/GEO Hosting'] and header_logo(body).endswith('nav_logo_en.png'), f'{nav_labels(body)[:2]} {header_logo(body)}')
+        check(f'{path} cookie=en: English nav + en logo', nav_labels(body)[:1] == ['AI Social Solutions'] and header_logo(body).endswith('nav_logo_en.png'), f'{nav_labels(body)[:2]} {header_logo(body)}')
         st, _, body = get(base, path, None)
         check(f'{path} no cookie: lang zh-Hant', st == 200 and lang(body) == 'zh-Hant', f'{st} {lang(body)}')
         # direct variant URL must not exist
