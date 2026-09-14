@@ -63,3 +63,17 @@ FAIL（3 × P2，皆已確認）。任務已在 production；上述為部署後�
 
 驗證：`scripts/test-initial-locale.py` 118/118（含新增的 F1 無副檔名 404、F2 `.html`→301→英文首屏、F3 大小寫）；
 部署後於 live origin 實測三項皆修復、且中文/爬蟲/canonical 行為不變（見 HANDOFF / 部署記錄）。
+
+---
+
+## Re-review of the fix — commit `73c04c3` (2026-09-14): **PASS**
+以 OpenAI Codex CLI（read-only，ChatGPT 認證）重新審查修正 commit `73c04c3`（parent `1c1aabb`）。
+**Verdict: PASS，0 findings。** 三項（F1/F2/F3）皆確認修復，regex location 順序安全、無 redirect loop、
+第 7 頁（index.html）由既有 redirect 涵蓋、測試涵蓋各案例。
+
+> Codex summary: Reviewed 73c04c3 against its parent; all three findings are resolved with no new actionable issue identified. F1: deploy/nginx/shell.fans.conf:150–152 blocks both variant spellings, no tracked legitimate .en file exists, and successful try_files candidates remain in their current location. F2: lines 157–158 match exactly the six intended .html routes, preserve query arguments in the same-host redirect, exclude .en.html and flat URLs, and introduce no loop; the existing index.html redirect at lines 291–293 covers the seventh page. F3: lines 60–63 use case-sensitive ~ matching, accepting lowercase en and sending mixed-case or invalid values to the Chinese fallback; the variant block and redirect precede location / in safe order. Tests cover direct .en.html URLs, representative extensionless variants with both cookie states, all six no-follow 301 responses and canonical locale responses, plus EN/En/eN and lowercase en; independent in-memory route assertions and Python syntax validation passed.
+
+> Codex residual risk: Production verification remains unconfirmed: the origin connection failed. The nginx integration suite was not rerun in the read-only environment; tests do not explicitly assert query preservation, exact redirect authority, or the existing index.html redirect.
+
+備註：Codex 的 residual risk 是「沙箱內無法連線 origin 做 production HTTP 驗證」——該項已由 Claude 於 live origin 實測補足
+（F1 /*.en→404、F2 引擎 .html→301→英文、F3 EN→中文、無回歸；見上方 Remediation 與部署記錄）。
