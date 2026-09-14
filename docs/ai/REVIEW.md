@@ -51,3 +51,15 @@ Browser and nginx integration suites were not executed in the read-only sandbox.
 ## Status
 FAIL（3 × P2，皆已確認）。任務已在 production；上述為部署後的補審查。是否修正（擋 `.en` 無副檔名變體、
 `.html` 網址的語系選擇、cookie 值大小寫一致）並重新部署，待 kirin 決定——修正 nginx 需再走一次備份→`nginx -t`→reload。
+
+---
+
+## Remediation（2026-09-14，Claude 依 findings 修正）
+三項皆為 nginx 設定層修正（`deploy/nginx/shell.fans.conf`），並補上回歸測試（`scripts/test-initial-locale.py`）：
+- **F1**：`location ~ \.en\.html$` → `location ~ \.en(\.html)?$`，一併擋無副檔名的 `/index.en` 等變體。
+- **F2**：新增 regex location 把 6 個有英文版的引擎頁 `.html` 明確網址 `301` 到扁平 canonical 網址（相對導向），
+  之後由 `location /` 的 `try_files` 依 cookie 選語系；`.en`/`.en.html` 由 F1 block 先擋，不進此規則。
+- **F3**：cookie map key `"en"` → case-sensitive regex `"~^en$"`，只認小寫 `en`，與客戶端一致；`EN`/`En` → 中文。
+
+驗證：`scripts/test-initial-locale.py` 118/118（含新增的 F1 無副檔名 404、F2 `.html`→301→英文首屏、F3 大小寫）；
+部署後於 live origin 實測三項皆修復、且中文/爬蟲/canonical 行為不變（見 HANDOFF / 部署記錄）。

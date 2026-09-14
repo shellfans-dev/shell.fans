@@ -99,10 +99,11 @@ def write_test_conf() -> Path:
         'map $http_accept $md_suffix', 'map $uri $md_base', 'map $http_accept $notfound_doc',
         'map $cookie_shellfans_locale $sf_lang'))
     locations = ''.join(extract_block(src, h, c) + '\n\n' for h, c in (
-        ('location ~ \\.en\\.html$', None), ('location ~ /\\.(?!well-known)', None),
+        ('location ~ \\.en(\\.html)?$', None), ('location ~ /\\.(?!well-known)', None),
+        ('location ~ "^(/(?:aeo-geo(?:/(?:methodology|taiwan-aeo-tools))?|social-media-backup|what-is-shellfans|tools/aeo-geo-checker))\\.html$"', None),
         ('location = /aeo-geo', 'try_files'), ('location /', 'try_files')))
     # sanity: the directives this fix depends on must be present verbatim in the deploy conf
-    for needle in ('$uri$sf_lang.html', '/aeo-geo$sf_lang.html', '"en"    ".en"'):
+    for needle in ('$uri$sf_lang.html', '/aeo-geo$sf_lang.html', '"~^en$"  ".en"', 'return 301 $1$is_args$args'):
         if needle not in src:
             raise SystemExit(f'deploy conf is missing: {needle}')
     for d in ('cb', 'px', 'fc', 'uw', 'sc', 'logs'):
@@ -196,6 +197,22 @@ def get(base: str, path: str, cookie: str | None = None, accept: str | None = No
         return e.code, dict((k.lower(), v) for k, v in e.headers.items()), e.read().decode('utf-8', 'replace')
 
 
+_NR = type('NR', (urllib.request.HTTPRedirectHandler,), {'redirect_request': lambda self, *a, **k: None})
+_noredir = urllib.request.build_opener(_NR(), urllib.request.HTTPSHandler(context=CTX))
+
+
+def get_raw(base: str, path: str, cookie: str | None = None):
+    """Request WITHOUT following redirects → (status, Location header)."""
+    req = urllib.request.Request(base + path)
+    if cookie is not None:
+        req.add_header('Cookie', cookie)
+    try:
+        with _noredir.open(req, timeout=10) as r:
+            return r.status, r.headers.get('Location')
+    except urllib.error.HTTPError as e:
+        return e.code, e.headers.get('Location')
+
+
 def nav_labels(page: str) -> list[str]:
     m = re.search(r'<nav class="nav-menu[^>]*>(.*?)</nav>', page, re.S)
     if not m:
@@ -280,7 +297,7 @@ def run_checks(base: str) -> None:
     check('/ cookie=en: engine + dictionary still present (client switch back works)', "window.__setLocale = function" in en and "'zh-TW': {" in en)
     check('/ cookie=en: bootstrap v2 (server locale wins)', 'sf-locale-bootstrap v2' in en)
     st_up, _, up = get(base, '/', 'shellfans_locale=EN')
-    check('/ cookie=EN (uppercase): nginx map is case-insensitive → English, lang en', st_up == 200 and lang(up) == 'en', f'{st_up} {lang(up)}')
+    check('/ cookie=EN (uppercase): case-sensitive map → Chinese (only lowercase en counts; Codex F3)', st_up == 200 and lang(up) == 'zh-Hant', f'{st_up} {lang(up)}')
     st0, h0, zh = get(base, '/', None)
     zh_chrome = (len(nav_labels(zh)), len(mobile_labels(zh)), zh.split('id="sf-footer-root"')[1].split('</footer>')[0].count('<a '))
     en_chrome = (len(nav_labels(en)), len(mobile_labels(en)), foot.count('<a '))
@@ -326,6 +343,28 @@ def run_checks(base: str) -> None:
         check('/ Accept: text/markdown still negotiates the .md file first (precedence unchanged)', st == 200 and not md_body.lstrip().startswith('<!DOCTYPE') and '<html' not in md_body[:200], f"{st} {md_body[:60]!r}")
     st, _, _ = get(base, '/this-page-does-not-exist', 'shellfans_locale=en')
     check('unknown path with en cookie → 404', st == 404, str(st))
+    # --- Codex remediation 2026-09-14 ---
+    # F1: extensionless .en variants must 404 too (not just .en.html)
+    for p in ('/index.en', '/social-media-backup.en', '/aeo-geo.en', '/what-is-shellfans.en'):
+        stf, _, _ = get(base, p, None)
+        check(f'F1 {p} (extensionless .en) → 404', stf == 404, str(stf))
+        stf2, _, _ = get(base, p, 'shellfans_locale=en')
+        check(f'F1 {p} with en cookie → 404', stf2 == 404, str(stf2))
+    # F2: engine .html URLs 301 to their flat canonical form so cookie-locale applies
+    for base_path in ('/social-media-backup', '/what-is-shellfans', '/aeo-geo', '/aeo-geo/methodology',
+                      '/aeo-geo/taiwan-aeo-tools', '/tools/aeo-geo-checker'):
+        stc, loc = get_raw(base, base_path + '.html', 'shellfans_locale=en')
+        check(f'F2 {base_path}.html → 301 flat', stc == 301 and (loc or '').rstrip('/').endswith(base_path), f'{stc} {loc}')
+        # after redirect, the flat URL with en cookie serves English (first frame en)
+        stflat, _, bflat = get(base, base_path, 'shellfans_locale=en')
+        check(f'F2 {base_path} (flat) + en cookie → en first frame', stflat == 200 and lang(bflat) == 'en', f'{stflat} {lang(bflat)}')
+        # no cookie → the flat page stays Chinese
+        check(f'F2 {base_path} (flat) no cookie → zh', lang(get(base, base_path)[2]) == 'zh-Hant')
+    # F3: cookie value matching is case-sensitive (only lowercase en); mixed case → Chinese, like the client
+    for badcookie in ('shellfans_locale=EN', 'shellfans_locale=En', 'shellfans_locale=eN'):
+        check(f'F3 {badcookie} → zh (case-sensitive)', lang(get(base, '/', badcookie)[2]) == 'zh-Hant', badcookie)
+    check('F3 exact lowercase en still → en', lang(get(base, '/', 'shellfans_locale=en')[2]) == 'en')
+
     st, _, b = get(base, '/aeo-geo/', 'shellfans_locale=en')
     check('/aeo-geo/ (directory form) unchanged behaviour (404 or same as before)', st in (403, 404), str(st))
 
